@@ -1,12 +1,11 @@
 package ec.edu.ups;
 
+import ec.edu.ups.controlador.CarritoController;
 import ec.edu.ups.controlador.ProductoController;
+import ec.edu.ups.dao.CarritoDAO;
 import ec.edu.ups.dao.ProductoDAO;
 import ec.edu.ups.dao.impl.ProductoDAOMemoria;
-import ec.edu.ups.vista.CarritoAnadirView;
-import ec.edu.ups.vista.MenuPrincipalView;
-import ec.edu.ups.vista.ProductoAnadirView;
-import ec.edu.ups.vista.ProductoListaView;
+import ec.edu.ups.vista.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,17 +17,22 @@ public class Main {
 
                 //instanciamos DAO (Singleton)
                 ProductoDAO productoDAO = new ProductoDAOMemoria();
+                //CarritoDAO carritoDAO = new Ca
 
                 //instancio Vistas
                 MenuPrincipalView principalView = new MenuPrincipalView();
                 ProductoAnadirView productoAnadirView = new ProductoAnadirView();
                 ProductoListaView productoListaView = new ProductoListaView();
+                ProductoActualizarView productoActualizarView = new ProductoActualizarView();
+
                 CarritoAnadirView carritoAnadirView = new CarritoAnadirView();
+
 
 
                 //instanciamos Controladores
                 ProductoController productoController = new ProductoController(productoDAO,
-                        productoAnadirView, productoListaView, carritoAnadirView);
+                        productoAnadirView, productoListaView, carritoAnadirView, productoActualizarView);
+                CarritoController carritoController = new CarritoController(carritoAnadirView,productoDAO);
 
                 principalView.getMenuItemCrearProducto().addActionListener(new ActionListener() {
                     @Override
@@ -49,6 +53,17 @@ public class Main {
                         }
                     }
                 });
+
+                principalView.getMenuItemActualizarProducto().addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if(!productoActualizarView.isVisible()){
+                            productoActualizarView.setVisible(true);
+                            principalView.getjDesktopPane().add(productoActualizarView);
+                        }
+                    }
+                });
+
 
                 principalView.getMenuItemCrearCarrito().addActionListener(new ActionListener() {
                     @Override
