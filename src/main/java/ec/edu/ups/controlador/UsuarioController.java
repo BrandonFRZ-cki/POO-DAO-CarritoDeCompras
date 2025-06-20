@@ -11,10 +11,13 @@ public class UsuarioController {
     private final UsuarioDAO usuarioDAO;
     private LoginView loginView;
     private Usuario usuario;
+
+
     public UsuarioController(UsuarioDAO usuarioDAO, LoginView loginView) {
         this.usuarioDAO = usuarioDAO;
         this.loginView = loginView;
-        this.usuario = new Usuario();
+        this.usuario = null;
+        configurarEventosEnVistas();
     }
     private void configurarEventosEnVistas() {
         loginView.getIniciarSesiónButton().addActionListener( new ActionListener() {
@@ -37,5 +40,8 @@ public class UsuarioController {
 
             loginView.dispose();
         }
+    }
+    public Usuario getUsuarioAutenticado() {
+        return usuario;
     }
 }
