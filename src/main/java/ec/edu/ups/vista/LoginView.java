@@ -3,25 +3,27 @@ package ec.edu.ups.vista;
 import javax.swing.*;
 
 public class LoginView extends JFrame {
-    private JPanel panel1;
+    private JPanel panelPrincipal;
     private JTextField txtUsername;
     private JPasswordField txtContrasena;
     private JButton iniciarSesiónButton;
     private JButton registrarceButton;
 
     public LoginView() {
+        add(panelPrincipal);
         setTitle("Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 400);
         setLocationRelativeTo(null);
+
     }
 
     public JPanel getPanel1() {
-        return panel1;
+        return panelPrincipal;
     }
 
     public void setPanel1(JPanel panel1) {
-        this.panel1 = panel1;
+        this.panelPrincipal = panel1;
     }
 
     public JTextField getTxtUsername() {
