@@ -13,9 +13,9 @@ public class LoginView extends JFrame {
         add(panelPrincipal);
         setTitle("Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 400);
+        setSize(400, 300);
         setLocationRelativeTo(null);
-
+        setResizable(false);
     }
 
     public JPanel getPanel1() {
