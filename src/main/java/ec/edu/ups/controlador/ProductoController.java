@@ -3,7 +3,6 @@ package ec.edu.ups.controlador;
 import ec.edu.ups.dao.ProductoDAO;
 import ec.edu.ups.modelo.Producto;
 import ec.edu.ups.vista.CarritoAnadirView;
-import ec.edu.ups.vista.ProductoActualizarView;
 import ec.edu.ups.vista.ProductoAnadirView;
 import ec.edu.ups.vista.ProductoListaView;
 
@@ -16,22 +15,18 @@ public class ProductoController {
     private final ProductoAnadirView productoAnadirView;
     private final ProductoListaView productoListaView;
     private final CarritoAnadirView carritoAnadirView;
-    private final ProductoActualizarView productoActualizarView;
 
     private final ProductoDAO productoDAO;
 
     public ProductoController(ProductoDAO productoDAO,
                               ProductoAnadirView productoAnadirView,
                               ProductoListaView productoListaView,
-                              CarritoAnadirView carritoAnadirView,
-                              ProductoActualizarView productoActualizarView
-    ) {
+                              CarritoAnadirView carritoAnadirView) {
 
         this.productoDAO = productoDAO;
         this.productoAnadirView = productoAnadirView;
         this.productoListaView = productoListaView;
         this.carritoAnadirView = carritoAnadirView;
-        this.productoActualizarView = productoActualizarView;
         this.configurarEventosEnVistas();
     }
 
@@ -56,16 +51,6 @@ public class ProductoController {
                 listarProductos();
             }
         });
-
-        productoActualizarView.getBtBuscar().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                buscarProducto();
-            }
-        });
-
-
-
 
         carritoAnadirView.getBtnBuscar().addActionListener(new ActionListener() {
             @Override
