@@ -1,31 +1,34 @@
 package ec.edu.ups.modelo;
 
 public class Usuario {
-    private String userName;
-    private String contrasena;
+    private String username;
+    private String contrasenia;
     private Rol rol;
 
-    public Usuario() {}
-    public Usuario(String nombreDeUsuario, String contrasena, Rol rol) {
-        this.userName = nombreDeUsuario;
-        this.contrasena = contrasena;
+    public Usuario() {
+
+    }
+
+    public Usuario(String nombreDeUsuario, String contrasenia, Rol rol) {
+        this.username = nombreDeUsuario;
+        this.contrasenia = contrasenia;
         this.rol = rol;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getContrasena() {
-        return contrasena;
+    public String getContrasenia() {
+        return contrasenia;
     }
 
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
+    public void setContrasenia(String contrasenia) {
+        this.contrasenia = contrasenia;
     }
 
     public Rol getRol() {
@@ -39,8 +42,8 @@ public class Usuario {
     @Override
     public String toString() {
         return "Usuario{" +
-                "nombreDeUsuario='" + userName + '\'' +
-                ", contrasena='" + contrasena + '\'' +
+                "nombreDeUsuario='" + username + '\'' +
+                ", contrasenia='" + contrasenia + '\'' +
                 ", rol=" + rol +
                 '}';
     }

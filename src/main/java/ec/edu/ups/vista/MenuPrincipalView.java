@@ -113,4 +113,15 @@ public class MenuPrincipalView extends JFrame {
     public void setjDesktopPane(JDesktopPane jDesktopPane) {
         this.jDesktopPane = jDesktopPane;
     }
+
+    public void mostrarMensaje(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje);
+    }
+
+    public void deshabilitarMenusAdministrador() {
+        getMenuItemCrearProducto().setEnabled(false);
+        getMenuItemBuscarProducto().setEnabled(false);
+        getMenuItemActualizarProducto().setEnabled(false);
+        getMenuItemEliminarProducto().setEnabled(false);
+    }
 }
