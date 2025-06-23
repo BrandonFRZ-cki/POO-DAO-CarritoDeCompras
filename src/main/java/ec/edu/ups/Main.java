@@ -33,7 +33,6 @@ public class Main {
                 loginView.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosed(WindowEvent e) {
-
                         Usuario usuarioAuntenticado = usuarioController.getUsuarioAutenticado();
                         if (usuarioAuntenticado != null) {
                             //instanciamos DAO (Singleton)
@@ -47,7 +46,6 @@ public class Main {
                             ProductoEliminarView productoEliminarView = new ProductoEliminarView();
                             CarritoAnadirView carritoAnadirView = new CarritoAnadirView();
 
-
                             //instanciamos Controladores
                             ProductoController productoController = new ProductoController(productoDAO, productoAnadirView, productoListaView, carritoAnadirView,productoEliminarView);
                             CarritoController carritoController = new CarritoController(carritoDAO, productoDAO, carritoAnadirView);
@@ -57,7 +55,6 @@ public class Main {
                             if (usuarioAuntenticado.getRol().equals(Rol.USUARIO)) {
                                 principalView.deshabilitarMenusAdministrador();
                             }
-
                             principalView.getMenuItemCrearProducto().addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
