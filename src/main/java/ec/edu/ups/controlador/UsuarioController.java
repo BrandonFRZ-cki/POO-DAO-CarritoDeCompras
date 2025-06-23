@@ -35,7 +35,7 @@ public class UsuarioController {
 
         usuario = usuarioDAO.autenticar(username,contrasena);
         if (usuario == null) {
-            loginView.mostrarMensaje("Usuario o contrasena incorrectos");
+            loginView.mostrarMensaje("Usuario o contrasena incorrectos","Datos Incorrectos","error");
         }else{
 
             loginView.dispose();
