@@ -6,9 +6,10 @@ import ec.edu.ups.modelo.Carrito;
 import java.util.List;
 
 public class CarritoDAOMemoria implements CarritoDAO {
+    List<Carrito> carritos;
     @Override
     public void crear(Carrito carrito) {
-
+        carritos.add(carrito);
     }
 
     @Override
