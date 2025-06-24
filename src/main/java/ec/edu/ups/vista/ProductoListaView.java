@@ -20,7 +20,7 @@ public class ProductoListaView extends JInternalFrame {
         setContentPane(panelPrincipal);
         setTitle("Listado de Productos");
         setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
-        setSize(500, 500);
+        setSize(500, 400);
         setClosable(true);
         setIconifiable(true);
         setResizable(true);
