@@ -10,6 +10,7 @@ import ec.edu.ups.vista.CarritoAnadirView;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class CarritoController {
@@ -46,9 +47,17 @@ public class CarritoController {
     }
 
     private void guardarCarrito() {
+        //fecha actual
+        GregorianCalendar actual = new GregorianCalendar();
+        carrito.setFechaCreacion(actual);
+        System.out.println("Fecha de creacion: " + actual.getTime());
+
         carritoDAO.crear(carrito);
-        carritoAnadirView.mostrarMensaje("Carrito creado correctamente");
+        carritoAnadirView.mostrarMensaje("Carrito creado correctamented");
         System.out.println(carritoDAO.listarTodos());
+        carritoAnadirView.dispose();
+        carrito = null;
+
     }
 
     private void anadirProducto() {

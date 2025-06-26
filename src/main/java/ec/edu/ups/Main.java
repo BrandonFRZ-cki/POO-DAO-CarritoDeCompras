@@ -99,6 +99,8 @@ public class Main {
                                     }
                                 }
                             });
+                            //------------------------------------------------------------------------------------------------ CARRITO
+
                             principalView.getMenuItemCrearCarrito().addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
