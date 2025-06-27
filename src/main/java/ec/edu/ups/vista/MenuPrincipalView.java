@@ -17,17 +17,21 @@ public class MenuPrincipalView extends JFrame {
 
 
 
+
     private JMenuItem menuItemCrearProducto;
     private JMenuItem menuItemEliminarProducto;
     private JMenuItem menuItemActualizarProducto;
     private JMenuItem menuItemBuscarProducto;
 
     private JMenuItem menuItemCrearCarrito;
+    private JMenuItem menuItemEliminarCarrito;
+    private JMenuItem menuItemActualizarCarrito;
+    private JMenuItem menuItemBuscarCarrito;
 
-    private JDesktopPane jDesktopPane;
+    private MiDescktopPane jDesktopPane;
 
     public MenuPrincipalView() {
-        jDesktopPane = new JDesktopPane();
+        jDesktopPane = new MiDescktopPane();
         menuBar = new JMenuBar();
 
         menuUsuario = new JMenu("Usuario");
@@ -40,7 +44,6 @@ public class MenuPrincipalView extends JFrame {
         menuItemActualizarUsuario = new JMenuItem("Actualizar Usuario");
         menuItemBuscarUsuario = new JMenuItem("Buscar Usuario");
         menuItemCerrarSesion = new JMenuItem("Cerrar Sesion");
-
         menuUsuario.add(menuItemCrearUsuario);
         menuUsuario.add(menuItemEliminarUsuario);
         menuUsuario.add(menuItemActualizarUsuario);
@@ -51,6 +54,7 @@ public class MenuPrincipalView extends JFrame {
         menuItemEliminarProducto = new JMenuItem("Eliminar Producto");
         menuItemActualizarProducto = new JMenuItem("Actualizar Producto");
         menuItemBuscarProducto = new JMenuItem("Buscar Producto");
+
 
         menuItemCrearCarrito = new JMenuItem("Crear Carrito");
 
@@ -63,7 +67,17 @@ public class MenuPrincipalView extends JFrame {
         menuProducto.add(menuItemActualizarProducto);
         menuProducto.add(menuItemBuscarProducto);
 
+        menuItemEliminarCarrito = new JMenuItem("Eliminar Carrito");
+        menuItemActualizarCarrito = new JMenuItem("Actualizar Carrito");
+        menuItemBuscarCarrito = new JMenuItem("Buscar Carrito");
+
         menuCarrito.add(menuItemCrearCarrito);
+        menuCarrito.add(menuItemEliminarCarrito);
+        menuCarrito.add(menuItemActualizarCarrito);
+        menuCarrito.add(menuItemBuscarCarrito);
+        menuCarrito.add(menuItemEliminarCarrito);
+        menuCarrito.add(menuItemCrearCarrito);
+
 
         setJMenuBar(menuBar);
         setContentPane(jDesktopPane);

@@ -51,7 +51,6 @@ public class Main {
                         CarritoController carritoController = new CarritoController(carritoDAO, productoDAO, carritoAnadirView);
                         Usuario usuarioAuntenticado = usuarioController.getUsuarioAutenticado();
                         if (usuarioAuntenticado != null) {
-
                             principalView.setVisible(true);
                             principalView.mostrarMensaje("Bienvenido: " + usuarioAuntenticado.getUsername());
                             principalView.setTitle("Sistema de Carrito de Compras en Linea ---------------------- USUARIO →  " + usuarioAuntenticado.getUsername());
