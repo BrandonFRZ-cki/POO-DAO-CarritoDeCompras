@@ -18,9 +18,7 @@ public class ProductoEliminarView extends JInternalFrame{
         setSize(400, 300);
         setClosable(true);
         setIconifiable(true);
-
     }
-
     public JPanel getPanelPrincipal() {
         return panelPrincipal;
     }

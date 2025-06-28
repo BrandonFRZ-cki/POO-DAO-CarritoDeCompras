@@ -38,12 +38,12 @@ public class MenuPrincipalView extends JFrame {
         menuProducto = new JMenu("Producto");
         menuCarrito = new JMenu("Carrito");
 
-
         menuItemCrearUsuario = new JMenuItem("Crear Usuario");
         menuItemEliminarUsuario = new JMenuItem("Eliminar Usuario");
         menuItemActualizarUsuario = new JMenuItem("Actualizar Usuario");
         menuItemBuscarUsuario = new JMenuItem("Buscar Usuario");
         menuItemCerrarSesion = new JMenuItem("Cerrar Sesion");
+
         menuUsuario.add(menuItemCrearUsuario);
         menuUsuario.add(menuItemEliminarUsuario);
         menuUsuario.add(menuItemActualizarUsuario);
@@ -54,7 +54,6 @@ public class MenuPrincipalView extends JFrame {
         menuItemEliminarProducto = new JMenuItem("Eliminar Producto");
         menuItemActualizarProducto = new JMenuItem("Actualizar Producto");
         menuItemBuscarProducto = new JMenuItem("Buscar Producto");
-
 
         menuItemCrearCarrito = new JMenuItem("Crear Carrito");
 
@@ -142,6 +141,18 @@ public class MenuPrincipalView extends JFrame {
 
     public JDesktopPane getjDesktopPane() {
         return jDesktopPane;
+    }
+
+    public JMenuItem getMenuItemEliminarCarrito() {
+        return menuItemEliminarCarrito;
+    }
+
+    public JMenuItem getMenuItemActualizarCarrito() {
+        return menuItemActualizarCarrito;
+    }
+
+    public JMenuItem getMenuItemBuscarCarrito() {
+        return menuItemBuscarCarrito;
     }
 
     public void mostrarMensaje(String mensaje) {
