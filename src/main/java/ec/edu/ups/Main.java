@@ -9,6 +9,7 @@ import ec.edu.ups.dao.UsuarioDAO;
 import ec.edu.ups.dao.impl.CarritoDAOMemoria;
 import ec.edu.ups.dao.impl.ProductoDAOMemoria;
 import ec.edu.ups.dao.impl.UsuarioDAOMemoria;
+import ec.edu.ups.modelo.Carrito;
 import ec.edu.ups.modelo.Rol;
 import ec.edu.ups.modelo.Usuario;
 import ec.edu.ups.vista.*;
@@ -22,12 +23,15 @@ public class Main {
     public static void main(String[] args) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                //instanciamos DAO (Singleton)
+                /**
+                 * ╔════════════════════════════════════╗
+                 * ║          📦 DAO - ACCESO A DATOS   ║
+                 * ╚════════════════════════════════════╝
+                 */
                 ProductoDAO productoDAO = new ProductoDAOMemoria();
                 CarritoDAO carritoDAO = new CarritoDAOMemoria();
-
-                //Iniciar sesión
                 UsuarioDAO usuarioDAO = new UsuarioDAOMemoria();
+
                 LoginView loginView = new LoginView();
                 loginView.setVisible(true);
 
@@ -38,22 +42,41 @@ public class Main {
                 loginView.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosed(WindowEvent e) {
+                        /**
+                         * ╔════════════════════════════════════╗
+                         * ║     🖥️ VISTAS - INTERFAZ GRÁFICA   ║
+                         * ╚════════════════════════════════════╝
+                         */
                         MenuPrincipalView principalView = new MenuPrincipalView();
                         ProductoAnadirView productoAnadirView = new ProductoAnadirView();
                         ProductoListaView productoListaView = new ProductoListaView();
                         ProductoEliminarView productoEliminarView = new ProductoEliminarView();
                         ProductoActualizarView productoActualizarView = new ProductoActualizarView();
 
+                        Usuario usuarioAuntenticado = usuarioController.getUsuarioAutenticado();
+
                         CarritoAnadirView carritoAnadirView = new CarritoAnadirView();
+                        carritoAnadirView.setUsuario(usuarioAuntenticado); // ← AÑADE ESTA LÍNEA
+                        carritoAnadirView.setCarrito(new Carrito(usuarioAuntenticado)); // ← Y ESTA
                         CarritoListaView carritoListaView = new CarritoListaView();
                         CarritoEliminarView carritoEliminarView = new CarritoEliminarView();
                         CarritoActualizarView carritoActualizarView = new CarritoActualizarView();
 
-                        //instanciamos Controladores
-                        ProductoController productoController = new ProductoController(productoDAO, productoAnadirView, productoListaView,productoActualizarView, carritoAnadirView,productoEliminarView);
-                        CarritoController carritoController = new CarritoController(carritoDAO, productoDAO, carritoAnadirView);
-                        Usuario usuarioAuntenticado = usuarioController.getUsuarioAutenticado();
+                        /**
+                         * ╔════════════════════════════════════╗
+                         * ║         🧍 USUARIO / LOGIN         ║
+                         * ╚════════════════════════════════════╝
+                         */
                         if (usuarioAuntenticado != null) {
+
+                            /**
+                             * ╔════════════════════════════════════╗
+                             * ║          🧠 CONTROLADORES          ║
+                             * ╚════════════════════════════════════╝
+                             */
+                            ProductoController productoController = new ProductoController(productoDAO, productoAnadirView, productoListaView,productoActualizarView, carritoAnadirView,productoEliminarView);
+                            CarritoController carritoController = new CarritoController(usuarioAuntenticado,carritoDAO, productoDAO, carritoAnadirView,carritoListaView,carritoEliminarView,carritoActualizarView);
+
                             principalView.setVisible(true);
                             principalView.mostrarMensaje("Bienvenido: " + usuarioAuntenticado.getUsername());
                             principalView.setTitle("Sistema de Carrito de Compras en Linea ---------------------- USUARIO →  " + usuarioAuntenticado.getUsername());
@@ -61,7 +84,11 @@ public class Main {
                                 principalView.deshabilitarMenusAdministrador();
                             }
 
-                            //--------------------------------------------------------------------------------------------- PRODUCTO
+                            /**
+                             * ╔════════════════════════════════════╗
+                             * ║          🛍️ PRODUCTO - CRUD        ║
+                             * ╚════════════════════════════════════╝
+                             */
 
                             principalView.getMenuItemCrearProducto().addActionListener(new ActionListener() {//------------ Crear
                                 @Override
@@ -101,7 +128,11 @@ public class Main {
                                     }
                                 }
                             });
-                            //------------------------------------------------------------------------------------------------ CARRITO
+                            /**
+                             * ╔════════════════════════════════════╗
+                             * ║         🛒 CARRITO - CRUD          ║
+                             * ╚════════════════════════════════════╝
+                             */
 
                             principalView.getMenuItemCrearCarrito().addActionListener(new ActionListener() {
                                 @Override
@@ -142,7 +173,19 @@ public class Main {
                                     }
                                 }
                             });
+                            /**
+                             * ╔════════════════════════════════════╗
+                             * ║        👤 USUARIO - CRUD TOTAL     ║
+                             * ╚════════════════════════════════════╝
+                             */
 
+
+
+                            /**
+                             * ╔════════════════════════════════════╗
+                             * ║          🚪 CIERRE DE SESIÓN       ║
+                             * ╚════════════════════════════════════╝
+                             */
                             principalView.getMenuItemCerrarSesion().addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
@@ -150,7 +193,6 @@ public class Main {
                                     productoListaView.setVisible(false);
                                     carritoAnadirView.setVisible(false);
                                     productoEliminarView.setVisible(false);
-
                                     loginView.setVisible(true);
                                 }
                             });

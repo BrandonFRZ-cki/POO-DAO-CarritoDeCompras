@@ -17,10 +17,33 @@ public class CarritoListaView extends JInternalFrame{
          setContentPane(panelPrincipal);
          setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
          setSize(500, 500);
-
          modelo = new DefaultTableModel();
          Object[] columnas = {"Codigo","Fecha","Usuario","Total"};
          modelo.setColumnIdentifiers(columnas);
          tblProductos.setModel(modelo);
      }
+
+    public JTable getTblProductos() {
+        return tblProductos;
+    }
+
+    public JButton getBtnBuscar() {
+        return btnBuscar;
+    }
+
+    public JTextField getTxtBuscar() {
+        return txtBuscar;
+    }
+
+    public JButton getBtnListar() {
+        return btnListar;
+    }
+
+    public JPanel getPanelPrincipal() {
+        return panelPrincipal;
+    }
+
+    public DefaultTableModel getModelo() {
+        return modelo;
+    }
 }

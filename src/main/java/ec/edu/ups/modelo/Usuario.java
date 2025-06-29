@@ -1,9 +1,13 @@
 package ec.edu.ups.modelo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Usuario {
     private String username;
     private String contrasenia;
     private Rol rol;
+    private List<Carrito> carritos;
 
     public Usuario() {
 
@@ -13,6 +17,7 @@ public class Usuario {
         this.username = nombreDeUsuario;
         this.contrasenia = contrasenia;
         this.rol = rol;
+        this.carritos = new ArrayList<Carrito>();
     }
 
     public String getUsername() {
@@ -37,6 +42,14 @@ public class Usuario {
 
     public void setRol(Rol rol) {
         this.rol = rol;
+    }
+
+    public List<Carrito> getCarritos() {
+        return carritos;
+    }
+
+    public void agregarCarrito(Carrito carrito) {
+        carritos.add(carrito);
     }
 
     @Override

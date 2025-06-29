@@ -1,6 +1,8 @@
 package ec.edu.ups.vista;
 
+import ec.edu.ups.modelo.Carrito;
 import ec.edu.ups.modelo.ItemCarrito;
+import ec.edu.ups.modelo.Usuario;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -21,10 +23,11 @@ public class CarritoAnadirView extends JInternalFrame {
     private JComboBox cbxCantidad;
     private JPanel panelPrincipal;
 
+    private Usuario usuario;
+    private Carrito carrito;
     private DefaultTableModel modelo;
 
-    public CarritoAnadirView(){
-
+    public CarritoAnadirView() {
         super("Carrito de Compras", true, true, false, true);
         setContentPane(panelPrincipal);
         setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
@@ -32,73 +35,49 @@ public class CarritoAnadirView extends JInternalFrame {
         cargarDatos();
 
         modelo = new DefaultTableModel();
-        Object[] columnas = {"Nombre", "Precio","Cantidad","Subtotal"};
+        Object[] columnas = {"Nombre", "Precio", "Cantidad", "Subtotal"};
         modelo.setColumnIdentifiers(columnas);
         tblProductos.setModel(modelo);
-
     }
 
-    private void cargarDatos(){
+    private void cargarDatos() {
         cbxCantidad.removeAllItems();
-        for(int i = 0; i < 20; i++){
-            cbxCantidad.addItem(String.valueOf(i + 1));
+        for (int i = 1; i <= 20; i++) {
+            cbxCantidad.addItem(String.valueOf(i));
         }
     }
 
-    public JButton getBtnBuscar() {
-        return btnBuscar;
-    }
-
-    public JTextField getTxtCodigo() {
-        return txtCodigo;
-    }
-
-    public JTextField getTxtNombre() {
-        return txtNombre;
-    }
-
-    public JTextField getTxtPrecio() {
-        return txtPrecio;
-    }
-
-    public JButton getBtnAnadir() {
-        return btnAnadir;
-    }
-
-    public JTable getTblProductos() {
-        return tblProductos;
-    }
-
-    public JTextField getTxtSubtotal() {
-        return txtSubtotal;
-    }
-
-    public JTextField getTxtIva() {
-        return txtIva;
-    }
-
-    public JTextField getTxtTotal() {
-        return txtTotal;
-    }
-
-    public JButton getBtnGuardar() {
-        return btnGuardar;
-    }
-
-    public JButton getBtnLimpiar() {
-        return btnLimpiar;
-    }
-
-    public JComboBox getCbxCantidad() {
-        return cbxCantidad;
-    }
-
-    public JPanel getPanelPrincipal() {
-        return panelPrincipal;
-    }
+    // Getters
+    public JButton getBtnBuscar() { return btnBuscar; }
+    public JTextField getTxtCodigo() { return txtCodigo; }
+    public JTextField getTxtNombre() { return txtNombre; }
+    public JTextField getTxtPrecio() { return txtPrecio; }
+    public JButton getBtnAnadir() { return btnAnadir; }
+    public JTable getTblProductos() { return tblProductos; }
+    public JTextField getTxtSubtotal() { return txtSubtotal; }
+    public JTextField getTxtIva() { return txtIva; }
+    public JTextField getTxtTotal() { return txtTotal; }
+    public JButton getBtnGuardar() { return btnGuardar; }
+    public JButton getBtnLimpiar() { return btnLimpiar; }
+    public JComboBox getCbxCantidad() { return cbxCantidad; }
+    public JPanel getPanelPrincipal() { return panelPrincipal; }
+    public Usuario getUsuario() { return usuario; }
+    public Carrito getCarrito() { return carrito; }
+    public void setUsuario(Usuario usuario) { this.usuario = usuario; }
+    public void setCarrito(Carrito carrito) { this.carrito = carrito; }
 
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
+    }
+
+    public void limpiarCampos() {
+        txtCodigo.setText("");
+        txtNombre.setText("");
+        txtPrecio.setText("");
+        txtSubtotal.setText("");
+        txtIva.setText("");
+        txtTotal.setText("");
+        modelo.setRowCount(0);
     }
 
     public void cargarItems(List<ItemCarrito> items) {
