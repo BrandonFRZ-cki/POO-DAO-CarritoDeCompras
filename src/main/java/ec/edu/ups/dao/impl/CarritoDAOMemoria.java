@@ -16,33 +16,6 @@ public class CarritoDAOMemoria implements CarritoDAO {
 
     public CarritoDAOMemoria() {
         this.carritos = new ArrayList<>();
-
-        // Crear usuarios temporales para asociarlos con los carritos
-        Usuario tempAdmin = new Usuario("tempAdmin", "12345", Rol.ADMINISTRADOR);
-        Usuario tempUser = new Usuario("tempUser", "12345", Rol.USUARIO);
-
-        // Carrito 1 – Admin: hogar y cocina
-        Carrito c1 = new Carrito(tempAdmin);
-        c1.agregarProducto(new Producto(1001, "Cafetera eléctrica", 45.90), 1);
-        c1.agregarProducto(new Producto(4002, "Sartén antiadherente", 28.30), 2);
-        carritos.add(c1);
-
-        // Carrito 2 – Admin: juguetes
-        Carrito c2 = new Carrito(tempAdmin);
-        c2.agregarProducto(new Producto(2001, "Rompecabezas 1000 piezas", 14.99), 3);
-        c2.agregarProducto(new Producto(2003, "Muñeca interactiva", 39.99), 1);
-        carritos.add(c2);
-
-        // Carrito 3 – User: hogar y tecnología
-        Carrito c3 = new Carrito(tempUser);
-        c3.agregarProducto(new Producto(1002, "Lámpara de escritorio LED", 29.50), 1);
-        c3.agregarProducto(new Producto(3001, "Mouse ergonómico", 19.95), 2);
-        carritos.add(c3);
-
-        // Carrito 4 – User: cocina
-        Carrito c4 = new Carrito(tempUser);
-        c4.agregarProducto(new Producto(4001, "Set de cuchillos de cocina", 49.99), 1);
-        carritos.add(c4);
     }
 
     @Override
