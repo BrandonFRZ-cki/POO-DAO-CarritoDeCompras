@@ -10,6 +10,7 @@ import ec.edu.ups.dao.impl.CarritoDAOMemoria;
 import ec.edu.ups.dao.impl.ProductoDAOMemoria;
 import ec.edu.ups.dao.impl.UsuarioDAOMemoria;
 import ec.edu.ups.modelo.Carrito;
+import ec.edu.ups.modelo.Producto;
 import ec.edu.ups.modelo.Rol;
 import ec.edu.ups.modelo.Usuario;
 import ec.edu.ups.vista.*;
@@ -29,8 +30,30 @@ public class Main {
                  * ╚════════════════════════════════════╝
                  */
                 ProductoDAO productoDAO = new ProductoDAOMemoria();
-                CarritoDAO carritoDAO = new CarritoDAOMemoria();
+                productoDAO.crear(new Producto(1001, "Cafetera eléctrica", 45.90));
+                productoDAO.crear(new Producto(1002, "Lámpara LED de escritorio", 29.50));
+                productoDAO.crear(new Producto(1003, "Set de cuchillos", 49.99));
+                productoDAO.crear(new Producto(1004, "Carro de control remoto", 27.80));
+                productoDAO.crear(new Producto(1005, "Muñeca interactiva", 39.99));
+                productoDAO.crear(new Producto(1006, "Soporte para laptop", 21.10));
+
                 UsuarioDAO usuarioDAO = new UsuarioDAOMemoria();
+                Usuario admin = usuarioDAO.buscarPorUsername("admin");
+                Usuario user = usuarioDAO.buscarPorUsername("user");
+
+                CarritoDAO carritoDAO = new CarritoDAOMemoria();
+
+                Carrito carrito1 = new Carrito(admin);
+                carrito1.agregarProducto(productoDAO.buscarPorCodigo(1001), 1); // Cafetera
+                carrito1.agregarProducto(productoDAO.buscarPorCodigo(1003), 1); // Cuchillos
+                carritoDAO.crear(carrito1);
+                admin.agregarCarrito(carrito1);
+
+                Carrito carrito2 = new Carrito(user);
+                carrito2.agregarProducto(productoDAO.buscarPorCodigo(1004), 2); // Carro RC
+                carrito2.agregarProducto(productoDAO.buscarPorCodigo(1005), 1); // Muñeca
+                carritoDAO.crear(carrito2);
+                user.agregarCarrito(carrito2);
 
                 LoginView loginView = new LoginView();
                 loginView.setVisible(true);

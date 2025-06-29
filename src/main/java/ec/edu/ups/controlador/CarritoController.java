@@ -40,6 +40,7 @@ public class CarritoController {
         this.carritoListaView = carritoListaView;
         this.carritoActualizarView = carritoActualizarView;
         this.carritoEliminarView = carritoEliminarView;
+        this.usuario = usuario;
         configurarEventosEnVistas();
     }
 
@@ -114,19 +115,12 @@ public class CarritoController {
         modelo.setRowCount(0);
 
         for (Carrito carro : carritos) {
-            String nombreUsuario = "Desconocido";
-            if (carro.getUsuario() != null)
-                nombreUsuario = carro.getUsuario().getUsername();
+            if (carro.getUsuario() != null) {
+                String nombreUsuario = carro.getUsuario().getUsername();
 
-            if(carro.getUsuario().getRol()== Rol.ADMINISTRADOR){
-                modelo.addRow(new Object[]{
-                        carro.getCodigo(),
-                        carro.getFechaCreacionConFormato(),
-                        nombreUsuario,
-                        carro.calcularTotal()
-                });
-            }else{
-                if (carro.getUsuario().getUsername().equals(usuario.getUsername())) {
+                if (usuario.getRol() == Rol.ADMINISTRADOR ||
+                        carro.getUsuario().getUsername().equals(usuario.getUsername())) {
+
                     modelo.addRow(new Object[]{
                             carro.getCodigo(),
                             carro.getFechaCreacionConFormato(),
