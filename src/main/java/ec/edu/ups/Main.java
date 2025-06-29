@@ -79,11 +79,12 @@ public class Main {
                         Usuario usuarioAuntenticado = usuarioController.getUsuarioAutenticado();
 
                         CarritoAnadirView carritoAnadirView = new CarritoAnadirView();
-                        carritoAnadirView.setUsuario(usuarioAuntenticado); // ← AÑADE ESTA LÍNEA
+                        carritoAnadirView.setUsuario(usuarioAuntenticado);
                         carritoAnadirView.setCarrito(new Carrito(usuarioAuntenticado)); // ← Y ESTA
                         CarritoListaView carritoListaView = new CarritoListaView();
                         CarritoEliminarView carritoEliminarView = new CarritoEliminarView();
                         CarritoActualizarView carritoActualizarView = new CarritoActualizarView();
+                        CarritoDetalleView carritoDetalleView = new CarritoDetalleView();
 
                         /**
                          * ╔════════════════════════════════════╗
@@ -98,8 +99,17 @@ public class Main {
                              * ╚════════════════════════════════════╝
                              */
                             ProductoController productoController = new ProductoController(productoDAO, productoAnadirView, productoListaView,productoActualizarView, carritoAnadirView,productoEliminarView);
-                            CarritoController carritoController = new CarritoController(usuarioAuntenticado,carritoDAO, productoDAO, carritoAnadirView,carritoListaView,carritoEliminarView,carritoActualizarView);
-
+                            CarritoController carritoController = new CarritoController(
+                                    usuarioAuntenticado,
+                                    carritoDAO,
+                                    productoDAO,
+                                    carritoAnadirView,
+                                    carritoListaView,
+                                    carritoEliminarView,
+                                    carritoActualizarView,
+                                    carritoDetalleView,
+                                    principalView
+                            );
                             principalView.setVisible(true);
                             principalView.mostrarMensaje("Bienvenido: " + usuarioAuntenticado.getUsername());
                             principalView.setTitle("Sistema de Carrito de Compras en Linea ---------------------- USUARIO →  " + usuarioAuntenticado.getUsername());
@@ -156,6 +166,7 @@ public class Main {
                              * ║         🛒 CARRITO - CRUD          ║
                              * ╚════════════════════════════════════╝
                              */
+                            principalView.getjDesktopPane().add(carritoDetalleView);
 
                             principalView.getMenuItemCrearCarrito().addActionListener(new ActionListener() {
                                 @Override
