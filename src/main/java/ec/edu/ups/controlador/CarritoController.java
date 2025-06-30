@@ -92,26 +92,50 @@ public class CarritoController {
         });
         carritoListaView.getTblProductos().addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
-            public void keyPressed(java.awt.event.KeyEvent e) {
+            public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == java.awt.event.KeyEvent.VK_SPACE) {
-                    int fila = carritoListaView.getTblProductos().getSelectedRow();
-
-                    if (fila != -1) {
-                        int codigo = (int) carritoListaView.getTblProductos().getValueAt(fila, 0);
-
-                        // Si ya se cerró antes, creamos una nueva instancia
-                        if (carritoDetalleView.isClosed()) {
-                            carritoDetalleView = new CarritoDetalleView(); // <-- Necesitarás que sea atributo no-final
-                            principalView.getjDesktopPane().add(carritoDetalleView);
-                        }
-
-                        mostrarDetalleCarrito(codigo);
-                        e.consume();
-                    }
+                    abrirDetalle();
                 }
             }
         });
 
+        /**
+         * ╔════════════════════════════════════╗
+         * ║         ❌ ELIMINAR                ║
+         * ╚════════════════════════════════════╝
+         */
+        carritoEliminarView.getBtBuscar().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                buscarEliminarCarrito();
+            }
+        });
+
+        carritoEliminarView.getBtEliminar().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                eliminarCarrito();
+            }
+        });
+
+        /**
+         * ╔════════════════════════════════════╗
+         * ║         📝 ACTUALIZAR              ║
+         * ╚════════════════════════════════════╝
+         */
+        carritoActualizarView.getPtActualizar().setVisible(false);
+        carritoActualizarView.getPtActualizar().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                actualizarCarrito();
+            }
+        });
+        carritoActualizarView.getBtBuscar().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                buscarActualizarCarrito();
+            }
+        });
     }
     private void guardarCarrito() {
         GregorianCalendar actual = new GregorianCalendar();
@@ -156,8 +180,6 @@ public class CarritoController {
             }
         }
     }
-
-
 
     private void anadirProducto() {
 
@@ -231,7 +253,22 @@ public class CarritoController {
             carritoListaView.mostrarMensaje("Código inválido","Error al buscar","error");
         }
     }
-    public void mostrarDetalleCarrito(int codigo) {
+
+    private void abrirDetalle(){
+
+        int fila = carritoListaView.getTblProductos().getSelectedRow();
+
+        if (fila != -1) {
+            int codigo = (int) carritoListaView.getTblProductos().getValueAt(fila, 0);
+            if (carritoDetalleView.isClosed()) {
+                carritoDetalleView = new CarritoDetalleView();
+                principalView.getjDesktopPane().add(carritoDetalleView);
+            }
+            mostrarDetalleCarrito(codigo);
+        }
+    }
+
+    private void mostrarDetalleCarrito(int codigo) {
         Carrito carrito = carritoDAO.buscarPorCodigo(codigo);
         if (carrito == null) return;
 
@@ -259,5 +296,188 @@ public class CarritoController {
             carritoDetalleView.toFront();
         }
     }
+
+    private void buscarEliminarCarrito() {
+        String codigoTexto = carritoEliminarView.getTxtCodigo().getText();
+        DefaultTableModel modelo = (DefaultTableModel) carritoEliminarView.getTblCarritos().getModel();
+        modelo.setRowCount(0);
+
+        try {
+            int codigo = Integer.parseInt(codigoTexto);
+            Carrito carrito = carritoDAO.buscarPorCodigo(codigo);
+
+            if (carrito != null &&
+                    carrito.getUsuario() != null &&
+                    (usuario.getRol().equals(Rol.ADMINISTRADOR) || carrito.getUsuario().getUsername().equals(usuario.getUsername()))) {
+
+                modelo.addRow(new Object[]{
+                        carrito.getCodigo(),
+                        carrito.getFechaCreacionConFormato(),
+                        carrito.getUsuario().getUsername(),
+                        carrito.calcularTotal()
+                });
+
+            } else {
+                carritoEliminarView.mostrarMensaje("Carrito no encontrado o sin permisos", "Aviso", "warning");
+            }
+
+        } catch (NumberFormatException ex) {
+            carritoEliminarView.mostrarMensaje("Código inválido", "Error", "error");
+        }
+    }
+
+    private void eliminarCarrito() {
+        int fila = carritoEliminarView.getTblCarritos().getSelectedRow();
+        if (fila == -1) {
+            carritoEliminarView.mostrarMensaje("Seleccione un carrito para eliminar", "Aviso", "warning");
+            return;
+        }
+
+        int codigo = (int) carritoEliminarView.getTblCarritos().getValueAt(fila, 0);
+        Carrito carrito = carritoDAO.buscarPorCodigo(codigo);
+
+        if (carrito != null &&
+                (usuario.getRol().equals(Rol.ADMINISTRADOR) || carrito.getUsuario().getUsername().equals(usuario.getUsername()))) {
+
+            int confirmacion = JOptionPane.showOptionDialog(
+                    null,
+                    "¿Estás segurísimo de querer borrar este carrito?",
+                    "Confirmar eliminación",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE,
+                    null,
+                    new Object[]{"Sí, bórralo", "No, mejor no"},
+                    null
+            );
+
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                carritoDAO.eliminar(codigo);
+                carritoEliminarView.mostrarMensaje("Carrito eliminado con éxito", "Éxito", "info");
+                ((DefaultTableModel) carritoEliminarView.getTblCarritos().getModel()).removeRow(fila);
+            }
+
+        } else {
+            carritoEliminarView.mostrarMensaje("No tiene permiso para eliminar este carrito", "Error", "error");
+        }
+    }
+
+    private void actualizarCarrito() {
+        String codigoTexto = carritoActualizarView.getTxtCodigo().getText();
+
+        try {
+            int codigo = Integer.parseInt(codigoTexto);
+            Carrito carrito = carritoDAO.buscarPorCodigo(codigo);
+
+            if (carrito == null) {
+                carritoActualizarView.mostrarMensaje("Carrito no encontrado", "Error", "error");
+                return;
+            }
+
+            if (!usuario.getRol().equals(Rol.ADMINISTRADOR) &&
+                    !carrito.getUsuario().getUsername().equals(usuario.getUsername())) {
+                carritoActualizarView.mostrarMensaje("No tiene permiso para modificar este carrito", "Denegado", "warning");
+                return;
+            }
+
+            String[] opciones = {"Eliminar producto", "Agregar producto", "Cambiar cantidad"};
+            String seleccion = (String) JOptionPane.showInputDialog(
+                    carritoActualizarView,
+                    "¿Qué desea hacer con el carrito?",
+                    "Opciones de actualización",
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    opciones,
+                    opciones[0]
+            );
+
+            if (seleccion == null) return;
+
+            switch (seleccion) {
+                case "Eliminar producto":
+                    String codProdEliminar = JOptionPane.showInputDialog("Ingrese el código del producto a eliminar:");
+                    carrito.eliminarProducto(Integer.parseInt(codProdEliminar));
+                    break;
+
+                case "Agregar producto":
+                    String codNuevo = JOptionPane.showInputDialog("Código del nuevo producto:");
+                    String cantNuevo = JOptionPane.showInputDialog("Cantidad:");
+                    Producto prod = productoDAO.buscarPorCodigo(Integer.parseInt(codNuevo));
+                    if (prod != null) {
+                        carrito.agregarProducto(prod, Integer.parseInt(cantNuevo));
+                    } else {
+                        carritoActualizarView.mostrarMensaje("Producto no encontrado", "Error", "error");
+                    }
+                    break;
+
+                case "Cambiar cantidad":
+                    String codEditar = JOptionPane.showInputDialog("Código del producto:");
+                    String nuevaCantidad = JOptionPane.showInputDialog("Nueva cantidad:");
+                    for (ItemCarrito item : carrito.obtenerItems()) {
+                        if (item.getProducto().getCodigo() == Integer.parseInt(codEditar)) {
+                            item.setCantidad(Integer.parseInt(nuevaCantidad));
+                            break;
+                        }
+                    }
+                    break;
+            }
+
+            carritoActualizarView.mostrarMensaje("Carrito actualizado", "Éxito", "info");
+            buscarActualizarCarrito();
+        } catch (NumberFormatException ex) {
+            carritoActualizarView.mostrarMensaje("Código inválido", "Error", "error");
+        }
+    }
+
+    private void buscarActualizarCarrito() {
+        String codigoTexto = carritoActualizarView.getTxtCodigo().getText();
+
+        try {
+            int codigo = Integer.parseInt(codigoTexto);
+            Carrito carrito = carritoDAO.buscarPorCodigo(codigo);
+
+
+
+            if (carrito == null) {
+                carritoActualizarView.mostrarMensaje("Carrito no encontrado", "Error", "error");
+                carritoActualizarView.limpiarCampos();
+                return;
+            }
+
+            if (!usuario.getRol().equals(Rol.ADMINISTRADOR) &&
+                    !carrito.getUsuario().getUsername().equals(usuario.getUsername())) {
+                carritoActualizarView.mostrarMensaje("No tiene permiso para acceder a este carrito", "Acceso denegado", "warning");
+                carritoActualizarView.limpiarCampos();
+                return;
+            }
+
+            carritoActualizarView.getPtActualizar().setVisible(true);
+            carritoActualizarView.getTxtFecha().setText(carrito.getFechaCreacionConFormato());
+            carritoActualizarView.getTxtUsuario().setText(carrito.getUsuario().getUsername());
+            carritoActualizarView.getTxtIva().setText(String.valueOf(carrito.calcularIVA()));
+            carritoActualizarView.getTxtSubtotal().setText(String.valueOf(carrito.calcularSubtotal()));
+            carritoActualizarView.getTxtTotal().setText(String.valueOf(carrito.calcularTotal()));
+
+            DefaultTableModel modelo = carritoActualizarView.getModelo();
+            modelo.setRowCount(0);
+
+            for (ItemCarrito item : carrito.obtenerItems()) {
+                modelo.addRow(new Object[]{
+                        item.getProducto().getCodigo(),
+                        item.getProducto().getNombre(),
+                        item.getProducto().getPrecio(),
+                        item.getCantidad(),
+                        item.getSubtotal()
+                });
+            }
+
+            carritoActualizarView.getTxtSubtotal().setText(String.format("%.2f", carrito.calcularSubtotal()));
+
+
+        } catch (NumberFormatException ex) {
+            carritoActualizarView.mostrarMensaje("Código inválido. Ingrese un número", "Error", "error");
+            carritoActualizarView.limpiarCampos();
+        }
+    }
+
 
 }
