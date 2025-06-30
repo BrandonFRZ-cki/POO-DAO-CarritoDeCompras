@@ -151,7 +151,7 @@ public class CarritoController {
 
         carritoDAO.crear(nuevoCarrito);
 
-        carritoAnadirView.mostrarMensaje("Carrito creado correctamente");
+        carritoAnadirView.mostrarMensaje("Carrito creado correctamente","Añadir","info");
         carritoAnadirView.setCarrito(new Carrito(carritoAnadirView.getUsuario()));
         carritoAnadirView.limpiarCampos();
     }

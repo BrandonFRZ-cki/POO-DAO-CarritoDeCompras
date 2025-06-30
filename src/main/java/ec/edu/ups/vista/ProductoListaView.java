@@ -80,17 +80,16 @@ public class ProductoListaView extends JInternalFrame {
     }
 
     public void cargarDatos(List<Producto> listaProductos) {
-        modelo.setNumRows(0);
+        DefaultTableModel modelo = getModelo();
+        modelo.setRowCount(0);
 
         for (Producto producto : listaProductos) {
-            Object[] fila = {
+            modelo.addRow(new Object[] {
                     producto.getCodigo(),
                     producto.getNombre(),
                     producto.getPrecio()
-            };
-            modelo.addRow(fila);
+            });
         }
-
 
     }
 }

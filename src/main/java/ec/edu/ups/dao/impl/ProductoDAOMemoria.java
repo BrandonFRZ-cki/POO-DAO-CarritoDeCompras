@@ -14,24 +14,13 @@ public class ProductoDAOMemoria implements ProductoDAO {
     public ProductoDAOMemoria() {
         productos = new ArrayList<>();
 
-        // 🏠 Hogar
-        crear(new Producto(1001, "Cafetera eléctrica", 45.90));
-        crear(new Producto(1002, "Lámpara de escritorio LED", 29.50));
-        crear(new Producto(1003, "Juego de sábanas", 32.75));
-        crear(new Producto(1004, "Organizador multiusos", 18.20));
-
-        // 🎲 Juguetes
         crear(new Producto(2001, "Rompecabezas 1000 piezas", 14.99));
         crear(new Producto(2002, "Set de bloques magnéticos", 23.40));
         crear(new Producto(2003, "Muñeca interactiva", 39.99));
         crear(new Producto(2004, "Carro de control remoto", 27.80));
-
-        // 💻 Tecnología
         crear(new Producto(3001, "Mouse ergonómico", 19.95));
         crear(new Producto(3002, "Teclado inalámbrico", 34.60));
         crear(new Producto(3003, "Soporte para laptop", 21.10));
-
-        // 🥣 Cocina
         crear(new Producto(4001, "Set de cuchillos de cocina", 49.99));
         crear(new Producto(4002, "Sartén antiadherente", 28.30));
         crear(new Producto(4003, "Batidora de mano", 37.75));

@@ -102,14 +102,32 @@ public class ProductoController {
     }
 
     private void guardarProducto() {
-        int codigo = Integer.parseInt(productoAnadirView.getTxtCodigo().getText());
+        String codTexto = productoAnadirView.getTxtCodigo().getText();
         String nombre = productoAnadirView.getTxtNombre().getText();
-        double precio = Double.parseDouble(productoAnadirView.getTxtPrecio().getText());
+        String precioTexto = productoAnadirView.getTxtPrecio().getText();
 
-        productoDAO.crear(new Producto(codigo, nombre, precio));
-        productoAnadirView.mostrarMensaje("Producto guardado correctamente");
-        productoAnadirView.limpiarCampos();
-        productoAnadirView.mostrarProductos(productoDAO.listarTodos());
+        if (codTexto.isEmpty() || nombre.isEmpty() || precioTexto.isEmpty()) {
+            productoAnadirView.mostrarMensaje("Todos los campos son obligatorios", "Datos incompletos", "warning");
+            return;
+        }
+
+        try {
+            int codigo = Integer.parseInt(codTexto);
+            double precio = Double.parseDouble(precioTexto);
+
+            if (productoDAO.buscarPorCodigo(codigo) != null) {
+                productoAnadirView.mostrarMensaje("Ya existe un producto con ese código", "Código duplicado", "error");
+                return;
+            }
+
+            productoDAO.crear(new Producto(codigo, nombre, precio));
+            productoAnadirView.mostrarMensaje("Producto guardado correctamente", "Guardado", "info");
+            productoAnadirView.limpiarCampos();
+            productoAnadirView.mostrarProductos(productoDAO.listarTodos());
+
+        } catch (NumberFormatException e) {
+            productoAnadirView.mostrarMensaje("El código debe ser entero y el precio numérico", "Formato inválido", "error");
+        }
     }
 
     private void buscarProducto() {
@@ -124,73 +142,116 @@ public class ProductoController {
         productoListaView.cargarDatos(productos);
     }
     private void buscarProductoPorCodigo() {
-        int codigo = Integer.parseInt(carritoAnadirView.getTxtCodigo().getText());
-        Producto producto = productoDAO.buscarPorCodigo(codigo);
-        if (producto == null) {
-            carritoAnadirView.mostrarMensaje("No se encontro el producto");
-            carritoAnadirView.getTxtNombre().setText("");
-            carritoAnadirView.getTxtPrecio().setText("");
-        } else {
-            carritoAnadirView.getTxtNombre().setText(producto.getNombre());
-            carritoAnadirView.getTxtPrecio().setText(String.valueOf(producto.getPrecio()));
-        }
+        try {
+            int codigo = Integer.parseInt(carritoAnadirView.getTxtCodigo().getText());
+            Producto producto = productoDAO.buscarPorCodigo(codigo);
 
+            if (producto == null) {
+                carritoAnadirView.mostrarMensaje("No se encontró el producto", "Sin coincidencias", "warning");
+                carritoAnadirView.getTxtNombre().setText("");
+                carritoAnadirView.getTxtPrecio().setText("");
+            } else {
+                carritoAnadirView.getTxtNombre().setText(producto.getNombre());
+                carritoAnadirView.getTxtPrecio().setText(String.valueOf(producto.getPrecio()));
+            }
+        } catch (NumberFormatException e) {
+            carritoAnadirView.mostrarMensaje("Ingrese un código numérico válido", "Código inválido", "error");
+        }
     }
     private boolean buscarProductoParaEliminar() {
-        int codigo = Integer.parseInt(productoEliminarView.getTxtCodigo().getText());
-        Producto producto = productoDAO.buscarPorCodigo(codigo);
-        if (producto == null) {
-            productoEliminarView.getTxtNombre().setText(" - ");
-            productoEliminarView.getTxtPrecio().setText(" - ");
+        try {
+            int codigo = Integer.parseInt(productoEliminarView.getTxtCodigo().getText());
+            Producto producto = productoDAO.buscarPorCodigo(codigo);
+
+            if (producto == null) {
+                productoEliminarView.getTxtNombre().setText(" - ");
+                productoEliminarView.getTxtPrecio().setText(" - ");
+                return false;
+            } else {
+                productoEliminarView.getTxtNombre().setText(producto.getNombre());
+                productoEliminarView.getTxtPrecio().setText(String.valueOf(producto.getPrecio()));
+                return true;
+            }
+
+        } catch (NumberFormatException e) {
+            productoEliminarView.mostrarMensaje("Ingrese un código válido", "Error de formato", "error");
             return false;
-        } else {
-            productoEliminarView.getTxtNombre().setText(producto.getNombre());
-            productoEliminarView.getTxtPrecio().setText(String.valueOf(producto.getPrecio()));
         }
-        return true;
     }
     private void eliminarProducto() {
-        int codigo = Integer.parseInt(productoEliminarView.getTxtCodigo().getText());
-        int seguroMensaje = JOptionPane.showOptionDialog(null,"Seguro papi?","Eliminar",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,new Object[]{"Si","No"},null );
-        if (buscarProductoParaEliminar()) {
-            if (seguroMensaje == JOptionPane.YES_OPTION) {
-                productoDAO.eliminar(codigo);
-                productoEliminarView.mostrarMensaje("Producto Eliminado Exitosamente","Eliminado","warning");
-            }
-            productoEliminarView.limpiarCampos();
-        }else{
-            productoEliminarView.mostrarMensaje("Ingrese un producto existente","Data no encontrada","error");
+        if (!buscarProductoParaEliminar()) {
+            productoEliminarView.mostrarMensaje("Ingrese un producto existente", "No encontrado", "warning");
+            return;
         }
 
+        try {
+            int codigo = Integer.parseInt(productoEliminarView.getTxtCodigo().getText());
+            int seguroMensaje = JOptionPane.showOptionDialog(
+                    null, "¿Seguro que deseas eliminar este producto?", "Confirmar eliminación",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+                    null, new Object[]{"Sí", "No"}, null);
+
+            if (seguroMensaje == JOptionPane.YES_OPTION) {
+                productoDAO.eliminar(codigo);
+                productoEliminarView.mostrarMensaje("Producto eliminado exitosamente", "Eliminado", "info");
+                productoEliminarView.limpiarCampos();
+            }
+
+        } catch (NumberFormatException e) {
+            productoEliminarView.mostrarMensaje("Código inválido", "Error", "error");
+        }
     }
     private void buscarProductoParaActualizar() {
-        int codigo = Integer.parseInt(productoActualizarView.getTxtCodigo().getText());
-        Producto producto = productoDAO.buscarPorCodigo(codigo);
-        if (producto != null) {
-            productoActualizarView.getTxtNombre().setText(producto.getNombre());
-            productoActualizarView.getTxtPrecio().setText(String.valueOf(producto.getPrecio()));
+        try {
+            int codigo = Integer.parseInt(productoActualizarView.getTxtCodigo().getText());
+            Producto producto = productoDAO.buscarPorCodigo(codigo);
 
-            productoActualizarView.getTxtCodigo().setEditable(false);
-            productoActualizarView.getTxtNuevoNombre().setEditable(true);
-            productoActualizarView.getTxtNuevoPrecio().setEditable(true);
-        }else{
-            productoActualizarView.getTxtCodigo().setText(" - ");
-            productoActualizarView.getTxtNombre().setText(" - ");
-            productoActualizarView.getTxtPrecio().setText(" - ");
-            productoActualizarView.mostrarMensaje("Ingrese un codigo existente","Data no encontrada","error");
+            if (producto != null) {
+                productoActualizarView.getTxtNombre().setText(producto.getNombre());
+                productoActualizarView.getTxtPrecio().setText(String.valueOf(producto.getPrecio()));
+
+                productoActualizarView.getTxtCodigo().setEditable(false);
+                productoActualizarView.getTxtNuevoNombre().setEditable(true);
+                productoActualizarView.getTxtNuevoPrecio().setEditable(true);
+            } else {
+                productoActualizarView.getTxtCodigo().setText(" - ");
+                productoActualizarView.getTxtNombre().setText(" - ");
+                productoActualizarView.getTxtPrecio().setText(" - ");
+                productoActualizarView.mostrarMensaje("Ingrese un código existente", "No encontrado", "warning");
+            }
+
+        } catch (NumberFormatException e) {
+            productoActualizarView.mostrarMensaje("Código inválido. Ingrese un número", "Error de formato", "error");
         }
     }
     private void actualizar() {
-        Producto producto = productoDAO.buscarPorCodigo(Integer.parseInt(productoActualizarView.getTxtCodigo().getText()));
-        producto.setPrecio(Double.parseDouble(productoActualizarView.getTxtNuevoPrecio().getText()));
-        producto.setNombre(productoActualizarView.getTxtNuevoNombre().getText());
-        productoActualizarView.getTxtCodigo().setEditable(true);
+        String nuevoNombre = productoActualizarView.getTxtNuevoNombre().getText();
+        String nuevoPrecioTexto = productoActualizarView.getTxtNuevoPrecio().getText();
 
-        productoActualizarView.getTxtCodigo().setText(" - ");
-        productoActualizarView.getTxtNombre().setText(" - ");
-        productoActualizarView.getTxtPrecio().setText(" - ");
-        productoActualizarView.getTxtNuevoNombre().setText("");
-        productoActualizarView.getTxtNuevoPrecio().setText("");
-        productoActualizarView.mostrarMensaje("Actualizado exitosamente","Producto actualizado","info");
+        if (nuevoNombre.isEmpty() || nuevoPrecioTexto.isEmpty()) {
+            productoActualizarView.mostrarMensaje("Debe ingresar nombre y precio nuevos", "Campos vacíos", "warning");
+            return;
+        }
+
+        try {
+            int codigo = Integer.parseInt(productoActualizarView.getTxtCodigo().getText());
+            double nuevoPrecio = Double.parseDouble(nuevoPrecioTexto);
+
+            Producto producto = productoDAO.buscarPorCodigo(codigo);
+            producto.setNombre(nuevoNombre);
+            producto.setPrecio(nuevoPrecio);
+
+            productoActualizarView.getTxtCodigo().setEditable(true);
+            productoActualizarView.getTxtCodigo().setText(" - ");
+            productoActualizarView.getTxtNombre().setText(" - ");
+            productoActualizarView.getTxtPrecio().setText(" - ");
+            productoActualizarView.getTxtNuevoNombre().setText("");
+            productoActualizarView.getTxtNuevoPrecio().setText("");
+
+            productoActualizarView.mostrarMensaje("Producto actualizado exitosamente", "Actualización", "info");
+
+        } catch (NumberFormatException e) {
+            productoActualizarView.mostrarMensaje("Precio inválido. Debe ser numérico", "Formato incorrecto", "error");
+        }
     }
 }
