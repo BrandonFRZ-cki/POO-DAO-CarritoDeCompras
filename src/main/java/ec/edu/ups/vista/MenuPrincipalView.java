@@ -168,7 +168,6 @@ public class MenuPrincipalView extends JFrame {
 
         getMenuItemCrearUsuario().setEnabled(false);
         getMenuItemEliminarUsuario().setEnabled(false);
-        getMenuItemActualizarUsuario().setEnabled(false);
         getMenuItemBuscarUsuario().setEnabled(false);
     }
 }

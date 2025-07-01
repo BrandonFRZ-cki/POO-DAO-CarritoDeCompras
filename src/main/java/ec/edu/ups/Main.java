@@ -238,6 +238,25 @@ public class Main {
                                     }
                                 }
                             });
+                            principalView.getMenuItemActualizarUsuario().addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    if(!usuarioActualizarView.isVisible()){
+                                        usuarioActualizarView.setVisible(true);
+                                        principalView.getjDesktopPane().add(usuarioActualizarView);
+                                        if (!usuarioAuntenticado.getRol().equals(Rol.ADMINISTRADOR)) {
+                                            usuarioActualizarView.getBtnBuscar().setVisible(false);
+                                            usuarioActualizarView.getTxtUsername().setText(usuarioAuntenticado.getUsername());
+                                            usuarioController.buscarParaActualizar();
+                                            usuarioActualizarView.getTxtUsername().setEditable(false);
+                                        }
+                                        else{
+                                            usuarioActualizarView.getBtnBuscar().setVisible(true);
+                                        }
+                                    }
+
+                                }
+                            });
 
                             /**
                              * ╔════════════════════════════════════╗

@@ -6,6 +6,7 @@ import ec.edu.ups.modelo.Rol;
 import ec.edu.ups.modelo.Usuario;
 import ec.edu.ups.vista.*;
 
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -89,6 +90,23 @@ public class UsuarioController {
                 listarUsuarios();
             }
         });
+        /**
+         * ╔════════════════════════════════════╗
+         * ║         📝 ACTUALIZAR              ║
+         * ╚════════════════════════════════════╝
+         */
+        usuarioActualizarView.getBtnActualizar().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                actualizarUsuario();
+            }
+        });
+        usuarioActualizarView.getBtnBuscar().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                buscarParaActualizar();
+            }
+        });
 
     }
     private void autenticar() {
@@ -118,7 +136,6 @@ public class UsuarioController {
             loginView.mostrarMensaje("Usuario registrado con exito","Datos Creados","warning");
         }
     }
-
     private void anadirUsuario() {
         String username = usuarioAnadirView.getTxtUserName().getText();
         String contrasena = usuarioAnadirView.getTxtContrasena().getText();
@@ -151,7 +168,6 @@ public class UsuarioController {
         usuarioAnadirView.mostrarMensaje("EL Usuario debe llenar sus preguntas de recuperacion posteriormente", "Registro completo", "warning");
         usuarioAnadirView.limparCampos();
     }
-
     private void buscarUsuarioPorUserName() {
         String texto = usuarioListaView.getTxtBuscar().getText().toLowerCase().trim();
 
@@ -195,5 +211,110 @@ public class UsuarioController {
                     u.getTelefono()
             });
         }
+    }
+    private void actualizarUsuario() {
+        String username = usuarioActualizarView.getTxtUsername().getText();
+        Usuario usuario = usuarioDAO.buscarPorUsername(username);
+
+        if (usuario == null) {
+            usuarioActualizarView.mostrarMensaje("Usuario no encontrado", "Error", "error");
+            return;
+        }
+
+        Object[] opciones = {
+                "Nombre",
+                "Apellido",
+                "Correo",
+                "Teléfono",
+                "Contraseña"
+        };
+
+        String opcion = (String) JOptionPane.showInputDialog(
+                usuarioActualizarView,
+                "¿Qué deseas actualizar?",
+                "Actualizar usuario",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opciones,
+                opciones[0]
+        );
+
+        if (opcion == null) return; // Canceló
+
+        switch (opcion) {
+            case "Nombre":
+                String nuevoNombre = JOptionPane.showInputDialog("Nuevo nombre:", usuario.getNombre());
+                if (nuevoNombre != null && !nuevoNombre.trim().isEmpty()) {
+                    usuario.setNombre(nuevoNombre);
+                }
+                break;
+
+            case "Apellido":
+                String nuevoApellido = JOptionPane.showInputDialog("Nuevo apellido:", usuario.getApellido());
+                if (nuevoApellido != null && !nuevoApellido.trim().isEmpty()) {
+                    usuario.setApellido(nuevoApellido);
+                }
+                break;
+
+            case "Correo":
+                String nuevoCorreo = JOptionPane.showInputDialog("Nuevo correo electrónico:", usuario.getEmail());
+                if (nuevoCorreo != null && !nuevoCorreo.trim().isEmpty()) {
+                    usuario.setEmail(nuevoCorreo);
+                }
+                break;
+
+            case "Teléfono":
+                String nuevoTelefono = JOptionPane.showInputDialog("Nuevo número de teléfono:", usuario.getTelefono());
+                if (nuevoTelefono != null && !nuevoTelefono.trim().isEmpty()) {
+                    usuario.setTelefono(nuevoTelefono);
+                }
+                break;
+
+            case "Contraseña":
+                String nuevaContrasena = JOptionPane.showInputDialog("Nueva contraseña:");
+                if (nuevaContrasena != null && !nuevaContrasena.trim().isEmpty()) {
+                    usuario.setContrasenia(nuevaContrasena);
+                }
+                break;
+        }
+
+        usuarioDAO.actualizar(usuario);
+        usuarioActualizarView.mostrarMensaje("Datos actualizados correctamente", "Éxito", "info");
+
+
+
+        // Refrescar los campos
+        usuarioActualizarView.getTxtUserName().setText(usuario.getUsername());
+        usuarioActualizarView.getTxtNombre().setText(usuario.getNombre());
+        usuarioActualizarView.getTxtApellido().setText(usuario.getApellido());
+        usuarioActualizarView.getTxtCorreo().setText(usuario.getEmail());
+        usuarioActualizarView.getTxtTelefono().setText(usuario.getTelefono());
+        usuarioActualizarView.getTxtContrasena().setText(usuario.getContrasenia());
+    }
+    public void buscarParaActualizar() {
+        String username = usuarioActualizarView.getTxtUsername().getText().trim();
+
+        if (username.isEmpty()) {
+            usuarioActualizarView.mostrarMensaje("Ingresa un nombre de usuario para buscar", "Campo vacío", "warning");
+            return;
+        }
+
+        Usuario usuario = usuarioDAO.buscarPorUsername(username);
+
+        if (usuario == null) {
+            usuarioActualizarView.mostrarMensaje("Usuario no encontrado", "Sin coincidencias", "error");
+            return;
+        }
+
+        // Mostrar información del usuario en campos no editables
+        usuarioActualizarView.getTxtUserName().setText(usuario.getUsername());
+        usuarioActualizarView.getTxtNombre().setText(usuario.getNombre());
+        usuarioActualizarView.getTxtApellido().setText(usuario.getApellido());
+        usuarioActualizarView.getTxtTelefono().setText(usuario.getTelefono());
+        usuarioActualizarView.getTxtCorreo().setText(usuario.getEmail());
+        usuarioActualizarView.getTxtContrasena().setText(usuario.getContrasenia());
+
+        usuarioActualizarView.mostrarMensaje("Usuario encontrado. Datos cargados.", "Éxito", "info");
+
     }
 }

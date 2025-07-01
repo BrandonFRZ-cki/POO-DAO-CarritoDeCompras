@@ -122,7 +122,7 @@
                 <properties>
                   <font name="Arial" size="18" style="1"/>
                   <foreground color="-16777216"/>
-                  <text value="Nombre"/>
+                  <text value="Username"/>
                 </properties>
               </component>
             </children>
