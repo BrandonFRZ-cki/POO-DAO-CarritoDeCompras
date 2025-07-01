@@ -4,23 +4,30 @@ import ec.edu.ups.dao.UsuarioDAO;
 import ec.edu.ups.dao.impl.UsuarioDAOMemoria;
 import ec.edu.ups.modelo.Rol;
 import ec.edu.ups.modelo.Usuario;
-import ec.edu.ups.vista.LoginView;
-import ec.edu.ups.vista.UsuarioAnadirView;
+import ec.edu.ups.vista.*;
 
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UsuarioController {
     private final UsuarioDAO usuarioDAO;
     private LoginView loginView;
     private Usuario usuario;
     private UsuarioAnadirView usuarioAnadirView;
+    private UsuarioListaView usuarioListaView;
+    private UsuarioEliminarView usuarioEliminarView;
+    private UsuarioActualizarView usuarioActualizarView;
 
-
-    public UsuarioController(UsuarioDAO usuarioDAO, LoginView loginView, UsuarioAnadirView usuarioAnadirView) {
+    public UsuarioController(UsuarioDAO usuarioDAO, LoginView loginView, UsuarioAnadirView usuarioAnadirView, UsuarioListaView usuarioListaView, UsuarioEliminarView usuarioEliminarView, UsuarioActualizarView usuarioActualizarView) {
         this.usuarioDAO = usuarioDAO;
         this.loginView = loginView;
         this.usuarioAnadirView = usuarioAnadirView;
+        this.usuarioListaView = usuarioListaView;
+        this.usuarioActualizarView = usuarioActualizarView;
+        this.usuarioEliminarView = usuarioEliminarView;
         this.usuario = null;
         configurarEventosEnVistas();
     }
@@ -61,6 +68,25 @@ public class UsuarioController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 usuarioAnadirView.limparCampos();
+            }
+        });
+
+        /**
+         * ╔════════════════════════════════════╗
+         * ║         🔍 LISTAR                  ║
+         * ╚════════════════════════════════════╝
+         */
+
+        usuarioListaView.getBtnBuscar().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                buscarUsuarioPorUserName();
+            }
+        });
+        usuarioListaView.getBtnListar().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                listarUsuarios();
             }
         });
 
@@ -124,5 +150,50 @@ public class UsuarioController {
         usuarioAnadirView.mostrarMensaje("Usuario registrado con éxito", "Registro completo", "info");
         usuarioAnadirView.mostrarMensaje("EL Usuario debe llenar sus preguntas de recuperacion posteriormente", "Registro completo", "warning");
         usuarioAnadirView.limparCampos();
+    }
+
+    private void buscarUsuarioPorUserName() {
+        String texto = usuarioListaView.getTxtBuscar().getText().toLowerCase().trim();
+
+        if (texto.isEmpty()) {
+            usuarioListaView.mostrarMensaje("Ingrese un nombre de usuario para buscar", "Campo vacío", "warning");
+            return;
+        }
+
+        List<Usuario> usuariosCoincidentes = new ArrayList<>();
+
+        List<Usuario> listaUsuarios = usuarioDAO.listarTodos();
+        for (int i = 0; i < listaUsuarios.size(); i++) {
+            Usuario u = listaUsuarios.get(i);
+            if (u.getUsername().toLowerCase().contains(texto)) {
+                usuariosCoincidentes.add(u);
+            }
+        }
+
+        if (usuariosCoincidentes.isEmpty()) {
+            usuarioListaView.mostrarMensaje("No se encontraron usuarios con ese username", "Sin resultados", "info");
+        }
+
+        cargarEnTabla(usuariosCoincidentes);
+    }
+    private void listarUsuarios() {
+        List<Usuario> usuarios = usuarioDAO.listarTodos();
+        cargarEnTabla(usuarios);
+    }
+    private void cargarEnTabla(List<Usuario> usuarios) {
+        DefaultTableModel modelo = usuarioListaView.getModelo();
+        modelo.setRowCount(0); // Limpia la tabla
+
+        for (int i = 0; i < usuarios.size(); i++) {
+            Usuario u = usuarios.get(i);
+            modelo.addRow(new Object[]{
+                    u.getUsername(),
+                    u.getNombre(),
+                    u.getApellido(),
+                    u.getContrasenia(),
+                    u.getEmail(),
+                    u.getTelefono()
+            });
+        }
     }
 }

@@ -59,7 +59,10 @@ public class Main {
                 loginView.setVisible(true);
 
                 UsuarioAnadirView usuarioAnadirView = new UsuarioAnadirView();
-                UsuarioController usuarioController = new UsuarioController(usuarioDAO, loginView, usuarioAnadirView);
+                UsuarioListaView usuarioListaView = new UsuarioListaView();
+                UsuarioEliminarView usuarioEliminarView = new UsuarioEliminarView();
+                UsuarioActualizarView usuarioActualizarView = new UsuarioActualizarView();
+                UsuarioController usuarioController = new UsuarioController(usuarioDAO, loginView, usuarioAnadirView,usuarioListaView,usuarioEliminarView,usuarioActualizarView);
 
 
                 //instancio Vistas
@@ -223,6 +226,15 @@ public class Main {
                                     if(!usuarioAnadirView.isVisible()){
                                         usuarioAnadirView.setVisible(true);
                                         principalView.getjDesktopPane().add(usuarioAnadirView);
+                                    }
+                                }
+                            });
+                            principalView.getMenuItemBuscarUsuario().addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    if(!usuarioListaView.isVisible()){
+                                        usuarioListaView.setVisible(true);
+                                        principalView.getjDesktopPane().add(usuarioListaView);
                                     }
                                 }
                             });
