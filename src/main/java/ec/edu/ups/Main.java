@@ -89,8 +89,6 @@ public class Main {
                         CarritoActualizarView carritoActualizarView = new CarritoActualizarView();
                         CarritoDetalleView carritoDetalleView = new CarritoDetalleView();
 
-                        UsuarioAnadirView usuarioAnadirView = new UsuarioAnadirView();
-
                         /**
                          * ╔════════════════════════════════════╗
                          * ║         🧍 USUARIO / LOGIN         ║

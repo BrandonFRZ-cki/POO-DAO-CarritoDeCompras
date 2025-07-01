@@ -8,12 +8,17 @@ public class UsuarioAnadirView extends JInternalFrame{
     private JButton btnLimpiar;
     private JButton btnAceptar;
     private JPanel panelPrincipal;
+    private JTextField txtNombre;
+    private JTextField txtApellido;
+    private JTextField txtCorreo;
+    private JTextField txtTelefono;
+    private JPasswordField txtVerificaContrasena;
 
     public UsuarioAnadirView(){
         setContentPane(panelPrincipal);
         setTitle("Datos del Producto");
         setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
-        setSize(400, 300);
+        setSize(400, 600);
         setClosable(true);
         setIconifiable(true);
         setResizable(true);
