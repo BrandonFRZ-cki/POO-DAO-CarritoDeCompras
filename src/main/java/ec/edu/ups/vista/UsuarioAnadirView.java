@@ -43,6 +43,27 @@ public class UsuarioAnadirView extends JInternalFrame{
     public JPanel getPanelPrincipal() {
         return panelPrincipal;
     }
+
+    public JTextField getTxtNombre() {
+        return txtNombre;
+    }
+
+    public JTextField getTxtApellido() {
+        return txtApellido;
+    }
+
+    public JTextField getTxtCorreo() {
+        return txtCorreo;
+    }
+
+    public JTextField getTxtTelefono() {
+        return txtTelefono;
+    }
+
+    public JPasswordField getTxtVerificaContrasena() {
+        return txtVerificaContrasena;
+    }
+
     public void mostrarMensaje(String mensaje, String titulo, String tipo) {
         if (tipo.equals("error")) {
             JOptionPane.showMessageDialog(this, mensaje, titulo, JOptionPane.ERROR_MESSAGE);
@@ -55,5 +76,10 @@ public class UsuarioAnadirView extends JInternalFrame{
     public void limparCampos() {
         txtUserName.setText("");
         txtContrasena.setText("");
+        txtVerificaContrasena.setText("");
+        txtNombre.setText("");
+        txtApellido.setText("");
+        txtCorreo.setText("");
+        txtTelefono.setText("");
     }
 }

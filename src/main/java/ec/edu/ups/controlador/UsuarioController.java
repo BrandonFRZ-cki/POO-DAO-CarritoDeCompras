@@ -96,20 +96,33 @@ public class UsuarioController {
     private void anadirUsuario() {
         String username = usuarioAnadirView.getTxtUserName().getText();
         String contrasena = usuarioAnadirView.getTxtContrasena().getText();
+        String verificarContrasena = new String(usuarioAnadirView.getTxtVerificaContrasena().getPassword());
+        String nombre = usuarioAnadirView.getTxtNombre().getText();
+        String apellido = usuarioAnadirView.getTxtApellido().getText();
+        String correo = usuarioAnadirView.getTxtCorreo().getText();
+        String telefono = usuarioAnadirView.getTxtTelefono().getText();
 
-        if (username.isEmpty() || contrasena.isEmpty()) {
-            usuarioAnadirView.mostrarMensaje("Debe llenar todos los campos", "Campos vacíos", "warning");
+        if (username.isEmpty() || contrasena.isEmpty() || verificarContrasena.isEmpty() ||
+                nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || telefono.isEmpty()) {
+            usuarioAnadirView.mostrarMensaje("Todos los campos son obligatorios", "Campos vacíos", "warning");
+            return;
+        }
+
+        if (!contrasena.equals(verificarContrasena)) {
+            usuarioAnadirView.mostrarMensaje("Las contraseñas no coinciden", "Verificación fallida", "error");
             return;
         }
 
         if (usuarioDAO.buscarPorUsername(username) != null) {
-            usuarioAnadirView.mostrarMensaje("Ya existe un usuario con ese nombre", "Nombre duplicado", "error");
+            usuarioAnadirView.mostrarMensaje("Ya existe un usuario con ese nombre", "Usuario duplicado", "error");
             return;
         }
 
-        Usuario nuevo = new Usuario(username, contrasena, Rol.USUARIO);
+        Usuario nuevo = new Usuario(username, contrasena, Rol.USUARIO, nombre, apellido, correo, telefono);
         usuarioDAO.crear(nuevo);
-        usuarioAnadirView.mostrarMensaje("Usuario añadido con éxito", "Registrado", "info");
+
+        usuarioAnadirView.mostrarMensaje("Usuario registrado con éxito", "Registro completo", "info");
+        usuarioAnadirView.mostrarMensaje("EL Usuario debe llenar sus preguntas de recuperacion posteriormente", "Registro completo", "warning");
         usuarioAnadirView.limparCampos();
     }
 }
