@@ -95,8 +95,6 @@ public class ProductoAnadirView extends JInternalFrame {
         }else if (tipo.equals("warning")) {
             JOptionPane.showMessageDialog(this, mensaje, titulo, JOptionPane.WARNING_MESSAGE);
         }
-
-
     }
     public void limpiarCampos() {
         txtCodigo.setText("");

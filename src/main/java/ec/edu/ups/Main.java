@@ -58,7 +58,10 @@ public class Main {
                 LoginView loginView = new LoginView();
                 loginView.setVisible(true);
 
-                UsuarioController usuarioController = new UsuarioController(usuarioDAO, loginView);
+                UsuarioAnadirView usuarioAnadirView = new UsuarioAnadirView();
+                UsuarioController usuarioController = new UsuarioController(usuarioDAO, loginView, usuarioAnadirView);
+
+
                 //instancio Vistas
 
 
@@ -80,11 +83,13 @@ public class Main {
 
                         CarritoAnadirView carritoAnadirView = new CarritoAnadirView();
                         carritoAnadirView.setUsuario(usuarioAuntenticado);
-                        carritoAnadirView.setCarrito(new Carrito(usuarioAuntenticado)); // ← Y ESTA
+                        carritoAnadirView.setCarrito(new Carrito(usuarioAuntenticado));
                         CarritoListaView carritoListaView = new CarritoListaView();
                         CarritoEliminarView carritoEliminarView = new CarritoEliminarView();
                         CarritoActualizarView carritoActualizarView = new CarritoActualizarView();
                         CarritoDetalleView carritoDetalleView = new CarritoDetalleView();
+
+                        UsuarioAnadirView usuarioAnadirView = new UsuarioAnadirView();
 
                         /**
                          * ╔════════════════════════════════════╗
@@ -98,6 +103,7 @@ public class Main {
                              * ║          🧠 CONTROLADORES          ║
                              * ╚════════════════════════════════════╝
                              */
+
                             ProductoController productoController = new ProductoController(productoDAO, productoAnadirView, productoListaView,productoActualizarView, carritoAnadirView,productoEliminarView);
                             CarritoController carritoController = new CarritoController(
                                     usuarioAuntenticado,
@@ -213,7 +219,15 @@ public class Main {
                              * ╚════════════════════════════════════╝
                              */
 
-
+                            principalView.getMenuItemCrearUsuario().addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    if(!usuarioAnadirView.isVisible()){
+                                        usuarioAnadirView.setVisible(true);
+                                        principalView.getjDesktopPane().add(usuarioAnadirView);
+                                    }
+                                }
+                            });
 
                             /**
                              * ╔════════════════════════════════════╗

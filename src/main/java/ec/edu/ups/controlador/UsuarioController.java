@@ -5,6 +5,7 @@ import ec.edu.ups.dao.impl.UsuarioDAOMemoria;
 import ec.edu.ups.modelo.Rol;
 import ec.edu.ups.modelo.Usuario;
 import ec.edu.ups.vista.LoginView;
+import ec.edu.ups.vista.UsuarioAnadirView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,15 +14,22 @@ public class UsuarioController {
     private final UsuarioDAO usuarioDAO;
     private LoginView loginView;
     private Usuario usuario;
+    private UsuarioAnadirView usuarioAnadirView;
 
 
-    public UsuarioController(UsuarioDAO usuarioDAO, LoginView loginView) {
+    public UsuarioController(UsuarioDAO usuarioDAO, LoginView loginView, UsuarioAnadirView usuarioAnadirView) {
         this.usuarioDAO = usuarioDAO;
         this.loginView = loginView;
+        this.usuarioAnadirView = usuarioAnadirView;
         this.usuario = null;
         configurarEventosEnVistas();
     }
     private void configurarEventosEnVistas() {
+        /**
+         * ╔═════════════════════════════╗
+         * ║         🧍 USUARIO          ║
+         * ╚═════════════════════════════╝
+         */
         loginView.getIniciarSesiónButton().addActionListener( new ActionListener() {
 
             @Override
@@ -34,6 +42,25 @@ public class UsuarioController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 registrar();
+            }
+        });
+
+        /**
+         * ╔════════════════════════════════════╗
+         * ║          ➕ CREAR                  ║
+         * ╚════════════════════════════════════╝
+         */
+
+        usuarioAnadirView.getBtnAceptar().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                anadirUsuario();
+            }
+        });
+        usuarioAnadirView.getBtnLimpiar().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                usuarioAnadirView.limparCampos();
             }
         });
 
@@ -66,4 +93,23 @@ public class UsuarioController {
         }
     }
 
+    private void anadirUsuario() {
+        String username = usuarioAnadirView.getTxtUserName().getText();
+        String contrasena = usuarioAnadirView.getTxtContrasena().getText();
+
+        if (username.isEmpty() || contrasena.isEmpty()) {
+            usuarioAnadirView.mostrarMensaje("Debe llenar todos los campos", "Campos vacíos", "warning");
+            return;
+        }
+
+        if (usuarioDAO.buscarPorUsername(username) != null) {
+            usuarioAnadirView.mostrarMensaje("Ya existe un usuario con ese nombre", "Nombre duplicado", "error");
+            return;
+        }
+
+        Usuario nuevo = new Usuario(username, contrasena, Rol.USUARIO);
+        usuarioDAO.crear(nuevo);
+        usuarioAnadirView.mostrarMensaje("Usuario añadido con éxito", "Registrado", "info");
+        usuarioAnadirView.limparCampos();
+    }
 }
