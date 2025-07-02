@@ -2,7 +2,6 @@ package ec.edu.ups.controlador;
 
 import ec.edu.ups.dao.PreguntaDAO;
 import ec.edu.ups.dao.UsuarioDAO;
-import ec.edu.ups.dao.impl.UsuarioDAOMemoria;
 import ec.edu.ups.modelo.Pregunta;
 import ec.edu.ups.modelo.Rol;
 import ec.edu.ups.modelo.Usuario;
@@ -50,7 +49,7 @@ public class UsuarioController {
          * ║         🧍 USUARIO          ║
          * ╚═════════════════════════════╝
          */
-        loginView.getIniciarSesiónButton().addActionListener( new ActionListener() {
+        loginView.getBtnIniciarSesion().addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {

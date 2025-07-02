@@ -6,7 +6,7 @@ public class LoginView extends JFrame {
     private JPanel panelPrincipal;
     private JTextField txtUsername;
     private JPasswordField txtContrasena;
-    private JButton iniciarSesiónButton;
+    private JButton btnIniciarSesion;
     private JButton registrarceButton;
     private JButton btnRecuperarContrasenia;
 
@@ -43,12 +43,12 @@ public class LoginView extends JFrame {
         this.txtContrasena = txtContrasena;
     }
 
-    public JButton getIniciarSesiónButton() {
-        return iniciarSesiónButton;
+    public JButton getBtnIniciarSesion() {
+        return btnIniciarSesion;
     }
 
-    public void setIniciarSesiónButton(JButton iniciarSesiónButton) {
-        this.iniciarSesiónButton = iniciarSesiónButton;
+    public void setBtnIniciarSesion(JButton btnIniciarSesion) {
+        this.btnIniciarSesion = btnIniciarSesion;
     }
 
     public JButton getRegistrarceButton() {
