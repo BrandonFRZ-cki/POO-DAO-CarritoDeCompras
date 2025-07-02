@@ -1,7 +1,9 @@
 package ec.edu.ups.controlador;
 
+import ec.edu.ups.dao.PreguntaDAO;
 import ec.edu.ups.dao.UsuarioDAO;
 import ec.edu.ups.dao.impl.UsuarioDAOMemoria;
+import ec.edu.ups.modelo.Pregunta;
 import ec.edu.ups.modelo.Rol;
 import ec.edu.ups.modelo.Usuario;
 import ec.edu.ups.vista.*;
@@ -11,7 +13,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
+
 
 public class UsuarioController {
     private final UsuarioDAO usuarioDAO;
@@ -22,10 +26,12 @@ public class UsuarioController {
     private UsuarioEliminarView usuarioEliminarView;
     private UsuarioActualizarView usuarioActualizarView;
     private RegistrarView registrarView;
+    private ResponderPreguntas responderPreguntasView;
+    private PreguntaDAO preguntaDAO;
 
     public UsuarioController(UsuarioDAO usuarioDAO, LoginView loginView, UsuarioAnadirView usuarioAnadirView,
                              UsuarioListaView usuarioListaView, UsuarioEliminarView usuarioEliminarView,
-                             UsuarioActualizarView usuarioActualizarView, RegistrarView registrarView) {
+                             UsuarioActualizarView usuarioActualizarView, RegistrarView registrarView, ResponderPreguntas responderPreguntasView, PreguntaDAO preguntaDAO) {
         this.usuarioDAO = usuarioDAO;
         this.loginView = loginView;
         this.usuarioAnadirView = usuarioAnadirView;
@@ -33,6 +39,8 @@ public class UsuarioController {
         this.usuarioEliminarView = usuarioEliminarView;
         this.usuarioActualizarView = usuarioActualizarView;
         this.registrarView = registrarView;
+        this.responderPreguntasView = responderPreguntasView;
+        this.preguntaDAO = preguntaDAO;
         this.usuario = null;
         configurarEventosEnVistas();
     }
@@ -67,6 +75,19 @@ public class UsuarioController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 registrarView.limpiarCampos();
+            }
+        });
+        responderPreguntasView.getBtnAceptar().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                guardarPreguntasYFecha(usuario);
+            }
+        });
+
+        responderPreguntasView.getBtnLimpiar().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                responderPreguntasView.limpiarCampos();
             }
         });
 
@@ -151,19 +172,92 @@ public class UsuarioController {
                 usuarioEliminarView.limpiarCampos();
             }
         });
+        loginView.getBtnRecuperarContrasenia().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                recuperarContrasena();
+            }
+        });
 
     }
+
     private void autenticar() {
         String username = loginView.getTxtUsername().getText();
-        String contrasena = loginView.getTxtContrasena().getText();
+        String contrasena = new String(loginView.getTxtContrasena().getPassword());
 
-        usuario = usuarioDAO.autenticar(username,contrasena);
+        usuario = usuarioDAO.autenticar(username, contrasena);
+
+
         if (usuario == null) {
-            loginView.mostrarMensaje("Usuario o contrasena incorrectos","Datos Incorrectos","error");
-        }else{
-
-            loginView.dispose();
+            loginView.mostrarMensaje("Usuario o contraseña incorrectos", "Error de autenticación", "error");
+            return;
         }
+
+
+        boolean esAdmin = usuario.getRol().equals(Rol.ADMINISTRADOR);
+
+        boolean tieneMinimoPreguntas = usuario.getPreguntasRespondidas() != null && usuario.getPreguntasRespondidas().size() >= 3;
+        boolean tieneFecha = usuario.getFechaNacimiento() != null;
+
+        if (!esAdmin && (!tieneMinimoPreguntas || !tieneFecha)) {
+            responderPreguntasView.setVisible(true);
+            return;
+        }
+
+        loginView.dispose();
+    }
+    private void configurarResponderPreguntas(Usuario usuario) {
+        responderPreguntasView.getBtnAceptar().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                guardarPreguntasYFecha(usuario);
+            }
+        });
+
+        responderPreguntasView.getBtnLimpiar().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                responderPreguntasView.limpiarCampos();
+            }
+        });
+    }
+    private void guardarPreguntasYFecha(Usuario usuario) {
+        List<Pregunta> preguntasRespondidas = new ArrayList<>();
+        JTextField[] campos = responderPreguntasView.getCamposRespuestas();
+
+        int respuestasValidas = 0;
+        for (int i = 0; i < campos.length; i++) {
+            String texto = campos[i].getText().trim();
+            if (!texto.isEmpty()) {
+                preguntasRespondidas.add(new Pregunta(i + 1, preguntaDAO.buscarPorCodigo(i + 1).getPregunta()));
+                preguntasRespondidas.get(preguntasRespondidas.size() - 1).setRespuesta(texto);
+                respuestasValidas++;
+            }
+        }
+
+        if (respuestasValidas < 3) {
+            JOptionPane.showMessageDialog(responderPreguntasView, "Debe responder al menos 3 preguntas", "Respuestas insuficientes", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try {
+            int dia = Integer.parseInt(responderPreguntasView.getTxtDia().getText().trim());
+            int mes = responderPreguntasView.getCbxMes().getSelectedIndex(); // enero=0
+            int anio = Integer.parseInt(responderPreguntasView.getTxtAnio().getText().trim());
+
+            if (String.valueOf(anio).length() != 4 || dia < 1 || dia > 31) {
+                throw new NumberFormatException();
+            }
+
+            usuario.setFechaNacimiento(new GregorianCalendar(anio, mes, dia));
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(responderPreguntasView, "Fecha inválida. Verifica el día y año (ej: 1999)", "Error de fecha", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        usuario.setPreguntasRespondidas(preguntasRespondidas);
+        JOptionPane.showMessageDialog(responderPreguntasView, "Preguntas guardadas con éxito", "¡Listo!", JOptionPane.INFORMATION_MESSAGE);
+        responderPreguntasView.dispose();
     }
     public Usuario getUsuarioAutenticado() {
         return usuario;
@@ -439,5 +533,36 @@ public class UsuarioController {
         registrarView.mostrarMensaje("Usuario registrado con éxito", "Registro completado", "info");
         registrarView.limpiarCampos();
         registrarView.setVisible(false);
+        responderPreguntasView.limpiarCampos();
+        responderPreguntasView.setVisible(true);
+
+    }
+    private void recuperarContrasena() {
+        String username = JOptionPane.showInputDialog(loginView, "Ingresa tu nombre de usuario:");
+        Usuario usuario = usuarioDAO.buscarPorUsername(username);
+
+        if (usuario == null) {
+            loginView.mostrarMensaje("Usuario no encontrado", "Error", "error");
+            return;
+        }
+
+        List<Pregunta> respondidas = usuario.getPreguntasRespondidas();
+        if (respondidas == null || respondidas.size() < 3) {
+            loginView.mostrarMensaje("No tienes suficientes preguntas registradas", "Acceso denegado", "warning");
+            return;
+        }
+
+        // Selección aleatoria
+        int aleatoria = (int) (Math.random() * respondidas.size());
+        Pregunta seleccionada = respondidas.get(aleatoria);
+
+        String respuesta = JOptionPane.showInputDialog(loginView, seleccionada.getPregunta());
+        if (respuesta == null || respuesta.trim().isEmpty()) return;
+
+        if (seleccionada.getRespuesta().equalsIgnoreCase(respuesta.trim())) {
+            loginView.mostrarMensaje("Tu contraseña es: " + usuario.getContrasenia(), "Recuperación exitosa", "info");
+        } else {
+            loginView.mostrarMensaje("Respuesta incorrecta", "Recuperación fallida", "error");
+        }
     }
 }

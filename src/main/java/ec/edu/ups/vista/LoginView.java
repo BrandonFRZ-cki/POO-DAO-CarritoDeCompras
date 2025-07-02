@@ -8,6 +8,7 @@ public class LoginView extends JFrame {
     private JPasswordField txtContrasena;
     private JButton iniciarSesiónButton;
     private JButton registrarceButton;
+    private JButton btnRecuperarContrasenia;
 
     public LoginView() {
         add(panelPrincipal);
@@ -56,6 +57,10 @@ public class LoginView extends JFrame {
 
     public void setRegistrarceButton(JButton registrarceButton) {
         this.registrarceButton = registrarceButton;
+    }
+
+    public JButton getBtnRecuperarContrasenia() {
+        return btnRecuperarContrasenia;
     }
 
     public void mostrarMensaje(String mensaje, String titulo, String tipo) {

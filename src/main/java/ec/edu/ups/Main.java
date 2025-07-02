@@ -4,9 +4,11 @@ import ec.edu.ups.controlador.CarritoController;
 import ec.edu.ups.controlador.ProductoController;
 import ec.edu.ups.controlador.UsuarioController;
 import ec.edu.ups.dao.CarritoDAO;
+import ec.edu.ups.dao.PreguntaDAO;
 import ec.edu.ups.dao.ProductoDAO;
 import ec.edu.ups.dao.UsuarioDAO;
 import ec.edu.ups.dao.impl.CarritoDAOMemoria;
+import ec.edu.ups.dao.impl.PreguntaDAOMemoria;
 import ec.edu.ups.dao.impl.ProductoDAOMemoria;
 import ec.edu.ups.dao.impl.UsuarioDAOMemoria;
 import ec.edu.ups.modelo.Carrito;
@@ -29,6 +31,8 @@ public class Main {
                  * ║          📦 DAO - ACCESO A DATOS   ║
                  * ╚════════════════════════════════════╝
                  */
+
+
                 ProductoDAO productoDAO = new ProductoDAOMemoria();
                 productoDAO.crear(new Producto(1001, "Cafetera eléctrica", 45.90));
                 productoDAO.crear(new Producto(1002, "Lámpara LED de escritorio", 29.50));
@@ -37,6 +41,7 @@ public class Main {
                 productoDAO.crear(new Producto(1005, "Muñeca interactiva", 39.99));
                 productoDAO.crear(new Producto(1006, "Soporte para laptop", 21.10));
 
+                PreguntaDAO preguntaDAO = new PreguntaDAOMemoria();
                 UsuarioDAO usuarioDAO = new UsuarioDAOMemoria();
                 Usuario admin = usuarioDAO.buscarPorUsername("admin");
                 Usuario user = usuarioDAO.buscarPorUsername("user");
@@ -63,6 +68,7 @@ public class Main {
                 UsuarioListaView usuarioListaView = new UsuarioListaView();
                 UsuarioEliminarView usuarioEliminarView = new UsuarioEliminarView();
                 UsuarioActualizarView usuarioActualizarView = new UsuarioActualizarView();
+                ResponderPreguntas responderPreguntas = new ResponderPreguntas();
                 UsuarioController usuarioController = new UsuarioController(
                         usuarioDAO,
                         loginView,
@@ -70,7 +76,9 @@ public class Main {
                         usuarioListaView,
                         usuarioEliminarView,
                         usuarioActualizarView,
-                        registrarView);
+                        registrarView,
+                        responderPreguntas,
+                        preguntaDAO);
 
 
 
