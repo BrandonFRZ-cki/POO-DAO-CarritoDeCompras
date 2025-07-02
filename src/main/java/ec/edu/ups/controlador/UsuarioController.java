@@ -21,14 +21,18 @@ public class UsuarioController {
     private UsuarioListaView usuarioListaView;
     private UsuarioEliminarView usuarioEliminarView;
     private UsuarioActualizarView usuarioActualizarView;
+    private RegistrarView registrarView;
 
-    public UsuarioController(UsuarioDAO usuarioDAO, LoginView loginView, UsuarioAnadirView usuarioAnadirView, UsuarioListaView usuarioListaView, UsuarioEliminarView usuarioEliminarView, UsuarioActualizarView usuarioActualizarView) {
+    public UsuarioController(UsuarioDAO usuarioDAO, LoginView loginView, UsuarioAnadirView usuarioAnadirView,
+                             UsuarioListaView usuarioListaView, UsuarioEliminarView usuarioEliminarView,
+                             UsuarioActualizarView usuarioActualizarView, RegistrarView registrarView) {
         this.usuarioDAO = usuarioDAO;
         this.loginView = loginView;
         this.usuarioAnadirView = usuarioAnadirView;
         this.usuarioListaView = usuarioListaView;
-        this.usuarioActualizarView = usuarioActualizarView;
         this.usuarioEliminarView = usuarioEliminarView;
+        this.usuarioActualizarView = usuarioActualizarView;
+        this.registrarView = registrarView;
         this.usuario = null;
         configurarEventosEnVistas();
     }
@@ -46,12 +50,26 @@ public class UsuarioController {
             }
         });
 
-        loginView.getRegistrarceButton().addActionListener( new ActionListener() {
+        loginView.getRegistrarceButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                registrar();
+                registrarView.setVisible(true);
             }
         });
+        registrarView.getBtnAceptar().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                registrarNuevoUsuario();
+            }
+        });
+
+        registrarView.getBtnLimpiar().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                registrarView.limpiarCampos();
+            }
+        });
+
 
         /**
          * ╔════════════════════════════════════╗
@@ -390,4 +408,36 @@ public class UsuarioController {
         }
     }
 
+    private void registrarNuevoUsuario() {
+        String username = registrarView.getTxtUserName().getText().trim();
+        String nombre = registrarView.getTxtNombre().getText().trim();
+        String apellido = registrarView.getTxtApellido().getText().trim();
+        String telefono = registrarView.getTxtTelefono().getText().trim();
+        String correo = registrarView.getTxtCorreo().getText().trim();
+        String contrasena = new String(registrarView.getTxtContrasena().getPassword()).trim();
+        String verificar = new String(registrarView.getTxtVerificaContrasena().getPassword()).trim();
+
+        if (username.isEmpty() || nombre.isEmpty() || apellido.isEmpty() || telefono.isEmpty() ||
+                correo.isEmpty() || contrasena.isEmpty() || verificar.isEmpty()) {
+            registrarView.mostrarMensaje("Completa todos los campos", "Campos vacíos", "warning");
+            return;
+        }
+
+        if (!contrasena.equals(verificar)) {
+            registrarView.mostrarMensaje("Las contraseñas no coinciden", "Verificación fallida", "error");
+            return;
+        }
+
+        if (usuarioDAO.buscarPorUsername(username) != null) {
+            registrarView.mostrarMensaje("Ya existe un usuario con ese nombre", "Duplicado", "error");
+            return;
+        }
+
+        Usuario nuevo = new Usuario(username, contrasena, Rol.USUARIO, nombre, apellido, correo, telefono);
+        usuarioDAO.crear(nuevo);
+
+        registrarView.mostrarMensaje("Usuario registrado con éxito", "Registro completado", "info");
+        registrarView.limpiarCampos();
+        registrarView.setVisible(false);
+    }
 }

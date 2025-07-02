@@ -16,7 +16,7 @@ public class UsuarioAnadirView extends JInternalFrame{
 
     public UsuarioAnadirView(){
         setContentPane(panelPrincipal);
-        setTitle("Datos del Producto");
+        setTitle("Datos del Usuario");
         setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
         setSize(400, 600);
         setClosable(true);

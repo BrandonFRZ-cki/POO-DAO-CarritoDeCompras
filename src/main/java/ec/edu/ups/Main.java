@@ -57,12 +57,21 @@ public class Main {
 
                 LoginView loginView = new LoginView();
                 loginView.setVisible(true);
+                RegistrarView registrarView = new RegistrarView();
 
                 UsuarioAnadirView usuarioAnadirView = new UsuarioAnadirView();
                 UsuarioListaView usuarioListaView = new UsuarioListaView();
                 UsuarioEliminarView usuarioEliminarView = new UsuarioEliminarView();
                 UsuarioActualizarView usuarioActualizarView = new UsuarioActualizarView();
-                UsuarioController usuarioController = new UsuarioController(usuarioDAO, loginView, usuarioAnadirView,usuarioListaView,usuarioEliminarView,usuarioActualizarView);
+                UsuarioController usuarioController = new UsuarioController(
+                        usuarioDAO,
+                        loginView,
+                        usuarioAnadirView,
+                        usuarioListaView,
+                        usuarioEliminarView,
+                        usuarioActualizarView,
+                        registrarView);
+
 
 
                 //instancio Vistas
