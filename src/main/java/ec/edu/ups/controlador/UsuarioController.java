@@ -108,6 +108,32 @@ public class UsuarioController {
             }
         });
 
+        /**
+         * ╔════════════════════════════════════╗
+         * ║         ❌ ELIMINAR                ║
+         * ╚════════════════════════════════════╝
+         */
+        usuarioEliminarView.getBtBuscar().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                buscarParaEliminar();
+
+            }
+
+        });
+        usuarioEliminarView.getBtEliminar().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                eliminar();
+            }
+        });
+        usuarioEliminarView.getBtLimpiar().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                usuarioEliminarView.limpiarCampos();
+            }
+        });
+
     }
     private void autenticar() {
         String username = loginView.getTxtUsername().getText();
@@ -317,4 +343,51 @@ public class UsuarioController {
         usuarioActualizarView.mostrarMensaje("Usuario encontrado. Datos cargados.", "Éxito", "info");
 
     }
+
+    public void buscarParaEliminar() {
+        String username = usuarioEliminarView.getTxtUsername().getText().trim();
+
+        if (username.isEmpty()) {
+            usuarioEliminarView.mostrarMensaje("Ingrese el nombre de usuario", "Campo vacío", "warning");
+            return;
+        }
+
+        Usuario usuario = usuarioDAO.buscarPorUsername(username);
+
+        if (usuario != null) {
+            usuarioEliminarView.getTxtNombre().setText(usuario.getNombre());
+            usuarioEliminarView.getTxtApellido().setText(usuario.getApellido());
+        } else {
+            usuarioEliminarView.getTxtNombre().setText(" - ");
+            usuarioEliminarView.getTxtApellido().setText(" - ");
+            usuarioEliminarView.mostrarMensaje("Usuario no encontrado", "Error", "error");
+        }
+    }
+    public void eliminar() {
+        String username = usuarioEliminarView.getTxtUsername().getText().trim();
+
+        Usuario usuario = usuarioDAO.buscarPorUsername(username);
+        if (usuario == null) {
+            usuarioEliminarView.mostrarMensaje("Debe buscar un usuario válido primero", "Advertencia", "warning");
+            return;
+        }
+
+        int confirmacion = JOptionPane.showConfirmDialog(
+                usuarioEliminarView,
+                "¿Estás seguro de eliminar al usuario \"" + username + "\"?",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            usuarioDAO.eliminar(username);
+            usuarioEliminarView.mostrarMensaje("Usuario eliminado correctamente", "Éxito", "info");
+
+            // Limpiar campos
+            usuarioEliminarView.getTxtUsername().setText("");
+            usuarioEliminarView.getTxtNombre().setText("");
+            usuarioEliminarView.getTxtApellido().setText("");
+        }
+    }
+
 }

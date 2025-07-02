@@ -257,6 +257,15 @@ public class Main {
 
                                 }
                             });
+                            principalView.getMenuItemEliminarUsuario().addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    if(!usuarioEliminarView.isVisible()){
+                                        usuarioEliminarView.setVisible(true);
+                                        principalView.getjDesktopPane().add(usuarioEliminarView);
+                                    }
+                                }
+                            });
 
                             /**
                              * ╔════════════════════════════════════╗
