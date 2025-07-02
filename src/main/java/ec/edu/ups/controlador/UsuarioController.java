@@ -241,7 +241,7 @@ public class UsuarioController {
 
         try {
             int dia = Integer.parseInt(responderPreguntasView.getTxtDia().getText().trim());
-            int mes = responderPreguntasView.getCbxMes().getSelectedIndex(); // enero=0
+            int mes = responderPreguntasView.getCbxMes().getSelectedIndex();
             int anio = Integer.parseInt(responderPreguntasView.getTxtAnio().getText().trim());
 
             if (String.valueOf(anio).length() != 4 || dia < 1 || dia > 31) {
@@ -526,8 +526,8 @@ public class UsuarioController {
             return;
         }
 
-        Usuario nuevo = new Usuario(username, contrasena, Rol.USUARIO, nombre, apellido, correo, telefono);
-        usuarioDAO.crear(nuevo);
+        usuario = new Usuario(username, contrasena, Rol.USUARIO, nombre, apellido, correo, telefono);
+        usuarioDAO.crear(usuario);
 
         registrarView.mostrarMensaje("Usuario registrado con éxito", "Registro completado", "info");
         registrarView.limpiarCampos();

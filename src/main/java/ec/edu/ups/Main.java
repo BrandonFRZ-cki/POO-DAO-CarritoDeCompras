@@ -15,6 +15,7 @@ import ec.edu.ups.modelo.Carrito;
 import ec.edu.ups.modelo.Producto;
 import ec.edu.ups.modelo.Rol;
 import ec.edu.ups.modelo.Usuario;
+import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 import ec.edu.ups.vista.*;
 
 import java.awt.event.ActionEvent;
@@ -28,11 +29,19 @@ public class Main {
             public void run() {
                 /**
                  * ╔════════════════════════════════════╗
+                 * ║      💀 INTERNACIONALIZACION       ║
+                 * ╚════════════════════════════════════╝
+                 */
+                //instanciamos MensajeHandler (Singleton)
+                MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler = new MensajeInternacionalizacionHandler("es", "EC");
+
+
+
+                /**
+                 * ╔════════════════════════════════════╗
                  * ║          📦 DAO - ACCESO A DATOS   ║
                  * ╚════════════════════════════════════╝
                  */
-
-
                 ProductoDAO productoDAO = new ProductoDAOMemoria();
                 productoDAO.crear(new Producto(1001, "Cafetera eléctrica", 45.90));
                 productoDAO.crear(new Producto(1002, "Lámpara LED de escritorio", 29.50));
@@ -69,21 +78,7 @@ public class Main {
                 UsuarioEliminarView usuarioEliminarView = new UsuarioEliminarView();
                 UsuarioActualizarView usuarioActualizarView = new UsuarioActualizarView();
                 ResponderPreguntas responderPreguntas = new ResponderPreguntas();
-                UsuarioController usuarioController = new UsuarioController(
-                        usuarioDAO,
-                        loginView,
-                        usuarioAnadirView,
-                        usuarioListaView,
-                        usuarioEliminarView,
-                        usuarioActualizarView,
-                        registrarView,
-                        responderPreguntas,
-                        preguntaDAO);
-
-
-
-                //instancio Vistas
-
+                UsuarioController usuarioController = new UsuarioController(usuarioDAO,loginView,usuarioAnadirView,usuarioListaView,usuarioEliminarView,usuarioActualizarView,registrarView, responderPreguntas,preguntaDAO);
 
                 loginView.addWindowListener(new WindowAdapter() {
                     @Override
@@ -93,7 +88,7 @@ public class Main {
                          * ║     🖥️ VISTAS - INTERFAZ GRÁFICA   ║
                          * ╚════════════════════════════════════╝
                          */
-                        MenuPrincipalView principalView = new MenuPrincipalView();
+                        MenuPrincipalView principalView = new MenuPrincipalView(mensajeInternacionalizacionHandler);
                         ProductoAnadirView productoAnadirView = new ProductoAnadirView();
                         ProductoListaView productoListaView = new ProductoListaView();
                         ProductoEliminarView productoEliminarView = new ProductoEliminarView();
@@ -116,6 +111,7 @@ public class Main {
                          */
                         if (usuarioAuntenticado != null) {
 
+
                             /**
                              * ╔════════════════════════════════════╗
                              * ║          🧠 CONTROLADORES          ║
@@ -132,7 +128,8 @@ public class Main {
                                     carritoEliminarView,
                                     carritoActualizarView,
                                     carritoDetalleView,
-                                    principalView
+                                    principalView,
+                                    mensajeInternacionalizacionHandler
                             );
                             principalView.setVisible(true);
                             principalView.mostrarMensaje("Bienvenido: " + usuarioAuntenticado.getUsername());
@@ -297,6 +294,31 @@ public class Main {
                                     carritoAnadirView.setVisible(false);
                                     productoEliminarView.setVisible(false);
                                     loginView.setVisible(true);
+                                }
+                            });
+                            /**
+                             * ╔════════════════════════════════════╗
+                             * ║      💀 INTERNACIONALIZACION       ║
+                             * ╚════════════════════════════════════╝
+                             */
+                            principalView.getMenuItemIdiomaEspanol().addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    principalView.cambiarIdioma("es", "EC");
+                                }
+                            });
+
+                            principalView.getMenuItemIdiomaIngles().addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    principalView.cambiarIdioma("en", "US");
+                                }
+                            });
+
+                            principalView.getMenuItemIdiomaFrances().addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    principalView.cambiarIdioma("fr", "FR");
                                 }
                             });
                         }
