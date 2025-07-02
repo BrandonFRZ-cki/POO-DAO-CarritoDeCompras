@@ -173,8 +173,7 @@ public class CarritoController {
                             carro.getCodigo(),
                             carro.getFechaCreacionConFormato(),
                             nombreUsuario,
-                            carro.calcularTotal(),
-                            "Detalle"
+                            carro.calcularTotal()
                     });
                 }
             }

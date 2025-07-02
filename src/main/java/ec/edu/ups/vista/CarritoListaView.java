@@ -18,7 +18,7 @@ public class CarritoListaView extends JInternalFrame{
          setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
          setSize(500, 500);
          modelo = new DefaultTableModel();
-         Object[] columnas = {"Código", "Fecha", "Usuario", "Total", "Acción"};
+         Object[] columnas = {"Código", "Fecha", "Usuario", "Total"};
          modelo.setColumnIdentifiers(columnas);
          tblProductos.setModel(modelo);
      }
