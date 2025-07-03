@@ -13,6 +13,12 @@ public class ProductoActualizarView extends JInternalFrame {
     private JPanel header;
     private JButton btBuscar;
     private JPanel ingresoCodigo;
+    private JLabel lbTitulo;
+    private JLabel lbCodigo;
+    private JLabel lbOriginal;
+    private JLabel lbNombre;
+    private JLabel lbPrecio;
+    private JLabel lbNuevo;
 
     public ProductoActualizarView(){
         setContentPane(panelPrincipal);
@@ -54,6 +60,38 @@ public class ProductoActualizarView extends JInternalFrame {
 
     public JPanel getIngresoCodigo() {
         return ingresoCodigo;
+    }
+
+    public JLabel getLbTitulo() {
+        return lbTitulo;
+    }
+
+    public JLabel getLbCodigo() {
+        return lbCodigo;
+    }
+
+    public JLabel getLbOriginal() {
+        return lbOriginal;
+    }
+
+    public JLabel getLbNombre() {
+        return lbNombre;
+    }
+
+    public JLabel getLbPrecio() {
+        return lbPrecio;
+    }
+
+    public JLabel getLbNuevo() {
+        return lbNuevo;
+    }
+
+    public JPanel getPanelPrincipal() {
+        return panelPrincipal;
+    }
+
+    public JPanel getHeader() {
+        return header;
     }
 
     public void mostrarMensaje(String mensaje, String titulo, String tipo) {

@@ -22,14 +22,14 @@
         </properties>
         <border type="none"/>
         <children>
-          <component id="ce967" class="javax.swing.JLabel">
+          <component id="ce967" class="javax.swing.JLabel" binding="lbTitulo">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <font name="Arial Black" size="28"/>
               <foreground color="-16777216"/>
-              <text value="Actualizar Datos de Producto"/>
+              <text value="Actualizar Producto 🔃"/>
             </properties>
           </component>
           <hspacer id="7164">
@@ -84,7 +84,7 @@
                   <enabled value="false"/>
                 </properties>
               </component>
-              <component id="7ccbd" class="javax.swing.JLabel">
+              <component id="7ccbd" class="javax.swing.JLabel" binding="lbNombre">
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -94,7 +94,7 @@
                   <text value="Nombre"/>
                 </properties>
               </component>
-              <component id="f5a6f" class="javax.swing.JLabel">
+              <component id="f5a6f" class="javax.swing.JLabel" binding="lbPrecio">
                 <constraints>
                   <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -104,7 +104,7 @@
                   <text value="Precio"/>
                 </properties>
               </component>
-              <component id="67517" class="javax.swing.JLabel">
+              <component id="67517" class="javax.swing.JLabel" binding="lbOriginal">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -126,7 +126,7 @@
             </properties>
             <border type="none"/>
             <children>
-              <component id="16513" class="javax.swing.JLabel">
+              <component id="16513" class="javax.swing.JLabel" binding="lbNuevo">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -237,7 +237,7 @@
         </properties>
         <border type="none"/>
         <children>
-          <component id="cad80" class="javax.swing.JLabel">
+          <component id="cad80" class="javax.swing.JLabel" binding="lbCodigo">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>

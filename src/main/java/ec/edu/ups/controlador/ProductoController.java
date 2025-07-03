@@ -2,6 +2,7 @@ package ec.edu.ups.controlador;
 
 import ec.edu.ups.dao.ProductoDAO;
 import ec.edu.ups.modelo.Producto;
+import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 import ec.edu.ups.vista.*;
 
 import javax.swing.*;
@@ -19,12 +20,15 @@ public class ProductoController {
 
     private final ProductoDAO productoDAO;
 
+    private MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler;
+
     public ProductoController(ProductoDAO productoDAO,
                               ProductoAnadirView productoAnadirView,
                               ProductoListaView productoListaView,
                               ProductoActualizarView productoActualizarView,
                               CarritoAnadirView carritoAnadirView,
-                              ProductoEliminarView productoEliminarView) {
+                              ProductoEliminarView productoEliminarView,
+                              MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler) {
 
         this.productoDAO = productoDAO;
         this.productoAnadirView = productoAnadirView;
@@ -32,10 +36,13 @@ public class ProductoController {
         this.productoEliminarView=productoEliminarView;
         this.carritoAnadirView = carritoAnadirView;
         this.productoActualizarView = productoActualizarView;
+        this.mensajeInternacionalizacionHandler = mensajeInternacionalizacionHandler;
         this.configurarEventosEnVistas();
+
     }
 
     private void configurarEventosEnVistas() {
+
 
         productoActualizarView.getBtBuscar().addActionListener(new ActionListener() {
             @Override
@@ -91,7 +98,6 @@ public class ProductoController {
             }
         });
 
-
         carritoAnadirView.getBtnBuscar().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -107,7 +113,7 @@ public class ProductoController {
         String precioTexto = productoAnadirView.getTxtPrecio().getText();
 
         if (codTexto.isEmpty() || nombre.isEmpty() || precioTexto.isEmpty()) {
-            productoAnadirView.mostrarMensaje("Todos los campos son obligatorios", "Datos incompletos", "warning");
+            productoAnadirView.mostrarMensaje(mensajes(0), titulosMensajes(0), "warning");
             return;
         }
 
@@ -116,27 +122,25 @@ public class ProductoController {
             double precio = Double.parseDouble(precioTexto);
 
             if (productoDAO.buscarPorCodigo(codigo) != null) {
-                productoAnadirView.mostrarMensaje("Ya existe un producto con ese código", "Código duplicado", "error");
+                productoAnadirView.mostrarMensaje(mensajes(1), titulosMensajes(1), "error");
                 return;
             }
 
             productoDAO.crear(new Producto(codigo, nombre, precio));
-            productoAnadirView.mostrarMensaje("Producto guardado correctamente", "Guardado", "info");
+            productoAnadirView.mostrarMensaje(mensajes(2), titulosMensajes(2), "info");
             productoAnadirView.limpiarCampos();
             productoAnadirView.mostrarProductos(productoDAO.listarTodos());
 
         } catch (NumberFormatException e) {
-            productoAnadirView.mostrarMensaje("El código debe ser entero y el precio numérico", "Formato inválido", "error");
+            productoAnadirView.mostrarMensaje(mensajes(3), titulosMensajes(3), "error");
         }
     }
-
     private void buscarProducto() {
         String nombre = productoListaView.getTxtBuscar().getText();
 
         List<Producto> productosEncontrados = productoDAO.buscarPorNombre(nombre);
         productoListaView.cargarDatos(productosEncontrados);
     }
-
     private void listarProductos() {
         List<Producto> productos = productoDAO.listarTodos();
         productoListaView.cargarDatos(productos);
@@ -147,7 +151,7 @@ public class ProductoController {
             Producto producto = productoDAO.buscarPorCodigo(codigo);
 
             if (producto == null) {
-                carritoAnadirView.mostrarMensaje("No se encontró el producto", "Sin coincidencias", "warning");
+                carritoAnadirView.mostrarMensaje(mensajes(4), titulosMensajes(4), "warning");
                 carritoAnadirView.getTxtNombre().setText("");
                 carritoAnadirView.getTxtPrecio().setText("");
             } else {
@@ -155,7 +159,7 @@ public class ProductoController {
                 carritoAnadirView.getTxtPrecio().setText(String.valueOf(producto.getPrecio()));
             }
         } catch (NumberFormatException e) {
-            carritoAnadirView.mostrarMensaje("Ingrese un código numérico válido", "Código inválido", "error");
+            carritoAnadirView.mostrarMensaje(mensajes(5), titulosMensajes(5), "error");
         }
     }
     private boolean buscarProductoParaEliminar() {
@@ -174,13 +178,13 @@ public class ProductoController {
             }
 
         } catch (NumberFormatException e) {
-            productoEliminarView.mostrarMensaje("Ingrese un código válido", "Error de formato", "error");
+            productoEliminarView.mostrarMensaje(mensajes(6), titulosMensajes(6), "error");
             return false;
         }
     }
     private void eliminarProducto() {
         if (!buscarProductoParaEliminar()) {
-            productoEliminarView.mostrarMensaje("Ingrese un producto existente", "No encontrado", "warning");
+            productoEliminarView.mostrarMensaje(mensajes(7), titulosMensajes(7), "warning");
             return;
         }
 
@@ -193,12 +197,12 @@ public class ProductoController {
 
             if (seguroMensaje == JOptionPane.YES_OPTION) {
                 productoDAO.eliminar(codigo);
-                productoEliminarView.mostrarMensaje("Producto eliminado exitosamente", "Eliminado", "info");
+                productoEliminarView.mostrarMensaje(mensajes(9), titulosMensajes(9), "info");
                 productoEliminarView.limpiarCampos();
             }
 
         } catch (NumberFormatException e) {
-            productoEliminarView.mostrarMensaje("Código inválido", "Error", "error");
+            productoEliminarView.mostrarMensaje(mensajes(10), titulosMensajes(10), "error");
         }
     }
     private void buscarProductoParaActualizar() {
@@ -217,11 +221,11 @@ public class ProductoController {
                 productoActualizarView.getTxtCodigo().setText(" - ");
                 productoActualizarView.getTxtNombre().setText(" - ");
                 productoActualizarView.getTxtPrecio().setText(" - ");
-                productoActualizarView.mostrarMensaje("Ingrese un código existente", "No encontrado", "warning");
+                productoActualizarView.mostrarMensaje(mensajes(11), titulosMensajes(11), "warning");
             }
 
         } catch (NumberFormatException e) {
-            productoActualizarView.mostrarMensaje("Código inválido. Ingrese un número", "Error de formato", "error");
+            productoActualizarView.mostrarMensaje(mensajes(12), titulosMensajes(12), "error");
         }
     }
     private void actualizar() {
@@ -229,7 +233,7 @@ public class ProductoController {
         String nuevoPrecioTexto = productoActualizarView.getTxtNuevoPrecio().getText();
 
         if (nuevoNombre.isEmpty() || nuevoPrecioTexto.isEmpty()) {
-            productoActualizarView.mostrarMensaje("Debe ingresar nombre y precio nuevos", "Campos vacíos", "warning");
+            productoActualizarView.mostrarMensaje(mensajes(13), titulosMensajes(13), "warning");
             return;
         }
 
@@ -247,11 +251,103 @@ public class ProductoController {
             productoActualizarView.getTxtPrecio().setText(" - ");
             productoActualizarView.getTxtNuevoNombre().setText("");
             productoActualizarView.getTxtNuevoPrecio().setText("");
-
-            productoActualizarView.mostrarMensaje("Producto actualizado exitosamente", "Actualización", "info");
+            productoActualizarView.mostrarMensaje(mensajes(14), titulosMensajes(14), "info");
 
         } catch (NumberFormatException e) {
-            productoActualizarView.mostrarMensaje("Precio inválido. Debe ser numérico", "Formato incorrecto", "error");
+            productoActualizarView.mostrarMensaje(mensajes(15), titulosMensajes(15), "error");
         }
     }
+
+    public void cambiarIdioma(String lenguaje, String pais) {
+
+        /**
+         * ╔════════════════════════════════════╗
+         * ║          ➕ CREAR                  ║
+         * ╚════════════════════════════════════╝
+         */
+        productoAnadirView.setTitle(mensajeInternacionalizacionHandler.get("producto.crear"));
+        productoAnadirView.getLbTitulo().setText(mensajeInternacionalizacionHandler.get("producto.crear")+ " ➕");
+        productoAnadirView.getLbCodigo().setText(mensajeInternacionalizacionHandler.get("codigo"));
+        productoAnadirView.getLbNombre().setText(mensajeInternacionalizacionHandler.get("nombre"));
+        productoAnadirView.getLbPrecio().setText(mensajeInternacionalizacionHandler.get("precio"));
+        productoAnadirView.getBtnAceptar().setText(mensajeInternacionalizacionHandler.get("aceptar"));
+        productoAnadirView.getBtnLimpiar().setText(mensajeInternacionalizacionHandler.get("limpiar"));
+        /**
+         * ╔════════════════════════════════════╗
+         * ║         ❌ ELIMINAR                ║
+         * ╚════════════════════════════════════╝
+         */
+        productoEliminarView.setTitle(mensajeInternacionalizacionHandler.get("producto.eliminar"));
+        productoEliminarView.getLbTitulo().setText(mensajeInternacionalizacionHandler.get("producto.eliminar")+" 🗑️");
+        productoEliminarView.getLbCodigo().setText(mensajeInternacionalizacionHandler.get("codigo"));
+        productoEliminarView.getBtEliminar().setText(mensajeInternacionalizacionHandler.get("eliminar"));
+        productoEliminarView.getBtLimpiar().setText(mensajeInternacionalizacionHandler.get("limpiar"));
+        /**
+         * ╔════════════════════════════════════╗
+         * ║         📝 ACTUALIZAR              ║
+         * ╚════════════════════════════════════╝
+         */
+        productoActualizarView.setTitle(mensajeInternacionalizacionHandler.get("producto.actualizar"));
+        productoActualizarView.getLbTitulo().setText(mensajeInternacionalizacionHandler.get("producto.actualizar")+" 🔃");
+        productoActualizarView.getLbCodigo().setText(mensajeInternacionalizacionHandler.get("codigo"));
+        productoActualizarView.getLbNombre().setText(mensajeInternacionalizacionHandler.get("nombre"));
+        productoActualizarView.getLbPrecio().setText(mensajeInternacionalizacionHandler.get("precio"));
+        productoActualizarView.getLbNuevo().setText(mensajeInternacionalizacionHandler.get("nuevo"));
+        productoActualizarView.getLbOriginal().setText(mensajeInternacionalizacionHandler.get("original"));
+        productoActualizarView.getPtActualizar().setText(mensajeInternacionalizacionHandler.get("actualizar"));
+        /**
+         * ╔════════════════════════════════════╗
+         * ║         🔍 LISTAR                  ║
+         * ╚════════════════════════════════════╝
+         */
+        productoListaView.getLbNombre().setText(mensajeInternacionalizacionHandler.get("nombre"));
+        productoListaView.getLbTitulo().setText(mensajeInternacionalizacionHandler.get("producto.buscar")+" 📁");
+        Object[] columnas = {mensajeInternacionalizacionHandler.get("codigo"), mensajeInternacionalizacionHandler.get("nombre"), mensajeInternacionalizacionHandler.get("precio")};
+        productoListaView.getModelo().setColumnIdentifiers(columnas);
+
+    }
+    private String mensajes(int cod) {
+        return switch (cod) {
+            case 0 -> mensajeInternacionalizacionHandler.get("mensaje.0");
+            case 1 -> mensajeInternacionalizacionHandler.get("mensaje.1");
+            case 2 -> mensajeInternacionalizacionHandler.get("mensaje.2");
+            case 3 -> mensajeInternacionalizacionHandler.get("mensaje.3");
+            case 4 -> mensajeInternacionalizacionHandler.get("mensaje.4");
+            case 5 -> mensajeInternacionalizacionHandler.get("mensaje.5");
+            case 6 -> mensajeInternacionalizacionHandler.get("mensaje.6");
+            case 7 -> mensajeInternacionalizacionHandler.get("mensaje.7");
+            case 8 -> mensajeInternacionalizacionHandler.get("mensaje.8");
+            case 9 -> mensajeInternacionalizacionHandler.get("mensaje.9");
+            case 10 -> mensajeInternacionalizacionHandler.get("mensaje.10");
+            case 11 -> mensajeInternacionalizacionHandler.get("mensaje.11");
+            case 12 -> mensajeInternacionalizacionHandler.get("mensaje.12");
+            case 13 -> mensajeInternacionalizacionHandler.get("mensaje.13");
+            case 14 -> mensajeInternacionalizacionHandler.get("mensaje.14");
+            case 15 -> mensajeInternacionalizacionHandler.get("mensaje.15");
+            default -> "";
+        };
+    }
+
+    private String titulosMensajes(int cod) {
+        return switch (cod) {
+            case 0 -> mensajeInternacionalizacionHandler.get("titulo.0");
+            case 1 -> mensajeInternacionalizacionHandler.get("titulo.1");
+            case 2 -> mensajeInternacionalizacionHandler.get("titulo.2");
+            case 3 -> mensajeInternacionalizacionHandler.get("titulo.3");
+            case 4 -> mensajeInternacionalizacionHandler.get("titulo.4");
+            case 5 -> mensajeInternacionalizacionHandler.get("titulo.5");
+            case 6 -> mensajeInternacionalizacionHandler.get("titulo.6");
+            case 7 -> mensajeInternacionalizacionHandler.get("titulo.7");
+            case 8 -> mensajeInternacionalizacionHandler.get("titulo.8");
+            case 9 -> mensajeInternacionalizacionHandler.get("titulo.9");
+            case 10 -> mensajeInternacionalizacionHandler.get("titulo.10");
+            case 11 -> mensajeInternacionalizacionHandler.get("titulo.11");
+            case 12 -> mensajeInternacionalizacionHandler.get("titulo.12");
+            case 13 -> mensajeInternacionalizacionHandler.get("titulo.13");
+            case 14 -> mensajeInternacionalizacionHandler.get("titulo.14");
+            case 15 -> mensajeInternacionalizacionHandler.get("titulo.15");
+            default -> "";
+        };
+    }
+
 }

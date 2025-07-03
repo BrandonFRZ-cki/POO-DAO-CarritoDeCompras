@@ -15,6 +15,10 @@ public class ProductoAnadirView extends JInternalFrame {
     private JTextField txtCodigo;
     private JButton btnAceptar;
     private JButton btnLimpiar;
+    private JLabel lbTitulo;
+    private JLabel lbCodigo;
+    private JLabel lbNombre;
+    private JLabel lbPrecio;
 
     public ProductoAnadirView() {
 
@@ -85,6 +89,22 @@ public class ProductoAnadirView extends JInternalFrame {
 
     public void setBtnLimpiar(JButton btnLimpiar) {
         this.btnLimpiar = btnLimpiar;
+    }
+
+    public JLabel getLbTitulo() {
+        return lbTitulo;
+    }
+
+    public JLabel getLbCodigo() {
+        return lbCodigo;
+    }
+
+    public JLabel getLbNombre() {
+        return lbNombre;
+    }
+
+    public JLabel getLbPrecio() {
+        return lbPrecio;
     }
 
     public void mostrarMensaje(String mensaje, String titulo, String tipo) {

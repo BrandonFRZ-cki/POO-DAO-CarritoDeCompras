@@ -10,6 +10,8 @@ public class ProductoEliminarView extends JInternalFrame{
     private JTextField txtCodigo;
     private JTextField txtNombre;
     private JTextField txtPrecio;
+    private JLabel lbCodigo;
+    private JLabel lbTitulo;
 
     public ProductoEliminarView() {
         setContentPane(panelPrincipal);
@@ -46,6 +48,16 @@ public class ProductoEliminarView extends JInternalFrame{
     public JTextField getTxtPrecio() {
         return txtPrecio;
     }
+
+    public JLabel getLbCodigo() {
+        return lbCodigo;
+    }
+
+    public JLabel getLbTitulo() {
+        return lbTitulo;
+    }
+
+
     public void limpiarCampos() {
         txtCodigo.setText("");
         txtNombre.setText("");

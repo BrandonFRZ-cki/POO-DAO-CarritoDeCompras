@@ -118,7 +118,7 @@ public class Main {
                              * ╚════════════════════════════════════╝
                              */
 
-                            ProductoController productoController = new ProductoController(productoDAO, productoAnadirView, productoListaView,productoActualizarView, carritoAnadirView,productoEliminarView);
+                            ProductoController productoController = new ProductoController(productoDAO, productoAnadirView, productoListaView,productoActualizarView, carritoAnadirView,productoEliminarView, mensajeInternacionalizacionHandler);
                             CarritoController carritoController = new CarritoController(
                                     usuarioAuntenticado,
                                     carritoDAO,
@@ -305,6 +305,7 @@ public class Main {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
                                     principalView.cambiarIdioma("es", "EC");
+                                    productoController.cambiarIdioma("es", "EC");
                                 }
                             });
 
@@ -312,6 +313,7 @@ public class Main {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
                                     principalView.cambiarIdioma("en", "US");
+                                    productoController.cambiarIdioma("en", "US");
                                 }
                             });
 
@@ -319,6 +321,7 @@ public class Main {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
                                     principalView.cambiarIdioma("fr", "FR");
+                                    productoController.cambiarIdioma("fr", "FR");
                                 }
                             });
                         }
