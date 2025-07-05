@@ -16,6 +16,14 @@ public class CarritoActualizarView extends JInternalFrame{
     private JTextField txtTotal;
     private JTextField txtFecha;
     private JTextField txtUsuario;
+    private JLabel lbTitulo;
+    private JLabel lbCodigo;
+    private JLabel lbFecha;
+    private JLabel lbUsuario;
+    private JPanel lbSubtotal;
+    private JLabel lbSubTotal;
+    private JLabel lbTotal;
+    private JLabel lbIVA;
 
     private DefaultTableModel modelo;
 
@@ -68,6 +76,50 @@ public class CarritoActualizarView extends JInternalFrame{
 
     public JTextField getTxtUsuario() {
         return txtUsuario;
+    }
+
+    public JButton getBtActualizar() {
+        return btActualizar;
+    }
+
+    public JPanel getIngresoCodigo() {
+        return ingresoCodigo;
+    }
+
+    public JPanel getPanelPrincipal() {
+        return panelPrincipal;
+    }
+
+    public JLabel getLbTitulo() {
+        return lbTitulo;
+    }
+
+    public JLabel getLbCodigo() {
+        return lbCodigo;
+    }
+
+    public JLabel getLbFecha() {
+        return lbFecha;
+    }
+
+    public JLabel getLbUsuario() {
+        return lbUsuario;
+    }
+
+    public JPanel getLbSubtotal() {
+        return lbSubtotal;
+    }
+
+    public JLabel getLbSubTotal() {
+        return lbSubTotal;
+    }
+
+    public JLabel getLbTotal() {
+        return lbTotal;
+    }
+
+    public JLabel getLbIVA() {
+        return lbIVA;
     }
 
     public void mostrarMensaje(String mensaje, String titulo, String tipo) {

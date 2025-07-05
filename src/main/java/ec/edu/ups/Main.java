@@ -306,6 +306,7 @@ public class Main {
                                 public void actionPerformed(ActionEvent e) {
                                     principalView.cambiarIdioma("es", "EC");
                                     productoController.cambiarIdioma("es", "EC");
+                                    carritoController.cambiarIdioma("es", "EC");
                                 }
                             });
 
@@ -314,6 +315,7 @@ public class Main {
                                 public void actionPerformed(ActionEvent e) {
                                     principalView.cambiarIdioma("en", "US");
                                     productoController.cambiarIdioma("en", "US");
+                                    carritoController.cambiarIdioma("en", "US");
                                 }
                             });
 
@@ -322,6 +324,7 @@ public class Main {
                                 public void actionPerformed(ActionEvent e) {
                                     principalView.cambiarIdioma("fr", "FR");
                                     productoController.cambiarIdioma("fr", "FR");
+                                    carritoController.cambiarIdioma("fr", "FR");
                                 }
                             });
                         }

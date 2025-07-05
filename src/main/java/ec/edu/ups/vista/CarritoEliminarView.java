@@ -9,7 +9,9 @@ public class CarritoEliminarView extends JInternalFrame{
     private JButton btEliminar;
     private JPanel panelPrincipal;
     private JTable tblCarritos;
-
+    private JLabel lbTitulo;
+    private JLabel lbCodigo;
+    private Object[] columnas;
     private DefaultTableModel modelo;
     public CarritoEliminarView() {
         super("Eliminar Carrito", true, true, false, true);
@@ -18,7 +20,7 @@ public class CarritoEliminarView extends JInternalFrame{
         setSize(500, 400);
 
         modelo = new DefaultTableModel();
-        Object[] columnas = {"Codigo", "Fecha","Usuario","Total"};
+        columnas = new Object[]{"Codigo", "Fecha","Usuario","Total"};
         modelo.setColumnIdentifiers(columnas);
         tblCarritos.setModel(modelo);
 
@@ -38,6 +40,22 @@ public class CarritoEliminarView extends JInternalFrame{
 
     public JTable getTblCarritos() {
         return tblCarritos;
+    }
+
+    public JPanel getPanelPrincipal() {
+        return panelPrincipal;
+    }
+
+    public JLabel getLbTitulo() {
+        return lbTitulo;
+    }
+
+    public JLabel getLbCodigo() {
+        return lbCodigo;
+    }
+
+    public DefaultTableModel getModelo() {
+        return modelo;
     }
 
     public void mostrarMensaje(String mensaje, String titulo, String tipo) {

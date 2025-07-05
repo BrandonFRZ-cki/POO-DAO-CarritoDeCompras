@@ -20,14 +20,14 @@
         </properties>
         <border type="none"/>
         <children>
-          <component id="34368" class="javax.swing.JLabel">
+          <component id="34368" class="javax.swing.JLabel" binding="lbTitulo">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <font name="Arial Black" size="28"/>
               <foreground color="-16777216"/>
-              <text value="Eliminar Carrito 🚮"/>
+              <text value="Eliminar Carrito 🗑️"/>
             </properties>
           </component>
           <hspacer id="29696">
@@ -62,7 +62,7 @@
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
           </hspacer>
-          <component id="c8af7" class="javax.swing.JLabel">
+          <component id="c8af7" class="javax.swing.JLabel" binding="lbCodigo">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>

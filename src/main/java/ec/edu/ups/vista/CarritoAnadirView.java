@@ -3,12 +3,15 @@ package ec.edu.ups.vista;
 import ec.edu.ups.modelo.Carrito;
 import ec.edu.ups.modelo.ItemCarrito;
 import ec.edu.ups.modelo.Usuario;
+import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
 public class CarritoAnadirView extends JInternalFrame {
+    private MensajeInternacionalizacionHandler mensajeInternacionalizacion;
+
     private JButton btnBuscar;
     private JTextField txtCodigo;
     private JTextField txtNombre;
@@ -22,20 +25,31 @@ public class CarritoAnadirView extends JInternalFrame {
     private JButton btnLimpiar;
     private JComboBox cbxCantidad;
     private JPanel panelPrincipal;
+    private JLabel lbTitulo;
+    private JLabel lbProducto;
+    private JLabel lbCodigo;
+    private JLabel lbNombre;
+    private JLabel lbPrecio;
+    private JLabel lbCantidad;
+    private JLabel lbSubtotal;
+    private JLabel lbIva;
+    private JLabel lbTotal;
 
     private Usuario usuario;
     private Carrito carrito;
     private DefaultTableModel modelo;
 
+    private Object[] columnas;
     public CarritoAnadirView() {
         super("Carrito de Compras", true, true, false, true);
+
         setContentPane(panelPrincipal);
         setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
         setSize(500, 500);
         cargarDatos();
 
         modelo = new DefaultTableModel();
-        Object[] columnas = {"Nombre", "Precio", "Cantidad", "Subtotal"};
+        columnas = new Object[] {"Nombre", "Precio", "Cantidad", "Subtotal"};
         modelo.setColumnIdentifiers(columnas);
         tblProductos.setModel(modelo);
     }
@@ -65,6 +79,62 @@ public class CarritoAnadirView extends JInternalFrame {
     public Carrito getCarrito() { return carrito; }
     public void setUsuario(Usuario usuario) { this.usuario = usuario; }
     public void setCarrito(Carrito carrito) { this.carrito = carrito; }
+
+    public MensajeInternacionalizacionHandler getMensajeInternacionalizacion() {
+        return mensajeInternacionalizacion;
+    }
+
+    public JLabel getLbTitulo() {
+        return lbTitulo;
+    }
+
+    public JLabel getLbProducto() {
+        return lbProducto;
+    }
+
+    public JLabel getLbCodigo() {
+        return lbCodigo;
+    }
+
+    public JLabel getLbNombre() {
+        return lbNombre;
+    }
+
+    public JLabel getLbPrecio() {
+        return lbPrecio;
+    }
+
+    public JLabel getLbCantidad() {
+        return lbCantidad;
+    }
+
+    public JLabel getLbSubtotal() {
+        return lbSubtotal;
+    }
+
+    public JLabel getLbIva() {
+        return lbIva;
+    }
+
+    public JLabel getLbTotal() {
+        return lbTotal;
+    }
+
+    public DefaultTableModel getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(DefaultTableModel modelo) {
+        this.modelo = modelo;
+    }
+
+    public Object[] getColumnas() {
+        return columnas;
+    }
+
+    public void setColumnas(Object[] columnas) {
+        this.columnas = columnas;
+    }
 
     public void mostrarMensaje(String mensaje, String titulo, String tipo) {
         if (tipo.equals("error")) {

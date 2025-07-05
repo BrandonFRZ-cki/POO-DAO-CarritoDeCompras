@@ -171,6 +171,7 @@ public class UsuarioController {
                 usuarioEliminarView.limpiarCampos();
             }
         });
+
         loginView.getBtnRecuperarContrasenia().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
