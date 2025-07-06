@@ -2,13 +2,16 @@ package ec.edu.ups.controlador;
 
 import ec.edu.ups.dao.ProductoDAO;
 import ec.edu.ups.modelo.Producto;
+import ec.edu.ups.util.FormateadorUtils;
 import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 import ec.edu.ups.vista.*;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Locale;
 
 public class ProductoController {
 
@@ -21,6 +24,8 @@ public class ProductoController {
     private final ProductoDAO productoDAO;
 
     private MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler;
+    private Locale locale;
+
 
     public ProductoController(ProductoDAO productoDAO,
                               ProductoAnadirView productoAnadirView,
@@ -37,6 +42,7 @@ public class ProductoController {
         this.carritoAnadirView = carritoAnadirView;
         this.productoActualizarView = productoActualizarView;
         this.mensajeInternacionalizacionHandler = mensajeInternacionalizacionHandler;
+        locale = mensajeInternacionalizacionHandler.getLocale();
         this.configurarEventosEnVistas();
 
     }
@@ -139,11 +145,24 @@ public class ProductoController {
         String nombre = productoListaView.getTxtBuscar().getText();
 
         List<Producto> productosEncontrados = productoDAO.buscarPorNombre(nombre);
-        productoListaView.cargarDatos(productosEncontrados);
+        cargarDatos(productosEncontrados);
     }
     private void listarProductos() {
         List<Producto> productos = productoDAO.listarTodos();
-        productoListaView.cargarDatos(productos);
+        cargarDatos(productos);
+    }
+    public void cargarDatos(List<Producto> listaProductos) {
+        DefaultTableModel modelo = productoListaView.getModelo();
+        modelo.setRowCount(0);
+
+        for (Producto producto : listaProductos) {
+            modelo.addRow(new Object[] {
+                    producto.getCodigo(),
+                    producto.getNombre(),
+                    FormateadorUtils.formatearMoneda(producto.getPrecio(),locale)
+            });
+        }
+
     }
     private void buscarProductoPorCodigo() {
         try {
@@ -156,7 +175,7 @@ public class ProductoController {
                 carritoAnadirView.getTxtPrecio().setText("");
             } else {
                 carritoAnadirView.getTxtNombre().setText(producto.getNombre());
-                carritoAnadirView.getTxtPrecio().setText(String.valueOf(producto.getPrecio()));
+                carritoAnadirView.getTxtPrecio().setText(FormateadorUtils.formatearMoneda(producto.getPrecio(),locale));
             }
         } catch (NumberFormatException e) {
             carritoAnadirView.mostrarMensaje(mensajes(5), titulosMensajes(5), "error");
@@ -257,9 +276,8 @@ public class ProductoController {
             productoActualizarView.mostrarMensaje(mensajes(15), titulosMensajes(15), "error");
         }
     }
-
     public void cambiarIdioma(String lenguaje, String pais) {
-
+        locale = mensajeInternacionalizacionHandler.getLocale();
         /**
          * ╔════════════════════════════════════╗x
          * ║          ➕ CREAR                  ║

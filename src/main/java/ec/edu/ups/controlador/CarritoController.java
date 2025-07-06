@@ -186,7 +186,7 @@ public class CarritoController {
 
                     modelo.addRow(new Object[]{
                             carro.getCodigo(),
-                            carro.getFechaCreacionConFormato(),
+                            FormateadorUtils.formatearFecha(carro.getFechaCreacion().getTime(),locale),
                             nombreUsuario,
                             FormateadorUtils.formatearMoneda(carro.calcularTotal(), locale)
                     });
@@ -203,7 +203,7 @@ public class CarritoController {
         carritoAnadirView.getCarrito().agregarProducto(producto, cantidad);
 
         cargarProductos();
-        mostrarTotales();
+
 
     }
 
@@ -215,22 +215,13 @@ public class CarritoController {
         for (ItemCarrito item : items) {
             modelo.addRow(new Object[]{item.getProducto().getCodigo(),
                     item.getProducto().getNombre(),
-                    item.getProducto().getPrecio(),
+                    FormateadorUtils.formatearMoneda(item.getProducto().getPrecio(), locale),
                     item.getCantidad(),
-                    item.getProducto().getPrecio() * item.getCantidad()});
+                    FormateadorUtils.formatearMoneda(item.getProducto().getPrecio() * item.getCantidad(), locale)
+            });
         }
     }
 
-    private void mostrarTotales() {
-        String subtotal = FormateadorUtils.formatearMoneda(carritoAnadirView.getCarrito().calcularSubtotal(), locale);
-        String iva = FormateadorUtils.formatearMoneda(carritoAnadirView.getCarrito().calcularIVA(), locale);
-        String total = FormateadorUtils.formatearMoneda(carritoAnadirView.getCarrito().calcularTotal(), locale);
-
-
-        carritoAnadirView.getTxtSubtotal().setText(subtotal);
-        carritoAnadirView.getTxtIva().setText(iva);
-        carritoAnadirView.getTxtTotal().setText(total);
-    }
 
     private void buscarCarrito() {
         String codigoTexto = carritoListaView.getTxtBuscar().getText();
@@ -253,9 +244,9 @@ public class CarritoController {
 
                     modelo.addRow(new Object[]{
                             carrito.getCodigo(),
-                            carrito.getFechaCreacionConFormato(),
+                            FormateadorUtils.formatearFecha(carrito.getFechaCreacion().getTime(),locale),
                             carrito.getUsuario().getUsername(),
-                            carrito.calcularTotal()
+                            FormateadorUtils.formatearMoneda(carrito.calcularTotal(), locale),
                     });
 
                 } else {
@@ -292,17 +283,17 @@ public class CarritoController {
         modelo.setRowCount(0);
 
         carritoDetalleView.getTxtCodigo().setText(String.valueOf(carrito.getCodigo()));
-        carritoDetalleView.getTxtSubtotal().setText(String.format("%.2f", carrito.calcularSubtotal()));
-        carritoDetalleView.getTxtIva().setText(String.format("%.2f", carrito.calcularIVA()));
-        carritoDetalleView.getTxtTotal().setText(String.format("%.2f", carrito.calcularTotal()));
+        carritoDetalleView.getTxtSubtotal().setText(FormateadorUtils.formatearMoneda(carrito.calcularSubtotal(), locale));
+        carritoDetalleView.getTxtIva().setText(FormateadorUtils.formatearMoneda(carrito.calcularIVA(), locale));
+        carritoDetalleView.getTxtTotal().setText(FormateadorUtils.formatearMoneda(carrito.calcularTotal(), locale));
 
         for (ItemCarrito item : carrito.obtenerItems()) {
             modelo.addRow(new Object[]{
                     item.getProducto().getCodigo(),
                     item.getProducto().getNombre(),
-                    item.getProducto().getPrecio(),
+                    FormateadorUtils.formatearMoneda(item.getProducto().getPrecio(), locale),
                     item.getCantidad(),
-                    item.getSubtotal()
+                    FormateadorUtils.formatearMoneda(item.getSubtotal(), locale),
             });
         }
 
@@ -328,9 +319,9 @@ public class CarritoController {
 
                 modelo.addRow(new Object[]{
                         carrito.getCodigo(),
-                        carrito.getFechaCreacionConFormato(),
+                        FormateadorUtils.formatearFecha(carrito.getFechaCreacion().getTime(),locale),
                         carrito.getUsuario().getUsername(),
-                        carrito.calcularTotal()
+                        FormateadorUtils.formatearMoneda(carrito.calcularTotal(), locale),
                 });
 
             } else {
@@ -455,26 +446,25 @@ public class CarritoController {
             int codigo = Integer.parseInt(codigoTexto);
             Carrito carrito = carritoDAO.buscarPorCodigo(codigo);
 
-
             if (carrito == null) {
-                carritoActualizarView.mostrarMensaje("Carrito no encontrado", "Error", "error");
+                carritoActualizarView.mostrarMensaje(mensajes(44), titulosMensajes(14), "error");
                 carritoActualizarView.limpiarCampos();
                 return;
             }
 
             if (!usuario.getRol().equals(Rol.ADMINISTRADOR) &&
                     !carrito.getUsuario().getUsername().equals(usuario.getUsername())) {
-                carritoActualizarView.mostrarMensaje("No tiene permiso para acceder a este carrito", "Acceso denegado", "warning");
+                carritoActualizarView.mostrarMensaje(mensajes(45), titulosMensajes(15), "warning");
                 carritoActualizarView.limpiarCampos();
                 return;
             }
 
             carritoActualizarView.getPtActualizar().setVisible(true);
-            carritoActualizarView.getTxtFecha().setText(carrito.getFechaCreacionConFormato());
+            carritoActualizarView.getTxtFecha().setText(FormateadorUtils.formatearFecha(carrito.getFechaCreacion().getTime(),locale));
             carritoActualizarView.getTxtUsuario().setText(carrito.getUsuario().getUsername());
-            carritoActualizarView.getTxtIva().setText(String.valueOf(carrito.calcularIVA()));
-            carritoActualizarView.getTxtSubtotal().setText(String.valueOf(carrito.calcularSubtotal()));
-            carritoActualizarView.getTxtTotal().setText(String.valueOf(carrito.calcularTotal()));
+            carritoActualizarView.getTxtIva().setText(FormateadorUtils.formatearMoneda(carrito.calcularIVA(),locale));
+            carritoActualizarView.getTxtSubtotal().setText(FormateadorUtils.formatearMoneda(carrito.calcularSubtotal(),locale));
+            carritoActualizarView.getTxtTotal().setText(FormateadorUtils.formatearMoneda(carrito.calcularTotal(),locale));
 
             DefaultTableModel modelo = carritoActualizarView.getModelo();
             modelo.setRowCount(0);
@@ -489,14 +479,14 @@ public class CarritoController {
                 });
             }
 
-            carritoActualizarView.getTxtSubtotal().setText(String.format("%.2f", carrito.calcularSubtotal()));
-
+            carritoActualizarView.getTxtSubtotal().setText(FormateadorUtils.formatearMoneda(carrito.calcularSubtotal(),locale));
 
         } catch (NumberFormatException ex) {
-            carritoActualizarView.mostrarMensaje("Código inválido. Ingrese un número", "Error", "error");
+            carritoActualizarView.mostrarMensaje(mensajes(46), titulosMensajes(14), "error");
             carritoActualizarView.limpiarCampos();
         }
     }
+
 
     public void cambiarIdioma(String lenguaje, String pais) {
         locale = mensajeInternacionalizacionHandler.getLocale();
@@ -607,6 +597,9 @@ public class CarritoController {
             case 41 -> mensajeInternacionalizacionHandler.get("mensaje.41");
             case 42 -> mensajeInternacionalizacionHandler.get("mensaje.42");
             case 43 -> mensajeInternacionalizacionHandler.get("mensaje.43");
+            case 44 -> mensajeInternacionalizacionHandler.get("mensaje.44");
+            case 45 -> mensajeInternacionalizacionHandler.get("mensaje.45");
+            case 46 -> mensajeInternacionalizacionHandler.get("mensaje.46");
 
             default -> "";
         };
@@ -624,6 +617,8 @@ public class CarritoController {
             case 11 -> mensajeInternacionalizacionHandler.get("titulo.24");
             case 12 -> mensajeInternacionalizacionHandler.get("titulo.25");
             case 13 -> mensajeInternacionalizacionHandler.get("titulo.26");
+            case 14 -> mensajeInternacionalizacionHandler.get("titulo.27");
+            case 15 -> mensajeInternacionalizacionHandler.get("titulo.28");
 
             default -> "";
         };
