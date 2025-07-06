@@ -28,7 +28,7 @@
             </properties>
             <border type="none"/>
             <children>
-              <component id="5ade8" class="javax.swing.JLabel">
+              <component id="5ade8" class="javax.swing.JLabel" binding="lbTitulo">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
                 </constraints>
@@ -60,7 +60,7 @@
             </properties>
             <border type="none"/>
             <children>
-              <component id="7f9aa" class="javax.swing.JLabel">
+              <component id="7f9aa" class="javax.swing.JLabel" binding="lbNombreDeUsuario">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -126,7 +126,7 @@
                       <font name="Arial" size="16" style="1"/>
                     </properties>
                   </component>
-                  <component id="3c6cf" class="javax.swing.JLabel">
+                  <component id="3c6cf" class="javax.swing.JLabel" binding="lbApellido">
                     <constraints>
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -136,7 +136,7 @@
                       <text value="Apellido"/>
                     </properties>
                   </component>
-                  <component id="d5a51" class="javax.swing.JLabel">
+                  <component id="d5a51" class="javax.swing.JLabel" binding="lbNombre">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -157,7 +157,7 @@
                       <font name="Arial" size="16" style="1"/>
                     </properties>
                   </component>
-                  <component id="da46d" class="javax.swing.JLabel">
+                  <component id="da46d" class="javax.swing.JLabel" binding="lbTelefono">
                     <constraints>
                       <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -167,7 +167,7 @@
                       <text value="Telefono"/>
                     </properties>
                   </component>
-                  <component id="26810" class="javax.swing.JLabel">
+                  <component id="26810" class="javax.swing.JLabel" binding="lbCorreo">
                     <constraints>
                       <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -203,7 +203,7 @@
                   <margin top="2" left="9" bottom="2" right="6"/>
                 </properties>
               </component>
-              <component id="732bf" class="javax.swing.JLabel">
+              <component id="732bf" class="javax.swing.JLabel" binding="lbContrasena">
                 <constraints>
                   <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -213,7 +213,7 @@
                   <text value="Contraseña"/>
                 </properties>
               </component>
-              <component id="1d615" class="javax.swing.JLabel">
+              <component id="1d615" class="javax.swing.JLabel" binding="lbVerificaContrasena">
                 <constraints>
                   <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>

@@ -13,6 +13,14 @@ public class UsuarioAnadirView extends JInternalFrame{
     private JTextField txtCorreo;
     private JTextField txtTelefono;
     private JPasswordField txtVerificaContrasena;
+    private JLabel lbTitulo;
+    private JLabel lbNombreDeUsuario;
+    private JLabel lbNombre;
+    private JLabel lbApellido;
+    private JLabel lbCorreo;
+    private JLabel lbTelefono;
+    private JLabel lbContrasena;
+    private JLabel lbVerificaContrasena;
 
     public UsuarioAnadirView(){
         setContentPane(panelPrincipal);
@@ -62,6 +70,38 @@ public class UsuarioAnadirView extends JInternalFrame{
 
     public JPasswordField getTxtVerificaContrasena() {
         return txtVerificaContrasena;
+    }
+
+    public JLabel getLbTitulo() {
+        return lbTitulo;
+    }
+
+    public JLabel getLbNombreDeUsuario() {
+        return lbNombreDeUsuario;
+    }
+
+    public JLabel getLbNombre() {
+        return lbNombre;
+    }
+
+    public JLabel getLbApellido() {
+        return lbApellido;
+    }
+
+    public JLabel getLbCorreo() {
+        return lbCorreo;
+    }
+
+    public JLabel getLbTelefono() {
+        return lbTelefono;
+    }
+
+    public JLabel getLbContrasena() {
+        return lbContrasena;
+    }
+
+    public JLabel getLbVerificaContrasena() {
+        return lbVerificaContrasena;
     }
 
     public void mostrarMensaje(String mensaje, String titulo, String tipo) {

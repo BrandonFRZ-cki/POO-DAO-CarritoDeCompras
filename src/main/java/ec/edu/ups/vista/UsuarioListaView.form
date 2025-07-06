@@ -28,14 +28,14 @@
             </properties>
             <border type="none"/>
             <children>
-              <component id="ef881" class="javax.swing.JLabel">
+              <component id="ef881" class="javax.swing.JLabel" binding="lbTitulo">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <font name="Arial Black" size="28"/>
                   <foreground color="-16777216"/>
-                  <text value="Usuarios 👤"/>
+                  <text value="Buscar Usuario 👤"/>
                 </properties>
               </component>
               <hspacer id="12394">
@@ -115,7 +115,7 @@
                   <margin top="2" left="9" bottom="2" right="6"/>
                 </properties>
               </component>
-              <component id="c69f9" class="javax.swing.JLabel">
+              <component id="c69f9" class="javax.swing.JLabel" binding="lbUsername">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>

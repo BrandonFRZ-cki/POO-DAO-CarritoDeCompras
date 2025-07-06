@@ -57,6 +57,7 @@ public class CarritoController {
         locale = mensajeInternacionalizacionHandler.getLocale();
         configurarEventosEnVistas();
     }
+
     private void configurarEventosEnVistas() {
         /**
          * ╔════════════════════════════════════╗

@@ -13,6 +13,14 @@ public class UsuarioActualizarView extends JInternalFrame {
     private JButton btnActualizar;
     private JButton btnBuscar;
     private JTextField txtUsername;
+    private JLabel lbTitulo;
+    private JLabel lbUserName;
+    private JLabel lbUser;
+    private JLabel lbNombre;
+    private JLabel lbApellido;
+    private JLabel tbCorreo;
+    private JLabel lbTelefono;
+    private JLabel lbContrasena;
 
     public UsuarioActualizarView() {
         setContentPane(panelPrincipal);
@@ -63,6 +71,39 @@ public class UsuarioActualizarView extends JInternalFrame {
     public JTextField getTxtUsername() {
         return txtUsername;
     }
+
+    public JLabel getLbTitulo() {
+        return lbTitulo;
+    }
+
+    public JLabel getLbUserName() {
+        return lbUserName;
+    }
+
+    public JLabel getLbUser() {
+        return lbUser;
+    }
+
+    public JLabel getLbNombre() {
+        return lbNombre;
+    }
+
+    public JLabel getLbApellido() {
+        return lbApellido;
+    }
+
+    public JLabel getTbCorreo() {
+        return tbCorreo;
+    }
+
+    public JLabel getLbTelefono() {
+        return lbTelefono;
+    }
+
+    public JLabel getLbContrasena() {
+        return lbContrasena;
+    }
+
     public void mostrarMensaje(String mensaje, String titulo, String tipo) {
         if (tipo.equals("error")) {
             JOptionPane.showMessageDialog(this, mensaje, titulo, JOptionPane.ERROR_MESSAGE);
@@ -71,7 +112,5 @@ public class UsuarioActualizarView extends JInternalFrame {
         }else if (tipo.equals("warning")) {
             JOptionPane.showMessageDialog(this, mensaje, titulo, JOptionPane.WARNING_MESSAGE);
         }
-
-
     }
 }

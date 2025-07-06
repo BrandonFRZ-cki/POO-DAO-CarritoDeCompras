@@ -9,6 +9,8 @@ public class UsuarioListaView extends JInternalFrame {
     private JTextField txtBuscar;
     private JButton btnListar;
     private JPanel panelPrincipal;
+    private JLabel lbTitulo;
+    private JLabel lbUsername;
 
     private DefaultTableModel modelo;
 
@@ -22,7 +24,7 @@ public class UsuarioListaView extends JInternalFrame {
         setResizable(true);
 
         modelo = new DefaultTableModel();
-        Object[] columnas = {"Username", "Nombre", "Apellido", "Contraseña ","Correo", "Telefono"};
+        Object[] columnas = {"Username", "Nombre", "Apellido","Correo", "Telefono","Fecha de nacimiento"};
         modelo.setColumnIdentifiers(columnas);
         tblUsuarios.setModel(modelo);
     }
@@ -50,6 +52,15 @@ public class UsuarioListaView extends JInternalFrame {
     public DefaultTableModel getModelo() {
         return modelo;
     }
+
+    public JLabel getLbTitulo() {
+        return lbTitulo;
+    }
+
+    public JLabel getLbUsername() {
+        return lbUsername;
+    }
+
     public void limpiarTabla() {
         modelo.setRowCount(0);
     }

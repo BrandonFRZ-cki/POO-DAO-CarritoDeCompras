@@ -5,6 +5,7 @@ import ec.edu.ups.dao.UsuarioDAO;
 import ec.edu.ups.modelo.Pregunta;
 import ec.edu.ups.modelo.Rol;
 import ec.edu.ups.modelo.Usuario;
+import ec.edu.ups.util.FormateadorUtils;
 import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 import ec.edu.ups.vista.*;
 
@@ -313,9 +314,9 @@ public class UsuarioController {
                     u.getUsername(),
                     u.getNombre(),
                     u.getApellido(),
-                    u.getContrasenia(),
                     u.getEmail(),
-                    u.getTelefono()
+                    u.getTelefono(),
+                    FormateadorUtils.formatearFecha(u.getFechaNacimiento().getTime(),locale)
             });
         }
     }
@@ -540,32 +541,60 @@ public class UsuarioController {
         loginView.getLbTitulo().setText(mensajeInternacionalizacionHandler.get("inicio.sesion")+"👤");
         loginView.getBtnIniciarSesion().setText(mensajeInternacionalizacionHandler.get("usuario.login"));
         loginView.getLbUsername().setText(mensajeInternacionalizacionHandler.get("usuario"));
-       loginView.getBtnRecuperarContrasenia().setText(mensajeInternacionalizacionHandler.get("olvidemicontrasena"));
+        loginView.getBtnRecuperarContrasenia().setText(mensajeInternacionalizacionHandler.get("olvidemicontrasena"));
         loginView.getRegistrarceButton().setText(mensajeInternacionalizacionHandler.get("registrarse"));
-
-
-
         /**
          * ╔════════════════════════════════════╗
          * ║          ➕ CREAR                  ║
          * ╚════════════════════════════════════╝
          */
-
+        usuarioAnadirView.setTitle(mensajeInternacionalizacionHandler.get("usuario.crear"));
+        usuarioAnadirView.getLbTitulo().setText(mensajeInternacionalizacionHandler.get("usuario.crear") + " ➕");
+        usuarioAnadirView.getLbNombre().setText(mensajeInternacionalizacionHandler.get("nombre"));
+        usuarioAnadirView.getLbNombreDeUsuario().setText(mensajeInternacionalizacionHandler.get("nombreusuario"));
+        usuarioAnadirView.getBtnLimpiar().setText(mensajeInternacionalizacionHandler.get("limpiar"));
+        usuarioAnadirView.getLbContrasena().setText(mensajeInternacionalizacionHandler.get("contrasena"));
+        usuarioAnadirView.getBtnAceptar().setText(mensajeInternacionalizacionHandler.get("aceptar"));
+        usuarioAnadirView.getLbVerificaContrasena().setText(mensajeInternacionalizacionHandler.get("validarcontrasena"));
+        usuarioAnadirView.getLbApellido().setText(mensajeInternacionalizacionHandler.get("apellido"));
+        usuarioAnadirView.getLbCorreo().setText(mensajeInternacionalizacionHandler.get("correo"));
+        usuarioAnadirView.getLbTelefono().setText(mensajeInternacionalizacionHandler.get("telefono"));
         /**
          * ╔════════════════════════════════════╗
          * ║         ❌ ELIMINAR                ║
          * ╚════════════════════════════════════╝
          */
+        usuarioEliminarView.setTitle(mensajeInternacionalizacionHandler.get("usuario.eliminar"));
+        usuarioEliminarView.getLbTitulo().setText(mensajeInternacionalizacionHandler.get("usuario.eliminar")+" 🗑️");
+        usuarioEliminarView.getBtLimpiar().setText(mensajeInternacionalizacionHandler.get("limpiar"));
+        usuarioEliminarView.getBtEliminar().setText(mensajeInternacionalizacionHandler.get("eliminar"));
+        usuarioEliminarView.getLbUsername().setText(mensajeInternacionalizacionHandler.get("nombreusuario"));
         /**
          * ╔════════════════════════════════════╗
          * ║         📝 ACTUALIZAR              ║
          * ╚════════════════════════════════════╝
          */
+        usuarioActualizarView.setTitle(mensajeInternacionalizacionHandler.get("usuario.actualizar"));
+        usuarioActualizarView.getLbTitulo().setText(mensajeInternacionalizacionHandler.get("usuario.actualizar") + " ✏️");
+        usuarioActualizarView.getLbNombre().setText(mensajeInternacionalizacionHandler.get("nombre"));
+        usuarioActualizarView.getLbApellido().setText(mensajeInternacionalizacionHandler.get("apellido"));
+        usuarioActualizarView.getLbContrasena().setText(mensajeInternacionalizacionHandler.get("contrasena"));
+        usuarioActualizarView.getLbTelefono().setText(mensajeInternacionalizacionHandler.get("telefono"));
+        usuarioActualizarView.getLbUser().setText(mensajeInternacionalizacionHandler.get("usuario"));
+        usuarioActualizarView.getTbCorreo().setText(mensajeInternacionalizacionHandler.get("correo"));
+        usuarioActualizarView.getLbUserName().setText(mensajeInternacionalizacionHandler.get("nombreusuario"));
+        usuarioActualizarView.getBtnActualizar().setText(mensajeInternacionalizacionHandler.get("actualizar"));
         /**
          * ╔════════════════════════════════════╗
          * ║         🔍 LISTAR                  ║
          * ╚════════════════════════════════════╝
          */
+        usuarioListaView.setTitle(mensajeInternacionalizacionHandler.get("usuario.buscar"));
+        usuarioListaView.getLbTitulo().setText(mensajeInternacionalizacionHandler.get("usuario.buscar")+" 👤");
+        usuarioListaView.getLbUsername().setText(mensajeInternacionalizacionHandler.get("nombreusuario"));
+        usuarioListaView.getBtnListar().setText(mensajeInternacionalizacionHandler.get("listar"));
+        Object[] columnasUsers = {mensajeInternacionalizacionHandler.get("nombreusuario"), mensajeInternacionalizacionHandler.get("nombre"), mensajeInternacionalizacionHandler.get("apellido"), mensajeInternacionalizacionHandler.get("correo"), mensajeInternacionalizacionHandler.get("telefono"),mensajeInternacionalizacionHandler.get("fechanacimiento")};
+        usuarioListaView.getModelo().setColumnIdentifiers(columnasUsers);
    }
 
     public MensajeInternacionalizacionHandler getMensajeInternacionalizacionHandler() {

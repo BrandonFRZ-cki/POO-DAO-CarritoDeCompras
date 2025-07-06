@@ -10,6 +10,8 @@ public class UsuarioEliminarView extends JInternalFrame {
     private JTextField txtNombre;
     private JTextField txtApellido;
     private JPanel panelPrincipal;
+    private JLabel lbTitulo;
+    private JLabel lbUsername;
 
     public UsuarioEliminarView() {
         setContentPane(panelPrincipal);
@@ -52,6 +54,15 @@ public class UsuarioEliminarView extends JInternalFrame {
         txtApellido.setText("");
         txtNombre.setText("");
     }
+
+    public JLabel getLbTitulo() {
+        return lbTitulo;
+    }
+
+    public JLabel getLbUsername() {
+        return lbUsername;
+    }
+
     public void mostrarMensaje(String mensaje, String titulo, String tipo) {
         if (tipo.equals("error")) {
             JOptionPane.showMessageDialog(this, mensaje, titulo, JOptionPane.ERROR_MESSAGE);
