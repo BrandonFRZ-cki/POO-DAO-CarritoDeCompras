@@ -536,7 +536,7 @@ public class UsuarioController {
         locale = mensajeInternacionalizacionHandler.getLocale();
         // Login
         loginView.getLbContrasena().setText(mensajeInternacionalizacionHandler.get("contrasena"));
-        loginView.getLbTitulo().setText(mensajeInternacionalizacionHandler.get("inicio.sesion")+"👤");
+        loginView.getLbTitulo().setText(mensajeInternacionalizacionHandler.get("inicio.sesion")+" 👤");
         loginView.getBtnIniciarSesion().setText(mensajeInternacionalizacionHandler.get("usuario.login"));
         loginView.getLbUsername().setText(mensajeInternacionalizacionHandler.get("usuario"));
         loginView.getBtnRecuperarContrasenia().setText(mensajeInternacionalizacionHandler.get("olvidemicontrasena"));
@@ -605,7 +605,7 @@ public class UsuarioController {
          * ╚════════════════════════════════════╝
          */
         usuarioActualizarView.setTitle(mensajeInternacionalizacionHandler.get("usuario.actualizar"));
-        usuarioActualizarView.getLbTitulo().setText(mensajeInternacionalizacionHandler.get("usuario.actualizar") + " ✏️");
+        usuarioActualizarView.getLbTitulo().setText(mensajeInternacionalizacionHandler.get("usuario.actualizar"));
         usuarioActualizarView.getLbNombre().setText(mensajeInternacionalizacionHandler.get("nombre"));
         usuarioActualizarView.getLbApellido().setText(mensajeInternacionalizacionHandler.get("apellido"));
         usuarioActualizarView.getLbContrasena().setText(mensajeInternacionalizacionHandler.get("contrasena"));

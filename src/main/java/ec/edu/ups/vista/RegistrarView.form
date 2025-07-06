@@ -34,7 +34,7 @@
                 </constraints>
                 <properties>
                   <font name="Arial Black" size="28"/>
-                  <foreground color="-16777216"/>
+                  <foreground color="-14471362"/>
                   <text value="Registro"/>
                 </properties>
               </component>
@@ -132,7 +132,7 @@
                     </constraints>
                     <properties>
                       <font name="Arial" size="14" style="3"/>
-                      <foreground color="-16777216"/>
+                      <foreground color="-14471362"/>
                       <text value="Apellido"/>
                     </properties>
                   </component>
@@ -142,7 +142,7 @@
                     </constraints>
                     <properties>
                       <font name="Arial" size="14" style="3"/>
-                      <foreground color="-16777216"/>
+                      <foreground color="-14471362"/>
                       <text value="Nombre"/>
                     </properties>
                   </component>
@@ -163,7 +163,7 @@
                     </constraints>
                     <properties>
                       <font name="Arial" size="14" style="3"/>
-                      <foreground color="-16777216"/>
+                      <foreground color="-14471362"/>
                       <text value="Telefono"/>
                     </properties>
                   </component>
@@ -173,7 +173,7 @@
                     </constraints>
                     <properties>
                       <font name="Arial" size="14" style="3"/>
-                      <foreground color="-16777216"/>
+                      <foreground color="-14471362"/>
                       <text value="Correo"/>
                     </properties>
                   </component>
@@ -209,7 +209,7 @@
                 </constraints>
                 <properties>
                   <font name="Arial" size="14" style="3"/>
-                  <foreground color="-16777216"/>
+                  <foreground color="-14471362"/>
                   <text value="Contraseña"/>
                 </properties>
               </component>
@@ -219,7 +219,7 @@
                 </constraints>
                 <properties>
                   <font name="Arial" size="14" style="3"/>
-                  <foreground color="-16777216"/>
+                  <foreground color="-14471362"/>
                   <text value="Verifica Contraseña"/>
                 </properties>
               </component>
@@ -255,21 +255,29 @@
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
               </hspacer>
-              <component id="baeec" class="javax.swing.JButton" binding="btnLimpiar">
+              <component id="c1a27" class="javax.swing.JButton" binding="btnLimpiar">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
+                  <background color="-14471362"/>
+                  <borderPainted value="false"/>
                   <font name="Arial" size="16" style="1"/>
+                  <foreground color="-1248001"/>
+                  <icon value="icon/icon_clean.png"/>
                   <text value="Limpiar"/>
                 </properties>
               </component>
-              <component id="f372e" class="javax.swing.JButton" binding="btnAceptar">
+              <component id="c0651" class="javax.swing.JButton" binding="btnAceptar">
                 <constraints>
                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
+                  <background color="-14471362"/>
+                  <borderPainted value="false"/>
                   <font name="Arial" size="16" style="1"/>
+                  <foreground color="-1248001"/>
+                  <icon value="icon/icon_accept.png"/>
                   <text value="Aceptar"/>
                 </properties>
               </component>

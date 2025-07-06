@@ -112,24 +112,6 @@
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
           </hspacer>
-          <component id="f6541" class="javax.swing.JButton" binding="btEliminar">
-            <constraints>
-              <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <font name="Arial" size="16" style="1"/>
-              <text value="Eliminar"/>
-            </properties>
-          </component>
-          <component id="9336b" class="javax.swing.JButton" binding="btLimpiar">
-            <constraints>
-              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <font name="Arial" size="16" style="1"/>
-              <text value="Limpiar"/>
-            </properties>
-          </component>
           <hspacer id="e8c3f">
             <constraints>
               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -168,6 +150,32 @@
               <enabled value="false"/>
               <font name="Courier New" size="16" style="1"/>
               <margin top="2" left="9" bottom="2" right="6"/>
+            </properties>
+          </component>
+          <component id="cb71d" class="javax.swing.JButton" binding="btLimpiar">
+            <constraints>
+              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <background color="-14471362"/>
+              <borderPainted value="false"/>
+              <font name="Arial" size="16" style="1"/>
+              <foreground color="-1248001"/>
+              <icon value="icon/icon_clean.png"/>
+              <text value="Limpiar"/>
+            </properties>
+          </component>
+          <component id="a19ca" class="javax.swing.JButton" binding="btEliminar">
+            <constraints>
+              <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <background color="-14471362"/>
+              <borderPainted value="false"/>
+              <font name="Arial" size="16" style="1"/>
+              <foreground color="-1248001"/>
+              <icon value="icon/icon_delete.png"/>
+              <text value="Eliminar"/>
             </properties>
           </component>
         </children>

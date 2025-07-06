@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="panelPrincipal" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="500" height="400"/>
+      <xy x="20" y="20" width="840" height="657"/>
     </constraints>
     <properties>
       <background color="-1979476"/>
@@ -36,7 +36,7 @@
             </constraints>
             <properties>
               <font name="Arial" size="14" style="3"/>
-              <foreground color="-16777216"/>
+              <foreground color="-14471362"/>
               <text value="Codigo"/>
             </properties>
           </component>
@@ -45,8 +45,12 @@
               <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <autoscrolls value="false"/>
+              <background color="-14471362"/>
               <font size="18" style="1"/>
-              <text value="🔎"/>
+              <icon value="icon/icon_search.png"/>
+              <inheritsPopupMenu value="true"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="b6eea" class="javax.swing.JTextField" binding="txtCodigo">
@@ -80,7 +84,7 @@
             </constraints>
             <properties>
               <font name="Arial Black" size="28"/>
-              <foreground color="-16777216"/>
+              <foreground color="-14471362"/>
               <text value="Eliminar Producto 🗑️"/>
             </properties>
           </component>
@@ -117,17 +121,12 @@
               <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <background color="-14471362"/>
+              <borderPainted value="false"/>
               <font name="Arial" size="16" style="1"/>
+              <foreground color="-1248001"/>
+              <icon value="icon/icon_delete.png"/>
               <text value="Eliminar"/>
-            </properties>
-          </component>
-          <component id="b9209" class="javax.swing.JButton" binding="btLimpiar">
-            <constraints>
-              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <font name="Arial" size="16" style="1"/>
-              <text value="Limpiar"/>
             </properties>
           </component>
           <hspacer id="7fea2">
@@ -150,7 +149,7 @@
               <background color="-2104859"/>
               <caretColor color="-16777216"/>
               <editable value="false"/>
-              <enabled value="false"/>
+              <enabled value="true"/>
               <font name="Courier New" size="16" style="1"/>
               <margin top="2" left="9" bottom="2" right="6"/>
             </properties>
@@ -165,9 +164,22 @@
               <background color="-2104859"/>
               <caretColor color="-16777216"/>
               <editable value="false"/>
-              <enabled value="false"/>
+              <enabled value="true"/>
               <font name="Courier New" size="16" style="1"/>
               <margin top="2" left="9" bottom="2" right="6"/>
+            </properties>
+          </component>
+          <component id="ea052" class="javax.swing.JButton" binding="btLimpiar">
+            <constraints>
+              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <background color="-14471362"/>
+              <borderPainted value="false"/>
+              <font name="Arial" size="16" style="1"/>
+              <foreground color="-1248001"/>
+              <icon value="icon/icon_clean.png"/>
+              <text value="Limpiar"/>
             </properties>
           </component>
         </children>

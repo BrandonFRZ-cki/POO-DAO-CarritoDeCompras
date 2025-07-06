@@ -90,7 +90,7 @@
                     </constraints>
                     <properties>
                       <font name="Arial" size="14" style="3"/>
-                      <foreground color="-16777216"/>
+                      <foreground color="-14471362"/>
                       <text value="Codigo"/>
                     </properties>
                   </component>
@@ -181,7 +181,7 @@
                 </constraints>
                 <properties>
                   <font name="Arial" size="14" style="3"/>
-                  <foreground color="-16777216"/>
+                  <foreground color="-14471362"/>
                   <text value="IVA"/>
                 </properties>
               </component>
@@ -191,7 +191,7 @@
                 </constraints>
                 <properties>
                   <font name="Arial" size="14" style="3"/>
-                  <foreground color="-16777216"/>
+                  <foreground color="-14471362"/>
                   <text value="Total"/>
                 </properties>
               </component>
@@ -201,7 +201,7 @@
                 </constraints>
                 <properties>
                   <font name="Arial" size="14" style="3"/>
-                  <foreground color="-16777216"/>
+                  <foreground color="-14471362"/>
                   <text value="Subtotal"/>
                 </properties>
               </component>

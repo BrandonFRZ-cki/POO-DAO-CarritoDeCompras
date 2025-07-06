@@ -28,7 +28,7 @@
             </constraints>
             <properties>
               <font name="Arial Black" size="28"/>
-              <foreground color="-16777216"/>
+              <foreground color="-14471362"/>
               <text value="Actualizar Carrito 🔃"/>
             </properties>
           </component>
@@ -60,7 +60,7 @@
             </constraints>
             <properties>
               <font name="Arial" size="18" style="1"/>
-              <foreground color="-16777216"/>
+              <foreground color="-14471362"/>
               <text value="Codigo"/>
             </properties>
           </component>
@@ -74,14 +74,6 @@
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
           </hspacer>
-          <component id="e06c2" class="javax.swing.JButton" binding="btBuscar">
-            <constraints>
-              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="🔎"/>
-            </properties>
-          </component>
           <component id="27720" class="javax.swing.JTextField" binding="txtCodigo">
             <constraints>
               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
@@ -93,6 +85,19 @@
               <caretColor color="-16777216"/>
               <font name="Courier New" size="16" style="1"/>
               <margin top="2" left="9" bottom="2" right="6"/>
+            </properties>
+          </component>
+          <component id="56cae" class="javax.swing.JButton" binding="btBuscar">
+            <constraints>
+              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <autoscrolls value="false"/>
+              <background color="-14471362"/>
+              <font size="18" style="1"/>
+              <icon value="icon/icon_search.png"/>
+              <inheritsPopupMenu value="true"/>
+              <text value=""/>
             </properties>
           </component>
         </children>
@@ -132,15 +137,6 @@
         </properties>
         <border type="none"/>
         <children>
-          <component id="77edd" class="javax.swing.JButton" binding="btActualizar">
-            <constraints>
-              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <font name="Arial" size="20" style="3"/>
-              <text value="Actualizar"/>
-            </properties>
-          </component>
           <hspacer id="59cc4">
             <constraints>
               <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -161,6 +157,18 @@
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
             </constraints>
           </vspacer>
+          <component id="96dc8" class="javax.swing.JButton" binding="btActualizar">
+            <constraints>
+              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <background color="-14471362"/>
+              <font name="Arial" size="20" style="3"/>
+              <foreground color="-1248001"/>
+              <icon value="icon/icon_pen.png"/>
+              <text value="Actualizar"/>
+            </properties>
+          </component>
         </children>
       </grid>
       <grid id="297ef" binding="lbSubtotal" layout-manager="GridLayoutManager" row-count="3" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -193,7 +201,7 @@
             </constraints>
             <properties>
               <font name="Arial" size="14" style="3"/>
-              <foreground color="-16777216"/>
+              <foreground color="-14471362"/>
               <text value="Subtotal"/>
             </properties>
           </component>
@@ -231,7 +239,7 @@
             </constraints>
             <properties>
               <font name="Arial" size="14" style="3"/>
-              <foreground color="-16777216"/>
+              <foreground color="-14471362"/>
               <text value="IVA"/>
             </properties>
           </component>
@@ -241,7 +249,7 @@
             </constraints>
             <properties>
               <font name="Arial" size="14" style="3"/>
-              <foreground color="-16777216"/>
+              <foreground color="-14471362"/>
               <text value="Total"/>
             </properties>
           </component>
@@ -296,7 +304,7 @@
             </constraints>
             <properties>
               <font name="Arial" size="18" style="1"/>
-              <foreground color="-16777216"/>
+              <foreground color="-14471362"/>
               <text value="Fecha"/>
             </properties>
           </component>
@@ -306,7 +314,7 @@
             </constraints>
             <properties>
               <font name="Arial" size="18" style="1"/>
-              <foreground color="-16777216"/>
+              <foreground color="-14471362"/>
               <text value="Usuario"/>
             </properties>
           </component>

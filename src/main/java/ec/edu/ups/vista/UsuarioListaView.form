@@ -137,15 +137,6 @@
             </properties>
             <border type="none"/>
             <children>
-              <component id="cf910" class="javax.swing.JButton" binding="btnListar">
-                <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <font name="Arial" size="16" style="1"/>
-                  <text value="Listar"/>
-                </properties>
-              </component>
               <hspacer id="b5e27">
                 <constraints>
                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -156,6 +147,19 @@
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
               </hspacer>
+              <component id="9fd2b" class="javax.swing.JButton" binding="btnListar">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-1979476"/>
+                  <borderPainted value="false"/>
+                  <font name="Arial" size="20" style="3"/>
+                  <icon value="icon/icon_List.png"/>
+                  <iconTextGap value="10"/>
+                  <text value="Listar"/>
+                </properties>
+              </component>
             </children>
           </grid>
         </children>

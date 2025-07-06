@@ -36,8 +36,8 @@
                 </constraints>
                 <properties>
                   <font name="Arial Black" size="28"/>
-                  <foreground color="-16777216"/>
-                  <text value="Actualizar Usuario ✏️"/>
+                  <foreground color="-14471362"/>
+                  <text value="Actualizar Usuario"/>
                 </properties>
               </component>
               <hspacer id="92560">
@@ -238,12 +238,15 @@
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
               </hspacer>
-              <component id="d10" class="javax.swing.JButton" binding="btnActualizar">
+              <component id="ad8c2" class="javax.swing.JButton" binding="btnActualizar">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <font name="Arial" size="16" style="1"/>
+                  <background color="-14471362"/>
+                  <font name="Arial" size="20" style="3"/>
+                  <foreground color="-1248001"/>
+                  <icon value="icon/icon_pen.png"/>
                   <text value="Actualizar"/>
                 </properties>
               </component>
@@ -272,15 +275,6 @@
                   <margin top="2" left="9" bottom="2" right="6"/>
                 </properties>
               </component>
-              <component id="4907a" class="javax.swing.JButton" binding="btnBuscar">
-                <constraints>
-                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <font name="Arial" size="20" style="1"/>
-                  <text value="🔎"/>
-                </properties>
-              </component>
               <hspacer id="4729c">
                 <constraints>
                   <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -299,6 +293,19 @@
                   <font name="Arial" size="18" style="1"/>
                   <foreground color="-16777216"/>
                   <text value="Username"/>
+                </properties>
+              </component>
+              <component id="8a473" class="javax.swing.JButton" binding="btnBuscar">
+                <constraints>
+                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <autoscrolls value="false"/>
+                  <background color="-14471362"/>
+                  <font size="18" style="1"/>
+                  <icon value="icon/icon_search.png"/>
+                  <inheritsPopupMenu value="true"/>
+                  <text value=""/>
                 </properties>
               </component>
             </children>

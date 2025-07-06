@@ -22,11 +22,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.Toolkit;
+import java.awt.Image;
 
 public class Main {
     public static void main(String[] args) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+
+                Image icono = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/icon/icon_app.png"));
                 /**
                  * ╔════════════════════════════════════╗
                  * ║      💀 INTERNACIONALIZACION       ║
@@ -70,8 +74,10 @@ public class Main {
                 user.agregarCarrito(carrito2);
 
                 LoginView loginView = new LoginView();
+                loginView.setIconImage(icono);
                 loginView.setVisible(true);
                 RegistrarView registrarView = new RegistrarView();
+                registrarView.setIconImage(icono);
 
                 UsuarioAnadirView usuarioAnadirView = new UsuarioAnadirView();
                 UsuarioListaView usuarioListaView = new UsuarioListaView();
@@ -112,6 +118,7 @@ public class Main {
                          * ╚════════════════════════════════════╝
                          */
                         MenuPrincipalView principalView = new MenuPrincipalView(mensajeInternacionalizacionHandler);
+                        principalView.setIconImage(icono);
                         ProductoAnadirView productoAnadirView = new ProductoAnadirView();
                         ProductoListaView productoListaView = new ProductoListaView();
                         ProductoEliminarView productoEliminarView = new ProductoEliminarView();

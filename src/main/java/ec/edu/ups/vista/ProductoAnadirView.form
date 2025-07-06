@@ -36,7 +36,7 @@
                 </constraints>
                 <properties>
                   <font name="Arial Black" size="28"/>
-                  <foreground color="-16777216"/>
+                  <foreground color="-14471362"/>
                   <text value="Crear Producto ➕"/>
                 </properties>
               </component>
@@ -111,7 +111,7 @@
                 </constraints>
                 <properties>
                   <font name="Arial" size="14" style="3"/>
-                  <foreground color="-16777216"/>
+                  <foreground color="-14471362"/>
                   <text value="Codigo"/>
                 </properties>
               </component>
@@ -121,7 +121,7 @@
                 </constraints>
                 <properties>
                   <font name="Arial" size="14" style="3"/>
-                  <foreground color="-16777216"/>
+                  <foreground color="-14471362"/>
                   <text value="Nombre"/>
                 </properties>
               </component>
@@ -131,7 +131,7 @@
                 </constraints>
                 <properties>
                   <font name="Arial" size="14" style="3"/>
-                  <foreground color="-16777216"/>
+                  <foreground color="-14471362"/>
                   <text value="Precio"/>
                 </properties>
               </component>
@@ -162,7 +162,11 @@
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
+                  <background color="-14471362"/>
+                  <borderPainted value="false"/>
                   <font name="Arial" size="16" style="1"/>
+                  <foreground color="-1248001"/>
+                  <icon value="icon/icon_clean.png"/>
                   <text value="Limpiar"/>
                 </properties>
               </component>
@@ -171,7 +175,11 @@
                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
+                  <background color="-14471362"/>
+                  <borderPainted value="false"/>
                   <font name="Arial" size="16" style="1"/>
+                  <foreground color="-1248001"/>
+                  <icon value="icon/icon_accept.png"/>
                   <text value="Aceptar"/>
                 </properties>
               </component>

@@ -503,7 +503,6 @@ public class CarritoController {
         carritoEliminarView.setTitle(mensajeInternacionalizacionHandler.get("carrito.eliminar"));
         carritoEliminarView.getLbTitulo().setText(mensajeInternacionalizacionHandler.get("carrito.eliminar") + " 🗑️");
         carritoEliminarView.getLbCodigo().setText(mensajeInternacionalizacionHandler.get("codigo"));
-        carritoEliminarView.getBtBuscar().setText(mensajeInternacionalizacionHandler.get("buscar"));
         carritoEliminarView.getBtEliminar().setText(mensajeInternacionalizacionHandler.get("eliminar"));
         Object[] columnasEliminar = {mensajeInternacionalizacionHandler.get("codigo"), mensajeInternacionalizacionHandler.get("fecha"), mensajeInternacionalizacionHandler.get("usuario"), mensajeInternacionalizacionHandler.get("total")};
         carritoEliminarView.getModelo().setColumnIdentifiers(columnasEliminar);
