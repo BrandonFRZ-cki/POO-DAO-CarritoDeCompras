@@ -1,13 +1,14 @@
 package ec.edu.ups.modelo;
 
+import ec.edu.ups.util.MensajeInternacionalizacionHandler;
+
 public class Pregunta {
     private int id;
-    private String pregunta;
     private String respuesta;
-    public Pregunta(int id, String pregunta) {
+
+    public Pregunta(int id) {
         this.id = id;
-        this.pregunta = pregunta;
-        respuesta = null;
+        this.respuesta = null;
     }
 
     public int getId() {
@@ -18,14 +19,6 @@ public class Pregunta {
         this.id = id;
     }
 
-    public String getPregunta() {
-        return pregunta;
-    }
-
-    public void setPregunta(String pregunta) {
-        this.pregunta = pregunta;
-    }
-
     public String getRespuesta() {
         return respuesta;
     }
@@ -34,4 +27,8 @@ public class Pregunta {
         this.respuesta = respuesta;
     }
 
+    // Obtiene la pregunta traducida
+    public String getPregunta(MensajeInternacionalizacionHandler handler) {
+        return handler.get("pregunta." + id);
+    }
 }

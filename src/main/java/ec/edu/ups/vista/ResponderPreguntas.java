@@ -23,10 +23,13 @@ public class ResponderPreguntas extends JFrame{
     private JTextField txtPregunta2;
     private JLabel lbPregunta7;
     private JTextField txtPregunta7;
-    private JTextField txtPregunta9;
+    private JTextField txtPregunta8;
+    private JLabel lbPregunta8;
     private JLabel lbPregunta9;
-    private JLabel lbPregunta10;
-    private JTextField txtPregunta10;
+    private JTextField txtPregunta9;
+    private JLabel lbDia;
+    private JLabel lbMes;
+    private JLabel lbAnio;
 
     public ResponderPreguntas() {
         setContentPane(panelPrincipal);
@@ -35,7 +38,6 @@ public class ResponderPreguntas extends JFrame{
         setSize(600, 400);
         setResizable(false);
         setLocationRelativeTo(null);
-        cargarMeses();
     }
 
     public JPanel getPanelPrincipal() {
@@ -198,12 +200,20 @@ public class ResponderPreguntas extends JFrame{
         this.txtPregunta7 = txtPregunta7;
     }
 
-    public JTextField getTxtPregunta9() {
-        return txtPregunta9;
+    public JTextField getTxtPregunta8() {
+        return txtPregunta8;
     }
 
-    public void setTxtPregunta9(JTextField txtPregunta9) {
-        this.txtPregunta9 = txtPregunta9;
+    public void setTxtPregunta8(JTextField txtPregunta8) {
+        this.txtPregunta8 = txtPregunta8;
+    }
+
+    public JLabel getLbPregunta8() {
+        return lbPregunta8;
+    }
+
+    public void setLbPregunta8(JLabel lbPregunta8) {
+        this.lbPregunta8 = lbPregunta8;
     }
 
     public JLabel getLbPregunta9() {
@@ -214,21 +224,30 @@ public class ResponderPreguntas extends JFrame{
         this.lbPregunta9 = lbPregunta9;
     }
 
-    public JLabel getLbPregunta10() {
-        return lbPregunta10;
+    public JTextField getTxtPregunta9() {
+        return txtPregunta9;
     }
 
-    public void setLbPregunta10(JLabel lbPregunta10) {
-        this.lbPregunta10 = lbPregunta10;
-    }
-
-    public JTextField getTxtPregunta10() {
-        return txtPregunta10;
+    public void setTxtPregunta9(JTextField txtPregunta9) {
+        this.txtPregunta9 = txtPregunta9;
     }
 
     public void setTxtPregunta10(JTextField txtPregunta10) {
-        this.txtPregunta10 = txtPregunta10;
+        this.txtPregunta9 = txtPregunta10;
     }
+
+    public JLabel getLbDia() {
+        return lbDia;
+    }
+
+    public JLabel getLbMes() {
+        return lbMes;
+    }
+
+    public JLabel getLbAnio() {
+        return lbAnio;
+    }
+
     public void limpiarCampos() {
         txtDia.setText("");
         txtAnio.setText("");
@@ -248,18 +267,9 @@ public class ResponderPreguntas extends JFrame{
                 txtPregunta5,
                 txtPregunta6,
                 txtPregunta7,
-                txtPregunta9,
-                txtPregunta10
+                txtPregunta8,
+                txtPregunta9
         };
     }
-    public void cargarMeses() {
-        cbxMes.removeAllItems(); // Por si acaso estaba vacío o sucio
-        String[] meses = {
-                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-                "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-        };
-        for (String mes : meses) {
-            cbxMes.addItem(mes);
-        }
-    }
+
 }

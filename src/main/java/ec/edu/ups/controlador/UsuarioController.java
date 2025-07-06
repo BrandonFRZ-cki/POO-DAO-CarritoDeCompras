@@ -71,7 +71,6 @@ public class UsuarioController {
             }
         });
 
-
         registrarView.getBtnAceptar().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -96,6 +95,8 @@ public class UsuarioController {
                 responderPreguntasView.limpiarCampos();
             }
         });
+
+
         /**
          * ╔════════════════════════════════════╗
          * ║          ➕ CREAR                  ║
@@ -184,19 +185,18 @@ public class UsuarioController {
 
         usuario = usuarioDAO.autenticar(username, contrasena);
 
-
         if (usuario == null) {
-            loginView.mostrarMensaje("Usuario o contraseña incorrectos", "Error de autenticación", "error");
+            loginView.mostrarMensaje(mensajes(0), titulosMensajes(0), "error");
             return;
         }
 
-
         boolean esAdmin = usuario.getRol().equals(Rol.ADMINISTRADOR);
-
-        boolean tieneMinimoPreguntas = usuario.getPreguntasRespondidas() != null && usuario.getPreguntasRespondidas().size() >= 3;
+        boolean tieneMinimoPreguntas = usuario.getPreguntasRespondidas() != null &&
+                usuario.getPreguntasRespondidas().size() >= 3;
         boolean tieneFecha = usuario.getFechaNacimiento() != null;
 
         if (!esAdmin && (!tieneMinimoPreguntas || !tieneFecha)) {
+            loginView.mostrarMensaje(mensajes(2), titulosMensajes(0), "warning");
             responderPreguntasView.setVisible(true);
             return;
         }
@@ -211,14 +211,16 @@ public class UsuarioController {
         for (int i = 0; i < campos.length; i++) {
             String texto = campos[i].getText().trim();
             if (!texto.isEmpty()) {
-                preguntasRespondidas.add(new Pregunta(i + 1, preguntaDAO.buscarPorCodigo(i + 1).getPregunta()));
+                Pregunta pregunta = new Pregunta(i + 1);
+                pregunta.setRespuesta(texto);
+                preguntasRespondidas.add(pregunta);
                 preguntasRespondidas.get(preguntasRespondidas.size() - 1).setRespuesta(texto);
                 respuestasValidas++;
             }
         }
 
         if (respuestasValidas < 3) {
-            JOptionPane.showMessageDialog(responderPreguntasView, "Debe responder al menos 3 preguntas", "Respuestas insuficientes", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(responderPreguntasView, mensajes(3), titulosMensajes(1), JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -233,12 +235,12 @@ public class UsuarioController {
 
             usuario.setFechaNacimiento(new GregorianCalendar(anio, mes, dia));
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(responderPreguntasView, "Fecha inválida. Verifica el día y año (ej: 1999)", "Error de fecha", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(responderPreguntasView, mensajes(5), titulosMensajes(2), JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         usuario.setPreguntasRespondidas(preguntasRespondidas);
-        JOptionPane.showMessageDialog(responderPreguntasView, "Preguntas guardadas con éxito", "¡Listo!", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(responderPreguntasView, mensajes(7), titulosMensajes(3), JOptionPane.INFORMATION_MESSAGE);
         responderPreguntasView.dispose();
     }
     public Usuario getUsuarioAutenticado() {
@@ -255,47 +257,46 @@ public class UsuarioController {
 
         if (username.isEmpty() || contrasena.isEmpty() || verificarContrasena.isEmpty() ||
                 nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || telefono.isEmpty()) {
-            usuarioAnadirView.mostrarMensaje("Todos los campos son obligatorios", "Campos vacíos", "warning");
+            usuarioAnadirView.mostrarMensaje(mensajes(9), titulosMensajes(4), "warning");
             return;
         }
 
         if (!contrasena.equals(verificarContrasena)) {
-            usuarioAnadirView.mostrarMensaje("Las contraseñas no coinciden", "Verificación fallida", "error");
+            usuarioAnadirView.mostrarMensaje(mensajes(11), titulosMensajes(5), "error");
             return;
         }
 
         if (usuarioDAO.buscarPorUsername(username) != null) {
-            usuarioAnadirView.mostrarMensaje("Ya existe un usuario con ese nombre", "Usuario duplicado", "error");
+            usuarioAnadirView.mostrarMensaje(mensajes(13), titulosMensajes(6), "error");
             return;
         }
 
         Usuario nuevo = new Usuario(username, contrasena, Rol.USUARIO, nombre, apellido, correo, telefono);
         usuarioDAO.crear(nuevo);
 
-        usuarioAnadirView.mostrarMensaje("Usuario registrado con éxito", "Registro completo", "info");
-        usuarioAnadirView.mostrarMensaje("EL Usuario debe llenar sus preguntas de recuperacion posteriormente", "Registro completo", "warning");
+        usuarioAnadirView.mostrarMensaje(mensajes(15), titulosMensajes(7), "info");
+        usuarioAnadirView.mostrarMensaje(mensajes(16), titulosMensajes(7), "warning");
         usuarioAnadirView.limparCampos();
     }
     private void buscarUsuarioPorUserName() {
         String texto = usuarioListaView.getTxtBuscar().getText().toLowerCase().trim();
 
         if (texto.isEmpty()) {
-            usuarioListaView.mostrarMensaje("Ingrese un nombre de usuario para buscar", "Campo vacío", "warning");
+            usuarioListaView.mostrarMensaje(mensajes(18), titulosMensajes(8), "warning");
             return;
         }
 
         List<Usuario> usuariosCoincidentes = new ArrayList<>();
-
         List<Usuario> listaUsuarios = usuarioDAO.listarTodos();
-        for (int i = 0; i < listaUsuarios.size(); i++) {
-            Usuario u = listaUsuarios.get(i);
+
+        for (Usuario u : listaUsuarios) {
             if (u.getUsername().toLowerCase().contains(texto)) {
                 usuariosCoincidentes.add(u);
             }
         }
 
         if (usuariosCoincidentes.isEmpty()) {
-            usuarioListaView.mostrarMensaje("No se encontraron usuarios con ese username", "Sin resultados", "info");
+            usuarioListaView.mostrarMensaje(mensajes(20), titulosMensajes(9), "info");
         }
 
         cargarEnTabla(usuariosCoincidentes);
@@ -325,73 +326,56 @@ public class UsuarioController {
         Usuario usuario = usuarioDAO.buscarPorUsername(username);
 
         if (usuario == null) {
-            usuarioActualizarView.mostrarMensaje("Usuario no encontrado", "Error", "error");
+            usuarioActualizarView.mostrarMensaje(mensajes(22), titulosMensajes(10), "error");
             return;
         }
 
         Object[] opciones = {
-                "Nombre",
-                "Apellido",
-                "Correo",
-                "Teléfono",
-                "Contraseña"
+                mensajes(25), mensajes(26), mensajes(27), mensajes(28), mensajes(29)
         };
 
         String opcion = (String) JOptionPane.showInputDialog(
                 usuarioActualizarView,
-                "¿Qué deseas actualizar?",
-                "Actualizar usuario",
+                mensajes(23),
+                mensajes(24),
                 JOptionPane.QUESTION_MESSAGE,
                 null,
                 opciones,
                 opciones[0]
         );
 
-        if (opcion == null) return; // Canceló
+        if (opcion == null) return;
 
-        switch (opcion) {
-            case "Nombre":
-                String nuevoNombre = JOptionPane.showInputDialog("Nuevo nombre:", usuario.getNombre());
-                if (nuevoNombre != null && !nuevoNombre.trim().isEmpty()) {
-                    usuario.setNombre(nuevoNombre);
-                }
-                break;
-
-            case "Apellido":
-                String nuevoApellido = JOptionPane.showInputDialog("Nuevo apellido:", usuario.getApellido());
-                if (nuevoApellido != null && !nuevoApellido.trim().isEmpty()) {
-                    usuario.setApellido(nuevoApellido);
-                }
-                break;
-
-            case "Correo":
-                String nuevoCorreo = JOptionPane.showInputDialog("Nuevo correo electrónico:", usuario.getEmail());
-                if (nuevoCorreo != null && !nuevoCorreo.trim().isEmpty()) {
-                    usuario.setEmail(nuevoCorreo);
-                }
-                break;
-
-            case "Teléfono":
-                String nuevoTelefono = JOptionPane.showInputDialog("Nuevo número de teléfono:", usuario.getTelefono());
-                if (nuevoTelefono != null && !nuevoTelefono.trim().isEmpty()) {
-                    usuario.setTelefono(nuevoTelefono);
-                }
-                break;
-
-            case "Contraseña":
-                String nuevaContrasena = JOptionPane.showInputDialog("Nueva contraseña:");
-                if (nuevaContrasena != null && !nuevaContrasena.trim().isEmpty()) {
-                    usuario.setContrasenia(nuevaContrasena);
-                }
-                break;
+        if (opcion.equals(mensajes(25))) {
+            String nuevoNombre = JOptionPane.showInputDialog(mensajes(30), usuario.getNombre());
+            if (nuevoNombre != null && !nuevoNombre.trim().isEmpty()) {
+                usuario.setNombre(nuevoNombre);
+            }
+        } else if (opcion.equals(mensajes(26))) {
+            String nuevoApellido = JOptionPane.showInputDialog(mensajes(31), usuario.getApellido());
+            if (nuevoApellido != null && !nuevoApellido.trim().isEmpty()) {
+                usuario.setApellido(nuevoApellido);
+            }
+        } else if (opcion.equals(mensajes(27))) {
+            String nuevoCorreo = JOptionPane.showInputDialog(mensajes(32), usuario.getEmail());
+            if (nuevoCorreo != null && !nuevoCorreo.trim().isEmpty()) {
+                usuario.setEmail(nuevoCorreo);
+            }
+        } else if (opcion.equals(mensajes(28))) {
+            String nuevoTelefono = JOptionPane.showInputDialog(mensajes(33), usuario.getTelefono());
+            if (nuevoTelefono != null && !nuevoTelefono.trim().isEmpty()) {
+                usuario.setTelefono(nuevoTelefono);
+            }
+        } else if (opcion.equals(mensajes(29))) {
+            String nuevaContrasena = JOptionPane.showInputDialog(mensajes(34));
+            if (nuevaContrasena != null && !nuevaContrasena.trim().isEmpty()) {
+                usuario.setContrasenia(nuevaContrasena);
+            }
         }
 
         usuarioDAO.actualizar(usuario);
-        usuarioActualizarView.mostrarMensaje("Datos actualizados correctamente", "Éxito", "info");
+        usuarioActualizarView.mostrarMensaje(mensajes(35), titulosMensajes(11), "info");
 
-
-
-        // Refrescar los campos
         usuarioActualizarView.getTxtUserName().setText(usuario.getUsername());
         usuarioActualizarView.getTxtNombre().setText(usuario.getNombre());
         usuarioActualizarView.getTxtApellido().setText(usuario.getApellido());
@@ -403,18 +387,17 @@ public class UsuarioController {
         String username = usuarioActualizarView.getTxtUsername().getText().trim();
 
         if (username.isEmpty()) {
-            usuarioActualizarView.mostrarMensaje("Ingresa un nombre de usuario para buscar", "Campo vacío", "warning");
+            usuarioActualizarView.mostrarMensaje(mensajes(36), titulosMensajes(12), "warning");
             return;
         }
 
         Usuario usuario = usuarioDAO.buscarPorUsername(username);
 
         if (usuario == null) {
-            usuarioActualizarView.mostrarMensaje("Usuario no encontrado", "Sin coincidencias", "error");
+            usuarioActualizarView.mostrarMensaje(mensajes(38), titulosMensajes(13), "error");
             return;
         }
 
-        // Mostrar información del usuario en campos no editables
         usuarioActualizarView.getTxtUserName().setText(usuario.getUsername());
         usuarioActualizarView.getTxtNombre().setText(usuario.getNombre());
         usuarioActualizarView.getTxtApellido().setText(usuario.getApellido());
@@ -422,14 +405,13 @@ public class UsuarioController {
         usuarioActualizarView.getTxtCorreo().setText(usuario.getEmail());
         usuarioActualizarView.getTxtContrasena().setText(usuario.getContrasenia());
 
-        usuarioActualizarView.mostrarMensaje("Usuario encontrado. Datos cargados.", "Éxito", "info");
-
+        usuarioActualizarView.mostrarMensaje(mensajes(40), titulosMensajes(14), "info");
     }
     public void buscarParaEliminar() {
         String username = usuarioEliminarView.getTxtUsername().getText().trim();
 
         if (username.isEmpty()) {
-            usuarioEliminarView.mostrarMensaje("Ingrese el nombre de usuario", "Campo vacío", "warning");
+            usuarioEliminarView.mostrarMensaje(mensajes(42), titulosMensajes(15), "warning");
             return;
         }
 
@@ -441,7 +423,7 @@ public class UsuarioController {
         } else {
             usuarioEliminarView.getTxtNombre().setText(" - ");
             usuarioEliminarView.getTxtApellido().setText(" - ");
-            usuarioEliminarView.mostrarMensaje("Usuario no encontrado", "Error", "error");
+            usuarioEliminarView.mostrarMensaje(mensajes(43), titulosMensajes(16), "error");
         }
     }
     public void eliminar() {
@@ -449,22 +431,23 @@ public class UsuarioController {
 
         Usuario usuario = usuarioDAO.buscarPorUsername(username);
         if (usuario == null) {
-            usuarioEliminarView.mostrarMensaje("Debe buscar un usuario válido primero", "Advertencia", "warning");
+            usuarioEliminarView.mostrarMensaje(mensajes(46), titulosMensajes(17), "warning");
             return;
         }
 
+        String mensajeConfirmacion = mensajes(48).replace("{0}", username);
+
         int confirmacion = JOptionPane.showConfirmDialog(
                 usuarioEliminarView,
-                "¿Estás seguro de eliminar al usuario \"" + username + "\"?",
-                "Confirmar eliminación",
+                mensajeConfirmacion,
+                titulosMensajes(18),
                 JOptionPane.YES_NO_OPTION
         );
 
         if (confirmacion == JOptionPane.YES_OPTION) {
             usuarioDAO.eliminar(username);
-            usuarioEliminarView.mostrarMensaje("Usuario eliminado correctamente", "Éxito", "info");
+            usuarioEliminarView.mostrarMensaje(mensajes(50), titulosMensajes(19), "info");
 
-            // Limpiar campos
             usuarioEliminarView.getTxtUsername().setText("");
             usuarioEliminarView.getTxtNombre().setText("");
             usuarioEliminarView.getTxtApellido().setText("");
@@ -481,59 +464,74 @@ public class UsuarioController {
 
         if (username.isEmpty() || nombre.isEmpty() || apellido.isEmpty() || telefono.isEmpty() ||
                 correo.isEmpty() || contrasena.isEmpty() || verificar.isEmpty()) {
-            registrarView.mostrarMensaje("Completa todos los campos", "Campos vacíos", "warning");
+            registrarView.mostrarMensaje(mensajes(51), titulosMensajes(20), "warning");
             return;
         }
 
         if (!contrasena.equals(verificar)) {
-            registrarView.mostrarMensaje("Las contraseñas no coinciden", "Verificación fallida", "error");
+            registrarView.mostrarMensaje(mensajes(53), titulosMensajes(21), "error");
             return;
         }
 
         if (usuarioDAO.buscarPorUsername(username) != null) {
-            registrarView.mostrarMensaje("Ya existe un usuario con ese nombre", "Duplicado", "error");
+            registrarView.mostrarMensaje(mensajes(55), titulosMensajes(22), "error");
             return;
         }
 
         usuario = new Usuario(username, contrasena, Rol.USUARIO, nombre, apellido, correo, telefono);
         usuarioDAO.crear(usuario);
 
-        registrarView.mostrarMensaje("Usuario registrado con éxito", "Registro completado", "info");
+        registrarView.mostrarMensaje(mensajes(57), titulosMensajes(23), "info");
         registrarView.limpiarCampos();
         registrarView.setVisible(false);
         responderPreguntasView.limpiarCampos();
         responderPreguntasView.setVisible(true);
-
     }
     private void recuperarContrasena() {
-        String username = JOptionPane.showInputDialog(loginView, "Ingresa tu nombre de usuario:");
+        String username = JOptionPane.showInputDialog(loginView, mensajes(68));
         Usuario usuario = usuarioDAO.buscarPorUsername(username);
 
         if (usuario == null) {
-            loginView.mostrarMensaje("Usuario no encontrado", "Error", "error");
+            loginView.mostrarMensaje(mensajes(69), titulosMensajes(28), "error");
             return;
         }
 
         List<Pregunta> respondidas = usuario.getPreguntasRespondidas();
         if (respondidas == null || respondidas.size() < 3) {
-            loginView.mostrarMensaje("No tienes suficientes preguntas registradas", "Acceso denegado", "warning");
+            loginView.mostrarMensaje(mensajes(71), titulosMensajes(29), "warning");
             return;
         }
 
-        // Selección aleatoria
         int aleatoria = (int) (Math.random() * respondidas.size());
         Pregunta seleccionada = respondidas.get(aleatoria);
 
-        String respuesta = JOptionPane.showInputDialog(loginView, seleccionada.getPregunta());
+        String textoPregunta = seleccionada.getPregunta(mensajeInternacionalizacionHandler);
+        String respuesta = JOptionPane.showInputDialog(loginView, textoPregunta);
+
         if (respuesta == null || respuesta.trim().isEmpty()) return;
 
         if (seleccionada.getRespuesta().equalsIgnoreCase(respuesta.trim())) {
-            loginView.mostrarMensaje("Tu contraseña es: " + usuario.getContrasenia(), "Recuperación exitosa", "info");
+            JPasswordField campoNuevaContra = new JPasswordField();
+            int option = JOptionPane.showConfirmDialog(
+                    loginView,
+                    campoNuevaContra,
+                    mensajes(73),
+                    JOptionPane.OK_CANCEL_OPTION
+            );
+
+            if (option == JOptionPane.OK_OPTION) {
+                String nuevaContra = new String(campoNuevaContra.getPassword());
+                if (!nuevaContra.trim().isEmpty()) {
+                    usuario.setContrasenia(nuevaContra);
+                    usuarioDAO.actualizar(usuario);
+                    loginView.mostrarMensaje(mensajes(74), titulosMensajes(30), "info");
+                }
+            }
+
         } else {
-            loginView.mostrarMensaje("Respuesta incorrecta", "Recuperación fallida", "error");
+            loginView.mostrarMensaje(mensajes(76), titulosMensajes(31), "error");
         }
     }
-
     public void cambiarIdioma(String lenguaje, String pais) {
         locale = mensajeInternacionalizacionHandler.getLocale();
         // Login
@@ -543,6 +541,26 @@ public class UsuarioController {
         loginView.getLbUsername().setText(mensajeInternacionalizacionHandler.get("usuario"));
         loginView.getBtnRecuperarContrasenia().setText(mensajeInternacionalizacionHandler.get("olvidemicontrasena"));
         loginView.getRegistrarceButton().setText(mensajeInternacionalizacionHandler.get("registrarse"));
+        responderPreguntasView.getLbAnio().setText(mensajeInternacionalizacionHandler.get("anio"));
+        responderPreguntasView.getLbDia().setText(mensajeInternacionalizacionHandler.get("dia"));
+        responderPreguntasView.getLbMes().setText(mensajeInternacionalizacionHandler.get("mes"));
+        responderPreguntasView.getLbPregunta1().setText(mensajeInternacionalizacionHandler.get("pregunta.1"));
+        responderPreguntasView.getLbPregunta2().setText(mensajeInternacionalizacionHandler.get("pregunta.2"));
+        responderPreguntasView.getLbPregunta3().setText(mensajeInternacionalizacionHandler.get("pregunta.3"));
+        responderPreguntasView.getLbPregunta4().setText(mensajeInternacionalizacionHandler.get("pregunta.4"));
+        responderPreguntasView.getLbPregunta5().setText(mensajeInternacionalizacionHandler.get("pregunta.5"));
+        responderPreguntasView.getLbPregunta6().setText(mensajeInternacionalizacionHandler.get("pregunta.6"));
+        responderPreguntasView.getLbPregunta7().setText(mensajeInternacionalizacionHandler.get("pregunta.7"));
+        responderPreguntasView.getLbPregunta8().setText(mensajeInternacionalizacionHandler.get("pregunta.8"));
+        responderPreguntasView.getLbPregunta9().setText(mensajeInternacionalizacionHandler.get("pregunta.9"));
+
+        responderPreguntasView.getCbxMes().removeAllItems();
+        for (int i = 1; i <= 12; i++) {
+            responderPreguntasView.getCbxMes().addItem(mensajeInternacionalizacionHandler.get("mes." + i));
+        }
+        responderPreguntasView.getBtnAceptar().setText(mensajeInternacionalizacionHandler.get("aceptar"));
+        responderPreguntasView.getBtnLimpiar().setText(mensajeInternacionalizacionHandler.get("limpiar"));
+
         /**
          * ╔════════════════════════════════════╗
          * ║          ➕ CREAR                  ║
@@ -596,22 +614,127 @@ public class UsuarioController {
         Object[] columnasUsers = {mensajeInternacionalizacionHandler.get("nombreusuario"), mensajeInternacionalizacionHandler.get("nombre"), mensajeInternacionalizacionHandler.get("apellido"), mensajeInternacionalizacionHandler.get("correo"), mensajeInternacionalizacionHandler.get("telefono"),mensajeInternacionalizacionHandler.get("fechanacimiento")};
         usuarioListaView.getModelo().setColumnIdentifiers(columnasUsers);
    }
-
-    public MensajeInternacionalizacionHandler getMensajeInternacionalizacionHandler() {
-        return mensajeInternacionalizacionHandler;
-    }
-
-    public void setMensajeInternacionalizacionHandler(MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler) {
-        this.mensajeInternacionalizacionHandler = mensajeInternacionalizacionHandler;
-    }
-
     private String mensajes(int cod) {
         return switch (cod) {
+            case 0 -> mensajeInternacionalizacionHandler.get("mensaje.47");
+            case 1 -> mensajeInternacionalizacionHandler.get("mensaje.48");
+            case 2 -> mensajeInternacionalizacionHandler.get("mensaje.49");
+            case 3 -> mensajeInternacionalizacionHandler.get("mensaje.50");
+            case 4 -> mensajeInternacionalizacionHandler.get("mensaje.51");
+            case 5 -> mensajeInternacionalizacionHandler.get("mensaje.52");
+            case 6 -> mensajeInternacionalizacionHandler.get("mensaje.53");
+            case 7 -> mensajeInternacionalizacionHandler.get("mensaje.54");
+            case 8 -> mensajeInternacionalizacionHandler.get("mensaje.55");
+            case 9 -> mensajeInternacionalizacionHandler.get("mensaje.56");
+            case 10 -> mensajeInternacionalizacionHandler.get("mensaje.57");
+            case 11 -> mensajeInternacionalizacionHandler.get("mensaje.58");
+            case 12 -> mensajeInternacionalizacionHandler.get("mensaje.59");
+            case 13 -> mensajeInternacionalizacionHandler.get("mensaje.60");
+            case 14 -> mensajeInternacionalizacionHandler.get("mensaje.61");
+            case 15 -> mensajeInternacionalizacionHandler.get("mensaje.62");
+            case 16 -> mensajeInternacionalizacionHandler.get("mensaje.63");
+            case 17 -> mensajeInternacionalizacionHandler.get("mensaje.64");
+            case 18 -> mensajeInternacionalizacionHandler.get("mensaje.65");
+            case 19 -> mensajeInternacionalizacionHandler.get("mensaje.66");
+            case 20 -> mensajeInternacionalizacionHandler.get("mensaje.67");
+            case 21 -> mensajeInternacionalizacionHandler.get("mensaje.68");
+            case 22 -> mensajeInternacionalizacionHandler.get("mensaje.69");
+            case 23 -> mensajeInternacionalizacionHandler.get("mensaje.70");
+            case 24 -> mensajeInternacionalizacionHandler.get("mensaje.71");
+            case 25 -> mensajeInternacionalizacionHandler.get("mensaje.72");
+            case 26 -> mensajeInternacionalizacionHandler.get("mensaje.73");
+            case 27 -> mensajeInternacionalizacionHandler.get("mensaje.74");
+            case 28 -> mensajeInternacionalizacionHandler.get("mensaje.75");
+            case 29 -> mensajeInternacionalizacionHandler.get("mensaje.76");
+            case 30 -> mensajeInternacionalizacionHandler.get("mensaje.77");
+            case 31 -> mensajeInternacionalizacionHandler.get("mensaje.78");
+            case 32 -> mensajeInternacionalizacionHandler.get("mensaje.79");
+            case 33 -> mensajeInternacionalizacionHandler.get("mensaje.80");
+            case 34 -> mensajeInternacionalizacionHandler.get("mensaje.81");
+            case 35 -> mensajeInternacionalizacionHandler.get("mensaje.82");
+            case 36 -> mensajeInternacionalizacionHandler.get("mensaje.83");
+            case 37 -> mensajeInternacionalizacionHandler.get("mensaje.84");
+            case 38 -> mensajeInternacionalizacionHandler.get("mensaje.85");
+            case 39 -> mensajeInternacionalizacionHandler.get("mensaje.86");
+            case 40 -> mensajeInternacionalizacionHandler.get("mensaje.87");
+            case 41 -> mensajeInternacionalizacionHandler.get("mensaje.88");
+            case 42 -> mensajeInternacionalizacionHandler.get("mensaje.89");
+            case 43 -> mensajeInternacionalizacionHandler.get("mensaje.90");
+            case 44 -> mensajeInternacionalizacionHandler.get("mensaje.91");
+            case 45 -> mensajeInternacionalizacionHandler.get("mensaje.92");
+            case 46 -> mensajeInternacionalizacionHandler.get("mensaje.93");
+            case 47 -> mensajeInternacionalizacionHandler.get("mensaje.94");
+            case 48 -> mensajeInternacionalizacionHandler.get("mensaje.95");
+            case 49 -> mensajeInternacionalizacionHandler.get("mensaje.96");
+            case 50 -> mensajeInternacionalizacionHandler.get("mensaje.97");
+            case 51 -> mensajeInternacionalizacionHandler.get("mensaje.98");
+            case 52 -> mensajeInternacionalizacionHandler.get("mensaje.99");
+            case 53 -> mensajeInternacionalizacionHandler.get("mensaje.100");
+            case 54 -> mensajeInternacionalizacionHandler.get("mensaje.101");
+            case 55 -> mensajeInternacionalizacionHandler.get("mensaje.102");
+            case 56 -> mensajeInternacionalizacionHandler.get("mensaje.103");
+            case 57 -> mensajeInternacionalizacionHandler.get("mensaje.104");
+            case 58 -> mensajeInternacionalizacionHandler.get("mensaje.105");
+            case 59 -> mensajeInternacionalizacionHandler.get("mensaje.106");
+            case 60 -> mensajeInternacionalizacionHandler.get("mensaje.107");
+            case 61 -> mensajeInternacionalizacionHandler.get("mensaje.108");
+            case 62 -> mensajeInternacionalizacionHandler.get("mensaje.109");
+            case 63 -> mensajeInternacionalizacionHandler.get("mensaje.110");
+            case 64 -> mensajeInternacionalizacionHandler.get("mensaje.111");
+            case 65 -> mensajeInternacionalizacionHandler.get("mensaje.112");
+            case 66 -> mensajeInternacionalizacionHandler.get("mensaje.113");
+            case 67 -> mensajeInternacionalizacionHandler.get("mensaje.114");
+            case 68 -> mensajeInternacionalizacionHandler.get("mensaje.115");
+            case 69 -> mensajeInternacionalizacionHandler.get("mensaje.116");
+            case 70 -> mensajeInternacionalizacionHandler.get("mensaje.117");
+            case 71 -> mensajeInternacionalizacionHandler.get("mensaje.118");
+            case 72 -> mensajeInternacionalizacionHandler.get("mensaje.119");
+            case 73 -> mensajeInternacionalizacionHandler.get("mensaje.120");
+            case 74 -> mensajeInternacionalizacionHandler.get("mensaje.121");
+            case 75 -> mensajeInternacionalizacionHandler.get("mensaje.122");
+            case 76 -> mensajeInternacionalizacionHandler.get("mensaje.123");
+            case 77 -> mensajeInternacionalizacionHandler.get("mensaje.124");
+
+
             default -> "";
         };
     }
     private String titulosMensajes(int cod) {
         return switch (cod) {
+            case 0 -> mensajeInternacionalizacionHandler.get("mensaje.48");
+            case 1 -> mensajeInternacionalizacionHandler.get("mensaje.51");
+            case 2 -> mensajeInternacionalizacionHandler.get("mensaje.53");
+            case 3 -> mensajeInternacionalizacionHandler.get("mensaje.55");
+            case 4 -> mensajeInternacionalizacionHandler.get("mensaje.57"); // Campos vacíos
+            case 5 -> mensajeInternacionalizacionHandler.get("mensaje.59"); // Verificación fallida
+            case 6 -> mensajeInternacionalizacionHandler.get("mensaje.61"); // Usuario duplicado
+            case 7 -> mensajeInternacionalizacionHandler.get("mensaje.64"); // Registro completo
+            case 8 -> mensajeInternacionalizacionHandler.get("mensaje.66"); // Campo vacío
+            case 9 -> mensajeInternacionalizacionHandler.get("mensaje.68"); // Sin resultados
+            case 10 -> mensajeInternacionalizacionHandler.get("titulo.30");
+            case 11 -> mensajeInternacionalizacionHandler.get("titulo.31");
+            case 12 -> mensajeInternacionalizacionHandler.get("mensaje.84"); // Campo vacío
+            case 13 -> mensajeInternacionalizacionHandler.get("mensaje.86"); // Sin coincidencias
+            case 14 -> mensajeInternacionalizacionHandler.get("mensaje.88"); // Éxito
+            case 15 -> mensajeInternacionalizacionHandler.get("mensaje.91"); // Campo vacío
+            case 16 -> mensajeInternacionalizacionHandler.get("mensaje.92"); // Error
+            case 17 -> mensajeInternacionalizacionHandler.get("titulo.33"); // Advertencia
+            case 18 -> mensajeInternacionalizacionHandler.get("titulo.34"); // Confirmar eliminación
+            case 19 -> mensajeInternacionalizacionHandler.get("titulo.35"); // Éxito
+            case 20 -> mensajeInternacionalizacionHandler.get("mensaje.99");  // Campos vacíos
+            case 21 -> mensajeInternacionalizacionHandler.get("mensaje.101"); // Verificación fallida
+            case 22 -> mensajeInternacionalizacionHandler.get("mensaje.103"); // Duplicado
+            case 23 -> mensajeInternacionalizacionHandler.get("mensaje.105"); // Registro completado
+            case 24 -> mensajeInternacionalizacionHandler.get("mensaje.108"); // Error
+            case 25 -> mensajeInternacionalizacionHandler.get("mensaje.110"); // Acceso denegado
+            case 26 -> mensajeInternacionalizacionHandler.get("mensaje.112"); // Recuperación fallida
+            case 27 -> mensajeInternacionalizacionHandler.get("mensaje.114"); // Recuperación exitosa
+            case 28 -> mensajeInternacionalizacionHandler.get("mensaje.117"); // Usuario no encontrado
+            case 29 -> mensajeInternacionalizacionHandler.get("mensaje.119"); // Preguntas insuficientes
+            case 30 -> mensajeInternacionalizacionHandler.get("mensaje.122"); // Contraseña actualizada
+            case 31 -> mensajeInternacionalizacionHandler.get("mensaje.124"); // Respuesta incorrecta
+
+
             default -> " ";
         };
     }
