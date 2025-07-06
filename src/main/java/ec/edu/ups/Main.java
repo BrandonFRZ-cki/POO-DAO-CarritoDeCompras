@@ -78,9 +78,32 @@ public class Main {
                 UsuarioEliminarView usuarioEliminarView = new UsuarioEliminarView();
                 UsuarioActualizarView usuarioActualizarView = new UsuarioActualizarView();
                 ResponderPreguntas responderPreguntas = new ResponderPreguntas();
-                UsuarioController usuarioController = new UsuarioController(usuarioDAO,loginView,usuarioAnadirView,usuarioListaView,usuarioEliminarView,usuarioActualizarView,registrarView, responderPreguntas,preguntaDAO);
+                UsuarioController usuarioController = new UsuarioController(usuarioDAO,loginView,usuarioAnadirView,usuarioListaView,usuarioEliminarView,usuarioActualizarView,registrarView, responderPreguntas,preguntaDAO,mensajeInternacionalizacionHandler);
 
+                loginView.getBtEN().addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        usuarioController.getMensajeInternacionalizacionHandler().setLenguaje("en","US");
+                        usuarioController.cambiarIdioma("en","US");
+                    }
+                });
+                loginView.getBtSP().addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        usuarioController.getMensajeInternacionalizacionHandler().setLenguaje("es","EC");
+                        usuarioController.cambiarIdioma("es","EC");
+                    }
+                });
+                loginView.getBtFR().addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        usuarioController.getMensajeInternacionalizacionHandler().setLenguaje("fr","FR");
+                        usuarioController.cambiarIdioma("fr","FR");
+
+                    }
+                });
                 loginView.addWindowListener(new WindowAdapter() {
+
                     @Override
                     public void windowClosed(WindowEvent e) {
                         /**
@@ -301,6 +324,8 @@ public class Main {
                              * ║      💀 INTERNACIONALIZACION       ║
                              * ╚════════════════════════════════════╝
                              */
+
+
                             principalView.getMenuItemIdiomaEspanol().addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
@@ -336,6 +361,7 @@ public class Main {
         });
 
     }
+
 
 
 }

@@ -9,12 +9,18 @@ public class LoginView extends JFrame {
     private JButton btnIniciarSesion;
     private JButton registrarceButton;
     private JButton btnRecuperarContrasenia;
+    private JButton btFR;
+    private JButton btSP;
+    private JButton btEN;
+    private JLabel lbTitulo;
+    private JLabel lbUsername;
+    private JLabel lbContrasena;
 
     public LoginView() {
         add(panelPrincipal);
         setTitle("Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(400, 300);
+        setSize(400, 350);
         setLocationRelativeTo(null);
         setResizable(false);
     }
@@ -62,6 +68,31 @@ public class LoginView extends JFrame {
     public JButton getBtnRecuperarContrasenia() {
         return btnRecuperarContrasenia;
     }
+
+    public JButton getBtFR() {
+        return btFR;
+    }
+
+    public JButton getBtSP() {
+        return btSP;
+    }
+
+    public JButton getBtEN() {
+        return btEN;
+    }
+
+    public JLabel getLbTitulo() {
+        return lbTitulo;
+    }
+
+    public JLabel getLbUsername() {
+        return lbUsername;
+    }
+
+    public JLabel getLbContrasena() {
+        return lbContrasena;
+    }
+
 
     public void mostrarMensaje(String mensaje, String titulo, String tipo) {
         if (tipo.equals("error")) {

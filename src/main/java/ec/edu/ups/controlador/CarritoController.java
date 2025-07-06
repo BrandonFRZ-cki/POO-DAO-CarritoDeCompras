@@ -57,11 +57,6 @@ public class CarritoController {
         locale = mensajeInternacionalizacionHandler.getLocale();
         configurarEventosEnVistas();
     }
-
-    public void setLocale(Locale locale) {
-        this.locale = locale;
-    }
-
     private void configurarEventosEnVistas() {
         /**
          * ╔════════════════════════════════════╗
@@ -151,7 +146,6 @@ public class CarritoController {
             }
         });
     }
-
     private void guardarCarrito() {
         GregorianCalendar actual = new GregorianCalendar();
         Carrito nuevoCarrito = carritoAnadirView.getCarrito();
@@ -170,7 +164,6 @@ public class CarritoController {
         carritoAnadirView.setCarrito(new Carrito(carritoAnadirView.getUsuario()));
         carritoAnadirView.limpiarCampos();
     }
-
     private void listarCarritos() {
 
         List<Carrito> carritos = carritoDAO.listarTodos();
@@ -194,7 +187,6 @@ public class CarritoController {
             }
         }
     }
-
     private void anadirProducto() {
 
         int codigo = Integer.parseInt(carritoAnadirView.getTxtCodigo().getText());
@@ -206,7 +198,6 @@ public class CarritoController {
 
 
     }
-
     private void cargarProductos() {
 
         List<ItemCarrito> items = carritoAnadirView.getCarrito().obtenerItems();
@@ -221,8 +212,6 @@ public class CarritoController {
             });
         }
     }
-
-
     private void buscarCarrito() {
         String codigoTexto = carritoListaView.getTxtBuscar().getText();
 
@@ -260,7 +249,6 @@ public class CarritoController {
             carritoListaView.mostrarMensaje(mensajes(4), titulosMensajes(4), "error");
         }
     }
-
     private void abrirDetalle() {
 
         int fila = carritoListaView.getTblProductos().getSelectedRow();
@@ -274,7 +262,6 @@ public class CarritoController {
             mostrarDetalleCarrito(codigo);
         }
     }
-
     private void mostrarDetalleCarrito(int codigo) {
         Carrito carrito = carritoDAO.buscarPorCodigo(codigo);
         if (carrito == null) return;
@@ -303,7 +290,6 @@ public class CarritoController {
             carritoDetalleView.toFront();
         }
     }
-
     private void buscarEliminarCarrito() {
         String codigoTexto = carritoEliminarView.getTxtCodigo().getText();
         DefaultTableModel modelo = (DefaultTableModel) carritoEliminarView.getTblCarritos().getModel();
@@ -332,7 +318,6 @@ public class CarritoController {
             carritoEliminarView.mostrarMensaje(mensajes(6), titulosMensajes(6), "error");
         }
     }
-
     private void eliminarCarrito() {
         int fila = carritoEliminarView.getTblCarritos().getSelectedRow();
         if (fila == -1) {
@@ -367,7 +352,6 @@ public class CarritoController {
             carritoEliminarView.mostrarMensaje(mensajes(10), titulosMensajes(10), "error");
         }
     }
-
     private void actualizarCarrito() {
         String codigoTexto = carritoActualizarView.getTxtCodigo().getText();
 
@@ -438,7 +422,6 @@ public class CarritoController {
             carritoActualizarView.mostrarMensaje(mensajes(43), titulosMensajes(11), "error");
         }
     }
-
     private void buscarActualizarCarrito() {
         String codigoTexto = carritoActualizarView.getTxtCodigo().getText();
 
@@ -486,8 +469,6 @@ public class CarritoController {
             carritoActualizarView.limpiarCampos();
         }
     }
-
-
     public void cambiarIdioma(String lenguaje, String pais) {
         locale = mensajeInternacionalizacionHandler.getLocale();
         /**
@@ -566,7 +547,6 @@ public class CarritoController {
         Object[] columnasDetalle = {mensajeInternacionalizacionHandler.get("codigo"),mensajeInternacionalizacionHandler.get("nombre"), mensajeInternacionalizacionHandler.get("precio"), mensajeInternacionalizacionHandler.get("cantidad"), mensajeInternacionalizacionHandler.get("subtotal")};
         carritoDetalleView.getModelo().setColumnIdentifiers(columnasDetalle);
     }
-
     private String mensajes(int cod) {
         return switch (cod) {
             case 0 -> mensajeInternacionalizacionHandler.get("mensaje.16");

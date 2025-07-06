@@ -5,6 +5,7 @@ import ec.edu.ups.dao.UsuarioDAO;
 import ec.edu.ups.modelo.Pregunta;
 import ec.edu.ups.modelo.Rol;
 import ec.edu.ups.modelo.Usuario;
+import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 import ec.edu.ups.vista.*;
 
 import javax.swing.*;
@@ -14,23 +15,27 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 
 public class UsuarioController {
+    private final LoginView loginView;
+    private final UsuarioAnadirView usuarioAnadirView;
+    private final UsuarioListaView usuarioListaView;
+    private final UsuarioEliminarView usuarioEliminarView;
+    private final UsuarioActualizarView usuarioActualizarView;
+    private final RegistrarView registrarView;
+    private final ResponderPreguntas responderPreguntasView;
     private final UsuarioDAO usuarioDAO;
-    private LoginView loginView;
+    private final PreguntaDAO preguntaDAO;
+    private MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler;
     private Usuario usuario;
-    private UsuarioAnadirView usuarioAnadirView;
-    private UsuarioListaView usuarioListaView;
-    private UsuarioEliminarView usuarioEliminarView;
-    private UsuarioActualizarView usuarioActualizarView;
-    private RegistrarView registrarView;
-    private ResponderPreguntas responderPreguntasView;
-    private PreguntaDAO preguntaDAO;
+    private Locale locale;
 
     public UsuarioController(UsuarioDAO usuarioDAO, LoginView loginView, UsuarioAnadirView usuarioAnadirView,
                              UsuarioListaView usuarioListaView, UsuarioEliminarView usuarioEliminarView,
-                             UsuarioActualizarView usuarioActualizarView, RegistrarView registrarView, ResponderPreguntas responderPreguntasView, PreguntaDAO preguntaDAO) {
+                             UsuarioActualizarView usuarioActualizarView, RegistrarView registrarView,
+                             ResponderPreguntas responderPreguntasView, PreguntaDAO preguntaDAO,MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler) {
         this.usuarioDAO = usuarioDAO;
         this.loginView = loginView;
         this.usuarioAnadirView = usuarioAnadirView;
@@ -41,7 +46,10 @@ public class UsuarioController {
         this.responderPreguntasView = responderPreguntasView;
         this.preguntaDAO = preguntaDAO;
         this.usuario = null;
+        this.mensajeInternacionalizacionHandler = mensajeInternacionalizacionHandler;
+        locale = mensajeInternacionalizacionHandler.getLocale();
         configurarEventosEnVistas();
+
     }
     private void configurarEventosEnVistas() {
         /**
@@ -50,26 +58,25 @@ public class UsuarioController {
          * ╚═════════════════════════════╝
          */
         loginView.getBtnIniciarSesion().addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 autenticar();
             }
         });
-
         loginView.getRegistrarceButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 registrarView.setVisible(true);
             }
         });
+
+
         registrarView.getBtnAceptar().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 registrarNuevoUsuario();
             }
         });
-
         registrarView.getBtnLimpiar().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -82,21 +89,17 @@ public class UsuarioController {
                 guardarPreguntasYFecha(usuario);
             }
         });
-
         responderPreguntasView.getBtnLimpiar().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 responderPreguntasView.limpiarCampos();
             }
         });
-
-
         /**
          * ╔════════════════════════════════════╗
          * ║          ➕ CREAR                  ║
          * ╚════════════════════════════════════╝
          */
-
         usuarioAnadirView.getBtnAceptar().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -109,13 +112,11 @@ public class UsuarioController {
                 usuarioAnadirView.limparCampos();
             }
         });
-
         /**
          * ╔════════════════════════════════════╗
          * ║         🔍 LISTAR                  ║
          * ╚════════════════════════════════════╝
          */
-
         usuarioListaView.getBtnBuscar().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -145,7 +146,6 @@ public class UsuarioController {
                 buscarParaActualizar();
             }
         });
-
         /**
          * ╔════════════════════════════════════╗
          * ║         ❌ ELIMINAR                ║
@@ -157,7 +157,6 @@ public class UsuarioController {
                 buscarParaEliminar();
 
             }
-
         });
         usuarioEliminarView.getBtEliminar().addActionListener(new ActionListener() {
             @Override
@@ -171,16 +170,13 @@ public class UsuarioController {
                 usuarioEliminarView.limpiarCampos();
             }
         });
-
         loginView.getBtnRecuperarContrasenia().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 recuperarContrasena();
             }
         });
-
     }
-
     private void autenticar() {
         String username = loginView.getTxtUsername().getText();
         String contrasena = new String(loginView.getTxtContrasena().getPassword());
@@ -205,21 +201,6 @@ public class UsuarioController {
         }
 
         loginView.dispose();
-    }
-    private void configurarResponderPreguntas(Usuario usuario) {
-        responderPreguntasView.getBtnAceptar().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                guardarPreguntasYFecha(usuario);
-            }
-        });
-
-        responderPreguntasView.getBtnLimpiar().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                responderPreguntasView.limpiarCampos();
-            }
-        });
     }
     private void guardarPreguntasYFecha(Usuario usuario) {
         List<Pregunta> preguntasRespondidas = new ArrayList<>();
@@ -261,18 +242,6 @@ public class UsuarioController {
     }
     public Usuario getUsuarioAutenticado() {
         return usuario;
-    }
-    private void registrar() {
-        if(loginView.getTxtUsername().getText().isEmpty() || loginView.getTxtContrasena().getText().isEmpty()){
-            loginView.mostrarMensaje("Llena los campos para crear tu usuario","Campos Vacios","error");
-        }else{
-            Usuario usuarioRegistrado = new Usuario();
-            usuarioRegistrado.setUsername(loginView.getTxtUsername().getText());
-            usuarioRegistrado.setContrasenia(loginView.getTxtContrasena().getText());
-            usuarioRegistrado.setRol(Rol.USUARIO);
-            usuarioDAO.crear(usuarioRegistrado);
-            loginView.mostrarMensaje("Usuario registrado con exito","Datos Creados","warning");
-        }
     }
     private void anadirUsuario() {
         String username = usuarioAnadirView.getTxtUserName().getText();
@@ -455,7 +424,6 @@ public class UsuarioController {
         usuarioActualizarView.mostrarMensaje("Usuario encontrado. Datos cargados.", "Éxito", "info");
 
     }
-
     public void buscarParaEliminar() {
         String username = usuarioEliminarView.getTxtUsername().getText().trim();
 
@@ -501,7 +469,6 @@ public class UsuarioController {
             usuarioEliminarView.getTxtApellido().setText("");
         }
     }
-
     private void registrarNuevoUsuario() {
         String username = registrarView.getTxtUserName().getText().trim();
         String nombre = registrarView.getTxtNombre().getText().trim();
@@ -564,5 +531,59 @@ public class UsuarioController {
         } else {
             loginView.mostrarMensaje("Respuesta incorrecta", "Recuperación fallida", "error");
         }
+    }
+
+    public void cambiarIdioma(String lenguaje, String pais) {
+        locale = mensajeInternacionalizacionHandler.getLocale();
+        // Login
+        loginView.getLbContrasena().setText(mensajeInternacionalizacionHandler.get("contrasena"));
+        loginView.getLbTitulo().setText(mensajeInternacionalizacionHandler.get("inicio.sesion")+"👤");
+        loginView.getBtnIniciarSesion().setText(mensajeInternacionalizacionHandler.get("usuario.login"));
+        loginView.getLbUsername().setText(mensajeInternacionalizacionHandler.get("usuario"));
+       loginView.getBtnRecuperarContrasenia().setText(mensajeInternacionalizacionHandler.get("olvidemicontrasena"));
+        loginView.getRegistrarceButton().setText(mensajeInternacionalizacionHandler.get("registrarse"));
+
+
+
+        /**
+         * ╔════════════════════════════════════╗
+         * ║          ➕ CREAR                  ║
+         * ╚════════════════════════════════════╝
+         */
+
+        /**
+         * ╔════════════════════════════════════╗
+         * ║         ❌ ELIMINAR                ║
+         * ╚════════════════════════════════════╝
+         */
+        /**
+         * ╔════════════════════════════════════╗
+         * ║         📝 ACTUALIZAR              ║
+         * ╚════════════════════════════════════╝
+         */
+        /**
+         * ╔════════════════════════════════════╗
+         * ║         🔍 LISTAR                  ║
+         * ╚════════════════════════════════════╝
+         */
+   }
+
+    public MensajeInternacionalizacionHandler getMensajeInternacionalizacionHandler() {
+        return mensajeInternacionalizacionHandler;
+    }
+
+    public void setMensajeInternacionalizacionHandler(MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler) {
+        this.mensajeInternacionalizacionHandler = mensajeInternacionalizacionHandler;
+    }
+
+    private String mensajes(int cod) {
+        return switch (cod) {
+            default -> "";
+        };
+    }
+    private String titulosMensajes(int cod) {
+        return switch (cod) {
+            default -> " ";
+        };
     }
 }
