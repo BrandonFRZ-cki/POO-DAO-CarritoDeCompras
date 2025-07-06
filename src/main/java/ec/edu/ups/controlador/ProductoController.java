@@ -302,6 +302,7 @@ public class ProductoController {
          */
         productoListaView.getLbNombre().setText(mensajeInternacionalizacionHandler.get("nombre"));
         productoListaView.getLbTitulo().setText(mensajeInternacionalizacionHandler.get("producto.buscar")+" 📁");
+        productoListaView.getBtnListar().setText(mensajeInternacionalizacionHandler.get("listar"));
         Object[] columnas = {mensajeInternacionalizacionHandler.get("codigo"), mensajeInternacionalizacionHandler.get("nombre"), mensajeInternacionalizacionHandler.get("precio")};
         productoListaView.getModelo().setColumnIdentifiers(columnas);
 
