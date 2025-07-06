@@ -20,7 +20,7 @@ public class RegistrarView extends JFrame {
     private JLabel lbCorreo;
     private JLabel lbContresenia;
     private JLabel lbVerificaContrasenia;
-
+    private JLabel lbTitulo;
 
 
     public RegistrarView() {
@@ -162,6 +162,10 @@ public class RegistrarView extends JFrame {
 
     public JLabel getLbVerificaContrasenia() {
         return lbVerificaContrasenia;
+    }
+
+    public JLabel getLbTitulo() {
+        return lbTitulo;
     }
 
     public void setLbVerificaContrasenia(JLabel lbVerificaContrasenia) {

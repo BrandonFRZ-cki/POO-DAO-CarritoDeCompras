@@ -553,13 +553,25 @@ public class UsuarioController {
         responderPreguntasView.getLbPregunta7().setText(mensajeInternacionalizacionHandler.get("pregunta.7"));
         responderPreguntasView.getLbPregunta8().setText(mensajeInternacionalizacionHandler.get("pregunta.8"));
         responderPreguntasView.getLbPregunta9().setText(mensajeInternacionalizacionHandler.get("pregunta.9"));
-
         responderPreguntasView.getCbxMes().removeAllItems();
         for (int i = 1; i <= 12; i++) {
             responderPreguntasView.getCbxMes().addItem(mensajeInternacionalizacionHandler.get("mes." + i));
         }
         responderPreguntasView.getBtnAceptar().setText(mensajeInternacionalizacionHandler.get("aceptar"));
         responderPreguntasView.getBtnLimpiar().setText(mensajeInternacionalizacionHandler.get("limpiar"));
+
+        registrarView.setTitle(mensajeInternacionalizacionHandler.get("registrarse"));
+        registrarView.getLbTitulo().setText(mensajeInternacionalizacionHandler.get("registrarse")+" 👤");
+        registrarView.getLbApellido().setText(mensajeInternacionalizacionHandler.get("apellido"));
+        registrarView.getLbNombre().setText(mensajeInternacionalizacionHandler.get("nombre"));
+        registrarView.getLbContresenia().setText(mensajeInternacionalizacionHandler.get("contrasena"));
+        registrarView.getLbNombreDeUsuario().setText(mensajeInternacionalizacionHandler.get("nombreusuario"));
+        registrarView.getLbTelefono().setText(mensajeInternacionalizacionHandler.get("telefono"));
+        registrarView.getLbCorreo().setText(mensajeInternacionalizacionHandler.get("correo"));
+        registrarView.getLbVerificaContrasenia().setText(mensajeInternacionalizacionHandler.get("validarcontrasena"));
+        registrarView.getBtnAceptar().setText(mensajeInternacionalizacionHandler.get("aceptar"));
+        registrarView.getBtnLimpiar().setText(mensajeInternacionalizacionHandler.get("limpiar"));
+
 
         /**
          * ╔════════════════════════════════════╗
