@@ -15,7 +15,6 @@ public class CarritoAnadirView extends JInternalFrame {
     private JButton btnBuscar;
     private JTextField txtCodigo;
     private JTextField txtNombre;
-    private JTextField txtPrecio;
     private JButton btnAnadir;
     private JTable tblProductos;
     private JTextField txtSubtotal;
@@ -34,6 +33,7 @@ public class CarritoAnadirView extends JInternalFrame {
     private JLabel lbSubtotal;
     private JLabel lbIva;
     private JLabel lbTotal;
+    private JTextField txtPrecio;
 
     private Usuario usuario;
     private Carrito carrito;
@@ -64,7 +64,6 @@ public class CarritoAnadirView extends JInternalFrame {
     // Getters
     public JButton getBtnBuscar() { return btnBuscar; }
     public JTextField getTxtCodigo() { return txtCodigo; }
-    public JTextField getTxtNombre() { return txtNombre; }
     public JTextField getTxtPrecio() { return txtPrecio; }
     public JButton getBtnAnadir() { return btnAnadir; }
     public JTable getTblProductos() { return tblProductos; }
@@ -79,6 +78,9 @@ public class CarritoAnadirView extends JInternalFrame {
     public Carrito getCarrito() { return carrito; }
     public void setUsuario(Usuario usuario) { this.usuario = usuario; }
     public void setCarrito(Carrito carrito) { this.carrito = carrito; }
+    public JTextField getTxtNombre() {
+        return txtNombre;
+    }
 
     public MensajeInternacionalizacionHandler getMensajeInternacionalizacion() {
         return mensajeInternacionalizacion;
@@ -149,8 +151,8 @@ public class CarritoAnadirView extends JInternalFrame {
     }
     public void limpiarCampos() {
         txtCodigo.setText("");
-        txtNombre.setText("");
         txtPrecio.setText("");
+        txtNombre.setText("");
         txtSubtotal.setText("");
         txtIva.setText("");
         txtTotal.setText("");

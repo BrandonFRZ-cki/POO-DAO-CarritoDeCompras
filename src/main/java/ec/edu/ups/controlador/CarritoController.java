@@ -54,8 +54,12 @@ public class CarritoController {
         this.carritoDetalleView = carritoDetalleView;
         this.principalView = principalView;
         this.mensajeInternacionalizacionHandler = mensajeInternacionalizacionHandler;
-
+        locale = mensajeInternacionalizacionHandler.getLocale();
         configurarEventosEnVistas();
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
     }
 
     private void configurarEventosEnVistas() {
@@ -444,7 +448,6 @@ public class CarritoController {
         }
     }
 
-
     private void buscarActualizarCarrito() {
         String codigoTexto = carritoActualizarView.getTxtCodigo().getText();
 
@@ -496,7 +499,7 @@ public class CarritoController {
     }
 
     public void cambiarIdioma(String lenguaje, String pais) {
-
+        locale = mensajeInternacionalizacionHandler.getLocale();
         /**
          * ╔════════════════════════════════════╗
          * ║          ➕ CREAR                  ║
@@ -548,21 +551,30 @@ public class CarritoController {
         carritoActualizarView.getBtActualizar().setText(mensajeInternacionalizacionHandler.get("actualizar"));
         Object[] columnasActualizar = {mensajeInternacionalizacionHandler.get("codigo"),mensajeInternacionalizacionHandler.get("nombre"), mensajeInternacionalizacionHandler.get("precio"),mensajeInternacionalizacionHandler.get("cantidad"),mensajeInternacionalizacionHandler.get("subtotal")};
         carritoActualizarView.getModelo().setColumnIdentifiers(columnasActualizar);
-
-
         /**
          * ╔════════════════════════════════════╗
          * ║         🔍 LISTAR                  ║
          * ╚════════════════════════════════════╝
          */
-
-
+        carritoListaView.setTitle(mensajeInternacionalizacionHandler.get("carrito.buscar"));
+        carritoListaView.getLbTitulo().setText(mensajeInternacionalizacionHandler.get("carrito.buscar")+ "🛒");
+        carritoListaView.getBtnListar().setText(mensajeInternacionalizacionHandler.get("listar"));
+        carritoListaView.getLbNombre().setText(mensajeInternacionalizacionHandler.get("nombre"));
+        Object[] columnas = {mensajeInternacionalizacionHandler.get("codigo"), mensajeInternacionalizacionHandler.get("fecha"), mensajeInternacionalizacionHandler.get("usuario"), mensajeInternacionalizacionHandler.get("total")};
+        carritoListaView.getModelo().setColumnIdentifiers(columnas);
         /**
          * ╔════════════════════════════════════╗
          * ║         📃 DETALLE                 ║
          * ╚════════════════════════════════════╝
          */
-
+        carritoDetalleView.setTitle(mensajeInternacionalizacionHandler.get("carrito.detalle"));
+        carritoDetalleView.getLbTitulo().setText(mensajeInternacionalizacionHandler.get("carrito.detalle")+" 📁");
+        carritoDetalleView.getLbCodigo().setText(mensajeInternacionalizacionHandler.get("codigo"));
+        carritoDetalleView.getLbIVA().setText(mensajeInternacionalizacionHandler.get("iva"));
+        carritoDetalleView.getLbTotal().setText(mensajeInternacionalizacionHandler.get("total"));
+        carritoDetalleView.getLbSubtotal().setText(mensajeInternacionalizacionHandler.get("subtotal"));
+        Object[] columnasDetalle = {mensajeInternacionalizacionHandler.get("codigo"),mensajeInternacionalizacionHandler.get("nombre"), mensajeInternacionalizacionHandler.get("precio"), mensajeInternacionalizacionHandler.get("cantidad"), mensajeInternacionalizacionHandler.get("subtotal")};
+        carritoDetalleView.getModelo().setColumnIdentifiers(columnasDetalle);
     }
 
     private String mensajes(int cod) {

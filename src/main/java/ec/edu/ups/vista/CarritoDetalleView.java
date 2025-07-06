@@ -10,6 +10,11 @@ public class CarritoDetalleView extends JInternalFrame {
     private JTextField txtSubtotal;
     private JTextField txtIva;
     private JPanel panelPrincipal;
+    private JLabel lbTitulo;
+    private JLabel lbCodigo;
+    private JLabel lbSubtotal;
+    private JLabel lbIVA;
+    private JLabel lbTotal;
     private DefaultTableModel modelo;
 
     public CarritoDetalleView() {
@@ -50,5 +55,25 @@ public class CarritoDetalleView extends JInternalFrame {
 
     public DefaultTableModel getModelo() {
         return modelo;
+    }
+
+    public JLabel getLbTitulo() {
+        return lbTitulo;
+    }
+
+    public JLabel getLbCodigo() {
+        return lbCodigo;
+    }
+
+    public JLabel getLbSubtotal() {
+        return lbSubtotal;
+    }
+
+    public JLabel getLbIVA() {
+        return lbIVA;
+    }
+
+    public JLabel getLbTotal() {
+        return lbTotal;
     }
 }

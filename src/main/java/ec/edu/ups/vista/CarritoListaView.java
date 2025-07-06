@@ -9,6 +9,8 @@ public class CarritoListaView extends JInternalFrame{
     private JTextField txtBuscar;
     private JButton btnListar;
     private JPanel panelPrincipal;
+    private JLabel lbTitulo;
+    private JLabel lbNombre;
 
     private DefaultTableModel modelo;
 
@@ -41,6 +43,14 @@ public class CarritoListaView extends JInternalFrame{
 
     public JPanel getPanelPrincipal() {
         return panelPrincipal;
+    }
+
+    public JLabel getLbTitulo() {
+        return lbTitulo;
+    }
+
+    public JLabel getLbNombre() {
+        return lbNombre;
     }
 
     public DefaultTableModel getModelo() {

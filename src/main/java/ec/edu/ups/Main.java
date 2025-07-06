@@ -327,6 +327,8 @@ public class Main {
                                     carritoController.cambiarIdioma("fr", "FR");
                                 }
                             });
+
+
                         }
                     }
                 });

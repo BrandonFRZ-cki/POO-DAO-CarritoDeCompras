@@ -28,7 +28,7 @@
             </properties>
             <border type="none"/>
             <children>
-              <component id="be7f" class="javax.swing.JLabel">
+              <component id="be7f" class="javax.swing.JLabel" binding="lbTitulo">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -84,7 +84,7 @@
                       <margin top="2" left="9" bottom="2" right="6"/>
                     </properties>
                   </component>
-                  <component id="6e712" class="javax.swing.JLabel">
+                  <component id="6e712" class="javax.swing.JLabel" binding="lbCodigo">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -175,7 +175,7 @@
                   <margin top="2" left="9" bottom="2" right="6"/>
                 </properties>
               </component>
-              <component id="3711" class="javax.swing.JLabel">
+              <component id="3711" class="javax.swing.JLabel" binding="lbIVA">
                 <constraints>
                   <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -185,7 +185,7 @@
                   <text value="IVA"/>
                 </properties>
               </component>
-              <component id="559aa" class="javax.swing.JLabel">
+              <component id="559aa" class="javax.swing.JLabel" binding="lbTotal">
                 <constraints>
                   <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -195,7 +195,7 @@
                   <text value="Total"/>
                 </properties>
               </component>
-              <component id="df3e4" class="javax.swing.JLabel">
+              <component id="df3e4" class="javax.swing.JLabel" binding="lbSubtotal">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
