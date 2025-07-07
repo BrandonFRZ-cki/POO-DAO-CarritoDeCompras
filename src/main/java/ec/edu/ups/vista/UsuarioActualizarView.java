@@ -113,4 +113,14 @@ public class UsuarioActualizarView extends JInternalFrame {
             JOptionPane.showMessageDialog(this, mensaje, titulo, JOptionPane.WARNING_MESSAGE);
         }
     }
+    public void limpiarCampos() {
+        txtUserName.setText("");
+        txtNombre.setText("");
+        txtApellido.setText("");
+        txtTelefono.setText("");
+        txtCorreo.setText("");
+        txtContrasena.setText("");
+        txtUsername.setText("");
+        txtUsername.setEditable(true);
+    }
 }

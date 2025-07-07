@@ -288,6 +288,7 @@ public class Main {
                             principalView.getMenuItemActualizarUsuario().addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
+                                    usuarioActualizarView.setVisible(false);
                                     if(!usuarioActualizarView.isVisible()){
                                         usuarioActualizarView.setVisible(true);
                                         principalView.getjDesktopPane().add(usuarioActualizarView);
@@ -326,6 +327,9 @@ public class Main {
                                     productoListaView.setVisible(false);
                                     carritoAnadirView.setVisible(false);
                                     productoEliminarView.setVisible(false);
+                                    loginView.getTxtContrasena().setText("");
+                                    loginView.getTxtUsername().setText("");
+                                    usuarioActualizarView.limpiarCampos();
                                     loginView.setVisible(true);
                                 }
                             });
