@@ -1,3 +1,9 @@
+# video
+https://youtu.be/oGiakMkho_4
+# Diagrama
+https://drive.google.com/file/d/1-RRuPmbhxxhFoKN15FzddQU6sPR-AAdx/view?usp=sharing
+
+
 # 🛒 Carrito de Compras — Proyecto Java Swing (POO | MVC | DAO | SOLID | MDI)
 
 Este proyecto fue desarrollado como parte de la práctica número 2 en la asignatura de **Programación Orientada a Objetos**, durante el período académico 66, en la **Universidad Politécnica Salesiana**.
