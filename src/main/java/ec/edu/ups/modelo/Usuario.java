@@ -7,6 +7,11 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+/**
+ * Clase que representa un usuario del sistema.
+ * Contiene datos personales, credenciales, listas de carritos y preguntas respondidas.
+ * Incluye validaciones para la cédula y contraseña conforme a reglas locales.
+ */
 public class Usuario {
 
     private String username;
@@ -20,12 +25,26 @@ public class Usuario {
     private GregorianCalendar fechaNacimiento;
     private List<Pregunta> preguntasRespondidas;
 
+    /**
+     * Constructor por defecto que inicializa las listas vacías y la fecha actual como fecha de nacimiento.
+     */
     public Usuario() {
         this.carritos = new ArrayList<>();
         this.preguntasRespondidas = new ArrayList<>();
         this.fechaNacimiento = new GregorianCalendar();
     }
 
+    /**
+     * Constructor principal con todos los atributos obligatorios del usuario.
+     *
+     * @param nombreDeUsuario Cédula del usuario (10 dígitos con validación).
+     * @param contrasenia Contraseña con validaciones.
+     * @param rol Rol del usuario (ADMINISTRADOR o USUARIO).
+     * @param nombre Nombre del usuario.
+     * @param apellido Apellido del usuario.
+     * @param email Correo electrónico.
+     * @param telefono Teléfono del usuario.
+     */
     public Usuario(String nombreDeUsuario, String contrasenia, Rol rol, String nombre, String apellido, String email, String telefono) {
         setUsername(nombreDeUsuario);
         this.carritos = new ArrayList<>();
@@ -39,10 +58,19 @@ public class Usuario {
         this.telefono = telefono;
     }
 
+    /**
+     * Devuelve la cédula (username) del usuario.
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Asigna y valida la cédula ecuatoriana del usuario.
+     *
+     * @param username Cédula de 10 dígitos.
+     * @throws CedulaValidationException si no cumple las reglas de validación.
+     */
     public void setUsername(String username) {
         if (username != null && username.length() == 10) {
             try {
@@ -66,19 +94,11 @@ public class Usuario {
             int digitoVerificador = Integer.parseInt(username.charAt(9) + "");
             int resultado = (suma % 10 == 0) ? 0 : 10 - (suma % 10);
 
-            if (resultado != digitoVerificador) {
-                throw new CedulaValidationException("80"); // Verificador incorrecto
-            }
-
+            if (resultado != digitoVerificador) throw new CedulaValidationException("80");
             int provincia = Integer.parseInt(username.substring(0, 2));
-            if (provincia < 0 || provincia > 24) {
-                throw new CedulaValidationException("81"); // Código de provincia inválido
-            }
-
+            if (provincia < 0 || provincia > 24) throw new CedulaValidationException("81");
             int tercerDigito = Integer.parseInt(username.charAt(2) + "");
-            if (tercerDigito >= 6) {
-                throw new CedulaValidationException("82"); // Tercer dígito inválido
-            }
+            if (tercerDigito >= 6) throw new CedulaValidationException("82");
 
             this.username = username;
         } else {
@@ -86,11 +106,20 @@ public class Usuario {
         }
     }
 
-
+    /**
+     * Devuelve la contraseña del usuario.
+     */
     public String getContrasenia() {
         return contrasenia;
     }
 
+    /**
+     * Asigna la contraseña del usuario con validaciones de seguridad:
+     * mínimo 6 caracteres, al menos una mayúscula, una minúscula y un carácter especial (@ _ -).
+     *
+     * @param contrasenia Contraseña ingresada.
+     * @throws PasswordException si no cumple las reglas.
+     */
     public void setContrasenia(String contrasenia) {
         boolean tieneMayuscula = false;
         boolean tieneMinuscula = false;
@@ -103,15 +132,15 @@ public class Usuario {
                 else if (Character.isLowerCase(c)) tieneMinuscula = true;
                 else if (c == '@' || c == '_' || c == '-') tieneEspecial = true;
             }
-            if (!tieneMayuscula) throw new PasswordException("84"); // Falta mayúscula
-            if (!tieneMinuscula) throw new PasswordException("85"); // Falta minúscula
-            if (!tieneEspecial)  throw new PasswordException("86"); // Falta carácter especial
+            if (!tieneMayuscula) throw new PasswordException("84");
+            if (!tieneMinuscula) throw new PasswordException("85");
+            if (!tieneEspecial)  throw new PasswordException("86");
+
             this.contrasenia = contrasenia;
         } else {
-            throw new PasswordException("83"); // Longitud < 6
+            throw new PasswordException("83");
         }
     }
-
 
     public Rol getRol() {
         return rol;
@@ -193,5 +222,39 @@ public class Usuario {
                 ", nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
                 '}';
+    }
+
+    /**
+     * Convierte el usuario a una representación de línea de archivo, separada por comas.
+     *
+     * @return Cadena de texto lista para escribirse en archivo.
+     */
+    public String toArchivo() {
+        return username + "," +
+                contrasenia + "," +
+                rol + "," +
+                nombre + "," +
+                apellido + "," +
+                email + "," +
+                telefono;
+    }
+
+    /**
+     * Crea un usuario a partir de una línea de archivo.
+     *
+     * @param linea Línea leída del archivo de texto.
+     * @return Objeto Usuario reconstruido.
+     */
+    public static Usuario fromArchivo(String linea) {
+        String[] datos = linea.split(",");
+        return new Usuario(
+                datos[0], // username (cédula)
+                datos[1], // contraseña
+                Rol.valueOf(datos[2]),
+                datos[3], // nombre
+                datos[4], // apellido
+                datos[5], // correo
+                datos[6]  // teléfono
+        );
     }
 }
