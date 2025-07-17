@@ -7,12 +7,15 @@ import ec.edu.ups.modelo.Rol;
 import ec.edu.ups.modelo.Usuario;
 import ec.edu.ups.util.FormateadorUtils;
 import ec.edu.ups.util.MensajeInternacionalizacionHandler;
+import ec.edu.ups.util.exceptions.CedulaValidationException;
+import ec.edu.ups.util.exceptions.PasswordException;
 import ec.edu.ups.vista.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -74,7 +77,13 @@ public class UsuarioController {
         registrarView.getBtnAceptar().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                registrarNuevoUsuario();
+                try {
+                    registrarNuevoUsuario();
+                }catch (CedulaValidationException e1){
+                    usuarioActualizarView.mostrarMensaje(mensajes(Integer.parseInt(e1.getMessage())),titulosMensajes(Integer.parseInt(e1.getMessage())),"error");
+                }catch (PasswordException e2){
+                    usuarioActualizarView.mostrarMensaje(mensajes(Integer.parseInt(e2.getMessage())),titulosMensajes(Integer.parseInt(e2.getMessage())),"error");
+                }
             }
         });
         registrarView.getBtnLimpiar().addActionListener(new ActionListener() {
@@ -105,7 +114,11 @@ public class UsuarioController {
         usuarioAnadirView.getBtnAceptar().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                anadirUsuario();
+                try {
+                    anadirUsuario();
+                }catch (CedulaValidationException e1){
+                    usuarioAnadirView.mostrarMensaje(mensajes(Integer.parseInt(e1.getMessage())),titulosMensajes(Integer.parseInt(e1.getMessage())),"error");
+                }
             }
         });
         usuarioAnadirView.getBtnLimpiar().addActionListener(new ActionListener() {
@@ -139,7 +152,13 @@ public class UsuarioController {
         usuarioActualizarView.getBtnActualizar().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                actualizarUsuario();
+                try {
+                    actualizarUsuario();
+                }catch (CedulaValidationException e1){
+                    usuarioActualizarView.mostrarMensaje(mensajes(Integer.parseInt(e1.getMessage())),titulosMensajes(Integer.parseInt(e1.getMessage())),"error");
+                }catch (PasswordException e2){
+                    usuarioActualizarView.mostrarMensaje(mensajes(Integer.parseInt(e2.getMessage())),titulosMensajes(Integer.parseInt(e2.getMessage())),"error");
+                }
             }
         });
         usuarioActualizarView.getBtnBuscar().addActionListener(new ActionListener() {
@@ -706,7 +725,15 @@ public class UsuarioController {
             case 75 -> mensajeInternacionalizacionHandler.get("mensaje.122");
             case 76 -> mensajeInternacionalizacionHandler.get("mensaje.123");
             case 77 -> mensajeInternacionalizacionHandler.get("mensaje.124");
-
+            case 78 -> mensajeInternacionalizacionHandler.get("mensaje.125");
+            case 79 -> mensajeInternacionalizacionHandler.get("mensaje.126");
+            case 80 -> mensajeInternacionalizacionHandler.get("mensaje.127");
+            case 81 -> mensajeInternacionalizacionHandler.get("mensaje.128");
+            case 82 -> mensajeInternacionalizacionHandler.get("mensaje.129");
+            case 83 -> mensajeInternacionalizacionHandler.get("mensaje.130");
+            case 84 -> mensajeInternacionalizacionHandler.get("mensaje.131");
+            case 85 -> mensajeInternacionalizacionHandler.get("mensaje.132");
+            case 86 -> mensajeInternacionalizacionHandler.get("mensaje.133");
 
             default -> "";
         };
@@ -745,7 +772,8 @@ public class UsuarioController {
             case 29 -> mensajeInternacionalizacionHandler.get("mensaje.119"); // Preguntas insuficientes
             case 30 -> mensajeInternacionalizacionHandler.get("mensaje.122"); // Contraseña actualizada
             case 31 -> mensajeInternacionalizacionHandler.get("mensaje.124"); // Respuesta incorrecta
-
+            case 78, 79, 80, 81, 82 -> mensajeInternacionalizacionHandler.get("titulo.36");
+            case 83, 84, 85, 86 -> mensajeInternacionalizacionHandler.get("titulo.37");
 
             default -> " ";
         };

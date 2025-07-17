@@ -56,8 +56,8 @@ public class Main {
 
                 PreguntaDAO preguntaDAO = new PreguntaDAOMemoria();
                 UsuarioDAO usuarioDAO = new UsuarioDAOMemoria();
-                Usuario admin = usuarioDAO.buscarPorUsername("admin");
-                Usuario user = usuarioDAO.buscarPorUsername("user");
+                Usuario admin = usuarioDAO.buscarPorUsername("0107233710");
+                Usuario user = usuarioDAO.buscarPorUsername ("0103176194");
 
                 CarritoDAO carritoDAO = new CarritoDAOMemoria();
 
