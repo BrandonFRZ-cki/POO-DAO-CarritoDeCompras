@@ -8,6 +8,10 @@ import ec.edu.ups.dao.PreguntaDAO;
 import ec.edu.ups.dao.ProductoDAO;
 import ec.edu.ups.dao.UsuarioDAO;
 import ec.edu.ups.dao.impl.CarritoDAOMemoria;
+import ec.edu.ups.dao.impl.DAOArchivoBinario.PreguntaDAOArchivoBinario;
+import ec.edu.ups.dao.impl.DAOArchivoBinario.ProductoDAOArchivoBinario;
+import ec.edu.ups.dao.impl.DAOArchivoTexto.CarritoDAOArchivoTexto;
+import ec.edu.ups.dao.impl.DAOArchivoTexto.UsuarioDAOArchivoTexto;
 import ec.edu.ups.dao.impl.PreguntaDAOMemoria;
 import ec.edu.ups.dao.impl.ProductoDAOMemoria;
 import ec.edu.ups.dao.impl.UsuarioDAOMemoria;
@@ -15,9 +19,11 @@ import ec.edu.ups.modelo.Carrito;
 import ec.edu.ups.modelo.Producto;
 import ec.edu.ups.modelo.Rol;
 import ec.edu.ups.modelo.Usuario;
+import ec.edu.ups.util.DAOConfigUtil;
 import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 import ec.edu.ups.vista.*;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -29,49 +35,69 @@ public class Main {
     public static void main(String[] args) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-
                 Image icono = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/icon/icon_app.png"));
+
                 /**
                  * ╔════════════════════════════════════╗
                  * ║      💀 INTERNACIONALIZACION       ║
                  * ╚════════════════════════════════════╝
                  */
-                //instanciamos MensajeHandler (Singleton)
                 MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler = new MensajeInternacionalizacionHandler("es", "EC");
-
-
 
                 /**
                  * ╔════════════════════════════════════╗
-                 * ║          📦 DAO - ACCESO A DATOS   ║
+                 * ║       📂 ELECCIÓN DE ALMACENAMIENTO ║
                  * ╚════════════════════════════════════╝
                  */
-                ProductoDAO productoDAO = new ProductoDAOMemoria();
-                productoDAO.crear(new Producto(1001, "Cafetera eléctrica", 45.90));
-                productoDAO.crear(new Producto(1002, "Lámpara LED de escritorio", 29.50));
-                productoDAO.crear(new Producto(1003, "Set de cuchillos", 49.99));
-                productoDAO.crear(new Producto(1004, "Carro de control remoto", 27.80));
-                productoDAO.crear(new Producto(1005, "Muñeca interactiva", 39.99));
-                productoDAO.crear(new Producto(1006, "Soporte para laptop", 21.10));
+                // Variable global para guardar la ruta si se elige archivo
+                String ruta = "";
 
-                PreguntaDAO preguntaDAO = new PreguntaDAOMemoria();
-                UsuarioDAO usuarioDAO = new UsuarioDAOMemoria();
-                Usuario admin = usuarioDAO.buscarPorUsername("0107233710");
-                Usuario user = usuarioDAO.buscarPorUsername ("0103176194");
+                // Selector de modo de almacenamiento (ARCHIVO o MEMORIA)
+                String[] opciones = {"MEMORIA", "ARCHIVO"};
+                int seleccion = JOptionPane.showOptionDialog(
+                        null,
+                        "Seleccione el tipo de almacenamiento",
+                        "Configuración inicial",
+                        JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        opciones,
+                        opciones[0]
+                );
 
-                CarritoDAO carritoDAO = new CarritoDAOMemoria();
+                // Declaración de DAOs
+                ProductoDAO productoDAO;
+                UsuarioDAO usuarioDAO;
+                CarritoDAO carritoDAO;
+                PreguntaDAO preguntaDAO;
 
-                Carrito carrito1 = new Carrito(admin);
-                carrito1.agregarProducto(productoDAO.buscarPorCodigo(1001), 1); // Cafetera
-                carrito1.agregarProducto(productoDAO.buscarPorCodigo(1003), 1); // Cuchillos
-                carritoDAO.crear(carrito1);
-                admin.agregarCarrito(carrito1);
+                if (seleccion == 1) { // ARCHIVO
+                    JFileChooser fileChooser = new JFileChooser();
+                    fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                    int resultado = fileChooser.showOpenDialog(null);
 
-                Carrito carrito2 = new Carrito(user);
-                carrito2.agregarProducto(productoDAO.buscarPorCodigo(1004), 2); // Carro RC
-                carrito2.agregarProducto(productoDAO.buscarPorCodigo(1005), 1); // Muñeca
-                carritoDAO.crear(carrito2);
-                user.agregarCarrito(carrito2);
+                    if (resultado == JFileChooser.APPROVE_OPTION) {
+                        ruta = fileChooser.getSelectedFile().getAbsolutePath();
+                        System.out.println(ruta);
+                        // DAO con ruta específica: PRODUCTO y PREGUNTA en binario, USUARIO y CARRITO en texto
+                        productoDAO = new ec.edu.ups.dao.impl.DAOArchivoBinario.ProductoDAOArchivoBinario(ruta + "/productos.dat");
+                        preguntaDAO = new ec.edu.ups.dao.impl.DAOArchivoBinario.PreguntaDAOArchivoBinario(ruta + "/preguntas.dat");
+                        usuarioDAO = new ec.edu.ups.dao.impl.DAOArchivoTexto.UsuarioDAOArchivoTexto(ruta + "/usuarios.txt");
+                        carritoDAO = new CarritoDAOArchivoTexto(ruta + "/carritos.txt", cedula -> usuarioDAO.buscarPorUsername(cedula));
+
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No se seleccionó carpeta. Cerrando aplicación.");
+                        System.exit(0);
+                        return;
+                    }
+                } else { // MEMORIA
+                    productoDAO = new ec.edu.ups.dao.impl.ProductoDAOMemoria();
+                    preguntaDAO = new ec.edu.ups.dao.impl.PreguntaDAOMemoria();
+                    usuarioDAO = new ec.edu.ups.dao.impl.UsuarioDAOMemoria();
+                    carritoDAO = new ec.edu.ups.dao.impl.CarritoDAOMemoria();
+                }
+
+                // Resto del código continúa igual...
 
                 LoginView loginView = new LoginView();
                 loginView.setIconImage(icono);
@@ -84,8 +110,19 @@ public class Main {
                 UsuarioEliminarView usuarioEliminarView = new UsuarioEliminarView();
                 UsuarioActualizarView usuarioActualizarView = new UsuarioActualizarView();
                 ResponderPreguntas responderPreguntas = new ResponderPreguntas();
-                UsuarioController usuarioController = new UsuarioController(usuarioDAO,loginView,usuarioAnadirView,usuarioListaView,usuarioEliminarView,usuarioActualizarView,registrarView, responderPreguntas,preguntaDAO,mensajeInternacionalizacionHandler);
 
+                UsuarioController usuarioController = new UsuarioController(
+                        usuarioDAO,
+                        loginView,
+                        usuarioAnadirView,
+                        usuarioListaView,
+                        usuarioEliminarView,
+                        usuarioActualizarView,
+                        registrarView,
+                        responderPreguntas,
+                        preguntaDAO,
+                        mensajeInternacionalizacionHandler
+                );
                 loginView.getBtEN().addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
