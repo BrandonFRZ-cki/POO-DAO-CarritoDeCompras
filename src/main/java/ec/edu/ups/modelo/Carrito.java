@@ -92,31 +92,10 @@ public class Carrito {
 
     @Override
     public String toString() {
-        return  codigo +","+ IVA+"," + fechaCreacion +"," + items;
-    }
-
-    public String toArchivo() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        return codigo + "," +
-                usuario.getUsername() + "," +
-                sdf.format(fechaCreacion.getTime());
+        return  codigo +","+ IVA+","+sdf.format(fechaCreacion.getTime())+","+calcularTotal()+","+ items;
     }
 
-    public static Carrito fromArchivo(String linea, Usuario usuario) {
-        try {
-            String[] datos = linea.split(",");
-            int codigo = Integer.parseInt(datos[0]);
-            String username = datos[1];
-            GregorianCalendar fecha = new GregorianCalendar();
-            fecha.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(datos[2]));
-            Carrito carrito = new Carrito(usuario);
-            carrito.setCodigo(codigo);
-            carrito.setFechaCreacion(fecha);
-            return carrito;
-        } catch (Exception e) {
-            throw new RuntimeException("Error al convertir línea en Carrito: " + linea, e);
-        }
-    }
 
 }
 

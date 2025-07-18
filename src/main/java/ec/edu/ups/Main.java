@@ -83,7 +83,8 @@ public class Main {
                         productoDAO = new ec.edu.ups.dao.impl.DAOArchivoBinario.ProductoDAOArchivoBinario(ruta + "/productos.dat");
                         preguntaDAO = new ec.edu.ups.dao.impl.DAOArchivoBinario.PreguntaDAOArchivoBinario(ruta + "/preguntas.dat");
                         usuarioDAO = new ec.edu.ups.dao.impl.DAOArchivoTexto.UsuarioDAOArchivoTexto(ruta + "/usuarios.txt");
-                        carritoDAO = new CarritoDAOArchivoTexto(ruta + "/carritos.txt", cedula -> usuarioDAO.buscarPorUsername(cedula));
+                        carritoDAO = new CarritoDAOArchivoTexto(ruta + "/carritos.txt");
+
 
                     } else {
                         JOptionPane.showMessageDialog(null, "No se seleccionó carpeta. Cerrando aplicación.");

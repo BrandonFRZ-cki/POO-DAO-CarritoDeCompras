@@ -216,45 +216,21 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Usuario{" +
-                "username='" + username + '\'' +
-                ", rol=" + rol +
-                ", nombre='" + nombre + '\'' +
-                ", apellido='" + apellido + '\'' +
-                '}';
-    }
-
-    /**
-     * Convierte el usuario a una representación de línea de archivo, separada por comas.
-     *
-     * @return Cadena de texto lista para escribirse en archivo.
-     */
-    public String toArchivo() {
         return username + "," +
                 contrasenia + "," +
                 rol + "," +
                 nombre + "," +
                 apellido + "," +
                 email + "," +
-                telefono;
+                telefono + "<"+carritosParaArchivo()+">";
+    }
+    private String carritosParaArchivo(){
+        String carritosString = "<";
+        for (Carrito carrito : carritos) {
+            carritosString += carrito+":";
+        }
+        carritosString +=  ">";
+        return "sin carritos";
     }
 
-    /**
-     * Crea un usuario a partir de una línea de archivo.
-     *
-     * @param linea Línea leída del archivo de texto.
-     * @return Objeto Usuario reconstruido.
-     */
-    public static Usuario fromArchivo(String linea) {
-        String[] datos = linea.split(",");
-        return new Usuario(
-                datos[0], // username (cédula)
-                datos[1], // contraseña
-                Rol.valueOf(datos[2]),
-                datos[3], // nombre
-                datos[4], // apellido
-                datos[5], // correo
-                datos[6]  // teléfono
-        );
-    }
 }

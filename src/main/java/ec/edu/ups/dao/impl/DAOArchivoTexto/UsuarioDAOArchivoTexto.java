@@ -17,15 +17,11 @@ public class UsuarioDAOArchivoTexto implements UsuarioDAO {
     private final String ruta;
 
     /**
-     * Constructor del DAO que recibe la ruta del archivo donde se almacenarán los usuarios.
-     * Si el archivo no existe, se crea automáticamente.
-     *
+     * Constructor que inicializa la ruta del archivo y crea dos usuarios predeterminados si no existen.
      * @param ruta Ruta del archivo de almacenamiento.
      */
     public UsuarioDAOArchivoTexto(String ruta) {
         this.ruta = ruta;
-        crear(new Usuario("0107233710", "12345", Rol.ADMINISTRADOR, "Brandon", "Rivera", "admin@tienda.com", "0999999999"));
-        crear(new Usuario("0103176194", "12345", Rol.USUARIO,"Cecilia", "Zambrano", "user@tienda.com", "0888888888"));
         File archivo = new File(ruta);
         if (!archivo.exists()) {
             try {
@@ -34,54 +30,88 @@ public class UsuarioDAOArchivoTexto implements UsuarioDAO {
                 throw new RuntimeException("No se pudo crear el archivo: " + ruta, e);
             }
         }
+        crear(new Usuario("0107233710", "12345", Rol.ADMINISTRADOR, "Brandon", "Rivera", "admin@tienda.com", "0999999999"));
+        crear(new Usuario("0103176194", "12345", Rol.USUARIO,"Cecilia", "Zambrano", "user@tienda.com", "0888888888"));
     }
 
     /**
      * Guarda un nuevo usuario en el archivo.
-     *
-     * @param usuario Objeto Usuario a guardar.
+     * @param usuario Usuario a guardar.
      */
     @Override
     public void crear(Usuario usuario) {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(ruta, true))) {
-            bw.write(usuario.toArchivo() + "\n");
-        } catch (IOException e) {
-            throw new RuntimeException("Error al guardar usuario", e);
+        if (buscarPorUsername(usuario.getUsername()) == null) {
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(ruta, true))) {
+                bw.write(usuario.toString() + "\n");
+            } catch (IOException e) {
+                throw new RuntimeException("Error al guardar usuario", e);
+            }
         }
     }
 
+
     /**
-     * Busca un usuario por su nombre de usuario (cédula).
-     *
-     * @param username Nombre de usuario (cédula).
-     * @return Usuario encontrado o null si no existe.
+     * Autentica un usuario con username y contraseña.
+     * @param username Nombre de usuario.
+     * @param contrasenia Contraseña.
+     * @return Usuario autenticado o null si no coincide.
      */
     @Override
-    public Usuario buscarPorUsername(String username) {
-        for (Usuario usuario : listarTodos()) {
-            if (usuario.getUsername().equals(username)) {
-                return usuario;
-            }
+    public Usuario autenticar(String username, String contrasenia) {
+        Usuario usuario = buscarPorUsername(username);
+        if(usuario != null && usuario.getUsername().equals(username) && usuario.getContrasenia().equals(contrasenia)){
+            return usuario;
         }
         return null;
     }
 
     /**
-     * Elimina un usuario del archivo según su cédula.
-     *
-     * @param username Cédula del usuario a eliminar.
+     * Busca un usuario por su nombre de usuario.
+     * @param username Nombre de usuario.
+     * @return Usuario encontrado o null si no existe.
+     */
+    @Override
+    public Usuario buscarPorUsername(String username) {
+        try {
+            FileReader archivoLectura = new FileReader(ruta);
+            BufferedReader lectura = new BufferedReader(archivoLectura);
+            String linea = lectura.readLine();
+            while (linea != null) {
+                Usuario usuario = convertirLineaEnUsuario(linea);
+                if (usuario != null && usuario.getUsername().equals(username)) {
+                    lectura.close();
+                    archivoLectura.close();
+                    return usuario;
+                }
+                linea = lectura.readLine();
+            }
+            lectura.close();
+            archivoLectura.close();
+        } catch (IOException e) {
+            throw new RuntimeException("Error al buscar usuario", e);
+        }
+        return null;
+    }
+
+    /**
+     * Elimina un usuario del archivo por su username.
+     * @param username Username del usuario a eliminar.
      */
     @Override
     public void eliminar(String username) {
         List<Usuario> usuarios = listarTodos();
-        usuarios.removeIf(u -> u.getUsername().equals(username));
-        sobrescribirArchivo(usuarios);
+        List<Usuario> nuevos = new ArrayList<>();
+        for (Usuario u : usuarios) {
+            if (!u.getUsername().equals(username)) {
+                nuevos.add(u);
+            }
+        }
+        sobrescribirArchivo(nuevos);
     }
 
     /**
-     * Actualiza los datos de un usuario ya existente.
-     *
-     * @param usuario Usuario con los datos modificados.
+     * Actualiza un usuario en el archivo.
+     * @param usuario Usuario con datos actualizados.
      */
     @Override
     public void actualizar(Usuario usuario) {
@@ -96,69 +126,82 @@ public class UsuarioDAOArchivoTexto implements UsuarioDAO {
     }
 
     /**
-     * Lista todos los usuarios almacenados en el archivo.
-     *
+     * Devuelve una lista de todos los usuarios almacenados en el archivo.
      * @return Lista de usuarios.
      */
     @Override
     public List<Usuario> listarTodos() {
         List<Usuario> lista = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
-            String linea;
-            while ((linea = br.readLine()) != null) {
-                lista.add(Usuario.fromArchivo(linea));
+        try {
+            FileReader archivoLectura = new FileReader(ruta);
+            BufferedReader lectura = new BufferedReader(archivoLectura);
+            String linea = lectura.readLine();
+            while (linea != null) {
+                Usuario usuario = convertirLineaEnUsuario(linea);
+                if (usuario != null) {
+                    lista.add(usuario);
+                }
+                linea = lectura.readLine();
             }
+            lectura.close();
+            archivoLectura.close();
         } catch (IOException e) {
-            throw new RuntimeException("Error al leer usuarios del archivo", e);
+            throw new RuntimeException("Error al leer usuarios", e);
         }
         return lista;
     }
 
     /**
-     * Lista todos los usuarios que tienen un rol específico.
-     *
-     * @param rol Rol a filtrar.
-     * @return Lista de usuarios con el rol indicado.
+     * Devuelve una lista de usuarios que tienen el rol especificado.
+     * @param rol Rol a buscar.
+     * @return Lista de usuarios con ese rol.
      */
     @Override
     public List<Usuario> listarPorRol(Rol rol) {
-        List<Usuario> resultado = new ArrayList<>();
-        for (Usuario usuario : listarTodos()) {
-            if (usuario.getRol().equals(rol)) {
-                resultado.add(usuario);
+        List<Usuario> filtrados = new ArrayList<>();
+        for (Usuario u : listarTodos()) {
+            if (u.getRol().equals(rol)) {
+                filtrados.add(u);
             }
         }
-        return resultado;
+        return filtrados;
     }
 
     /**
-     * Autentica un usuario comparando cédula y contraseña.
-     *
-     * @param username Cédula del usuario.
-     * @param contrasenia Contraseña del usuario.
-     * @return Usuario autenticado o null si no coincide.
+     * Convierte una línea del archivo en un objeto Usuario.
+     * @param linea Línea leída del archivo.
+     * @return Objeto Usuario o null si el formato es inválido.
      */
-    @Override
-    public Usuario autenticar(String username, String contrasenia) {
-        Usuario usuario = buscarPorUsername(username);
-        if (usuario != null && usuario.getContrasenia().equals(contrasenia)) {
-            return usuario;
+    private Usuario convertirLineaEnUsuario(String linea) {
+        if (linea.contains("<")) {
+            linea = linea.substring(0, linea.indexOf("<"));
+        }
+        String[] partes = linea.split(",");
+        if (partes.length >= 7) {
+            return new Usuario(
+                    partes[0],
+                    partes[1],
+                    Rol.valueOf(partes[2]),
+                    partes[3],
+                    partes[4],
+                    partes[5],
+                    partes[6]
+            );
         }
         return null;
     }
 
     /**
-     * Método auxiliar para sobrescribir el archivo completo con una nueva lista de usuarios.
-     *
-     * @param usuarios Lista de usuarios a guardar.
+     * Sobrescribe completamente el archivo con una nueva lista de usuarios.
+     * @param lista Lista de usuarios a escribir.
      */
-    private void sobrescribirArchivo(List<Usuario> usuarios) {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(ruta))) {
-            for (Usuario u : usuarios) {
-                bw.write(u.toArchivo() + "\n");
+    private void sobrescribirArchivo(List<Usuario> lista) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(ruta, false))) {
+            for (Usuario u : lista) {
+                bw.write(u.toString() + "\n");
             }
         } catch (IOException e) {
-            throw new RuntimeException("Error al sobrescribir archivo de usuarios", e);
+            throw new RuntimeException("Error al sobrescribir archivo", e);
         }
     }
 }
