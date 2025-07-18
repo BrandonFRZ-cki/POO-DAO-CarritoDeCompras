@@ -621,6 +621,8 @@ public class UsuarioController {
         loginView.getLbUsername().setText(mensajeInternacionalizacionHandler.get("usuario"));
         loginView.getBtnRecuperarContrasenia().setText(mensajeInternacionalizacionHandler.get("olvidemicontrasena"));
         loginView.getRegistrarceButton().setText(mensajeInternacionalizacionHandler.get("registrarse"));
+
+        responderPreguntasView.getLbTitulo().setText(mensajeInternacionalizacionHandler.get("registro"));
         responderPreguntasView.getLbAnio().setText(mensajeInternacionalizacionHandler.get("anio"));
         responderPreguntasView.getLbDia().setText(mensajeInternacionalizacionHandler.get("dia"));
         responderPreguntasView.getLbMes().setText(mensajeInternacionalizacionHandler.get("mes"));
