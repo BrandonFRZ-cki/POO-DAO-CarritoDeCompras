@@ -346,7 +346,6 @@ public class ProductoController {
             default -> "";
         };
     }
-
     private String titulosMensajes(int cod) {
         return switch (cod) {
             case 0 -> mensajeInternacionalizacionHandler.get("titulo.0");

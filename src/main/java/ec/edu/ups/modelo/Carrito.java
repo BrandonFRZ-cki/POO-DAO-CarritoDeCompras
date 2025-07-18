@@ -89,14 +89,20 @@ public class Carrito {
         return calcularSubtotal() + calcularIVA();
     }
 
+
     @Override
     public String toString() {
-        return "Carrito{" +
-                "IVA=" + IVA +
-                ", codigo=" + codigo +
-                ", fechaCreacion=" + fechaCreacion +
-                ", items=" + items +
-                '}';
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return codigo + "," +
+                IVA + "," +
+                sdf.format(fechaCreacion.getTime()) + "," +
+                calcularTotal() + "," +
+                (usuario != null ? usuario.getUsername() : "null") + "," +
+                items;
     }
+
+
+
+
 }
 

@@ -30,6 +30,7 @@ public class ResponderPreguntas extends JFrame{
     private JLabel lbDia;
     private JLabel lbMes;
     private JLabel lbAnio;
+    private JLabel lbTitulo;
 
     public ResponderPreguntas() {
         setContentPane(panelPrincipal);
@@ -246,6 +247,10 @@ public class ResponderPreguntas extends JFrame{
 
     public JLabel getLbAnio() {
         return lbAnio;
+    }
+
+    public JLabel getLbTitulo() {
+        return lbTitulo;
     }
 
     public void limpiarCampos() {

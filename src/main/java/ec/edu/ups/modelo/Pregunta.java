@@ -31,4 +31,8 @@ public class Pregunta {
     public String getPregunta(MensajeInternacionalizacionHandler handler) {
         return handler.get("pregunta." + id);
     }
+
+    public int getCodigo() {
+        return id;
+    }
 }
