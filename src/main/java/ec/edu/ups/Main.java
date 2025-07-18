@@ -46,11 +46,9 @@ public class Main {
 
                 /**
                  * ╔════════════════════════════════════╗
-                 * ║       📂 ELECCIÓN DE ALMACENAMIENTO ║
+                 * ║      📂 ELECCIÓN DE ALMACENAMIENTO ║
                  * ╚════════════════════════════════════╝
                  */
-                // Variable global para guardar la ruta si se elige archivo
-                String ruta = "";
 
                 // Selector de modo de almacenamiento (ARCHIVO o MEMORIA)
                 String[] opciones = {"MEMORIA", "ARCHIVO"};
@@ -77,7 +75,7 @@ public class Main {
                     int resultado = fileChooser.showOpenDialog(null);
 
                     if (resultado == JFileChooser.APPROVE_OPTION) {
-                        ruta = fileChooser.getSelectedFile().getAbsolutePath();
+                        String ruta = fileChooser.getSelectedFile().getAbsolutePath();
                         System.out.println(ruta);
                         // DAO con ruta específica: PRODUCTO y PREGUNTA en binario, USUARIO y CARRITO en texto
                         productoDAO = new ec.edu.ups.dao.impl.DAOArchivoBinario.ProductoDAOArchivoBinario(ruta + "/productos.dat");

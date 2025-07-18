@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class CarritoDAOArchivoTexto implements CarritoDAO {
 
-    private final String ruta;
+    private final String ruta; // Ruta del archivo donde se guardan los carritos
 
     /**
      * Constructor del DAO que recibe la ruta del archivo.
@@ -29,13 +29,16 @@ public class CarritoDAOArchivoTexto implements CarritoDAO {
         File archivo = new File(ruta);
         if (!archivo.exists()) {
             try {
-                archivo.createNewFile();
+                archivo.createNewFile(); // Crea el archivo si no existe
             } catch (IOException e) {
                 throw new RuntimeException("No se pudo crear el archivo: " + ruta, e);
             }
         }
     }
 
+    /**
+     * Guarda un nuevo carrito si no está duplicado.
+     */
     @Override
     public void crear(Carrito carrito) {
         if (buscarPorCodigo(carrito.getCodigo()) == null) {
@@ -47,6 +50,9 @@ public class CarritoDAOArchivoTexto implements CarritoDAO {
         }
     }
 
+    /**
+     * Busca un carrito por su código.
+     */
     @Override
     public Carrito buscarPorCodigo(int codigo) {
         for (Carrito c : listarTodos()) {
@@ -57,6 +63,9 @@ public class CarritoDAOArchivoTexto implements CarritoDAO {
         return null;
     }
 
+    /**
+     * Actualiza un carrito existente por su código.
+     */
     @Override
     public void actualizar(Carrito carrito) {
         List<Carrito> lista = listarTodos();
@@ -69,6 +78,9 @@ public class CarritoDAOArchivoTexto implements CarritoDAO {
         sobrescribirArchivo(lista);
     }
 
+    /**
+     * Elimina un carrito por su código.
+     */
     @Override
     public void eliminar(int codigo) {
         List<Carrito> lista = listarTodos();
@@ -76,6 +88,9 @@ public class CarritoDAOArchivoTexto implements CarritoDAO {
         sobrescribirArchivo(lista);
     }
 
+    /**
+     * Lista todos los carritos almacenados.
+     */
     @Override
     public List<Carrito> listarTodos() {
         List<Carrito> lista = new ArrayList<>();
@@ -93,6 +108,9 @@ public class CarritoDAOArchivoTexto implements CarritoDAO {
         return lista;
     }
 
+    /**
+     * Convierte una línea de texto a un objeto Carrito.
+     */
     private Carrito fromArchivo(String linea) {
         try {
             String[] partes = linea.split(",", 5);
@@ -108,6 +126,7 @@ public class CarritoDAOArchivoTexto implements CarritoDAO {
             carrito.setCodigo(codigo);
             carrito.setFechaCreacion(fecha);
 
+            // Procesar los items si existen
             if (itemsStr.contains("[") && itemsStr.contains("]")) {
                 String contenido = itemsStr.substring(itemsStr.indexOf("[") + 1, itemsStr.lastIndexOf("]"));
                 String[] itemsSeparados = contenido.split(":");
@@ -129,6 +148,9 @@ public class CarritoDAOArchivoTexto implements CarritoDAO {
         }
     }
 
+    /**
+     * Reescribe el archivo con una nueva lista de carritos.
+     */
     private void sobrescribirArchivo(List<Carrito> lista) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(ruta, false))) {
             for (Carrito c : lista) {

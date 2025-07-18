@@ -3,17 +3,18 @@ package ec.edu.ups.dao.impl.DAOArchivoBinario;
 import ec.edu.ups.dao.PreguntaDAO;
 import ec.edu.ups.modelo.Pregunta;
 
-import java.io.EOFException;
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Implementación de PreguntaDAO que almacena preguntas en un archivo binario usando RandomAccessFile.
- * El formato binario por pregunta es:
- * [int: código de la pregunta] [UTF: respuesta (si existe, o string vacío)]
+ * Implementación de la interfaz {@link PreguntaDAO} utilizando archivos binarios con {@link RandomAccessFile}.
+ * Cada pregunta se guarda con el siguiente formato:
+ * <ul>
+ *     <li>{@code int} → código de la pregunta</li>
+ *     <li>{@code UTF} → respuesta correspondiente (cadena de texto)</li>
+ * </ul>
+ * La escritura y lectura es directa mediante posición en archivo.
  */
 public class PreguntaDAOArchivoBinario implements PreguntaDAO {
 
@@ -21,118 +22,121 @@ public class PreguntaDAOArchivoBinario implements PreguntaDAO {
 
     /**
      * Constructor que establece la ruta del archivo binario.
-     * @param ruta Ruta del archivo donde se almacenarán las preguntas.
+     * Si el archivo no existe, inicializa automáticamente 10 preguntas con respuestas vacías.
+     *
+     * @param ruta Ruta absoluta del archivo binario donde se almacenarán las preguntas.
      */
     public PreguntaDAOArchivoBinario(String ruta) {
         this.ruta = ruta;
 
-        // Si el archivo no existe, inicializa con 10 preguntas sin respuesta
         File archivo = new File(ruta);
         if (!archivo.exists()) {
             try (RandomAccessFile raf = new RandomAccessFile(ruta, "rw")) {
                 for (int i = 1; i <= 10; i++) {
-                    raf.writeInt(i);         // Código
-                    raf.writeUTF("");        // Respuesta vacía
+                    raf.writeInt(i);
+                    raf.writeUTF("");
                 }
             } catch (IOException e) {
-                System.err.println("Error al inicializar preguntas en archivo binario: " + e.getMessage());
+                System.err.println("Error al inicializar archivo de preguntas: " + e.getMessage());
             }
         }
     }
+
     /**
-     * Crea o actualiza una pregunta en el archivo binario.
-     * Si ya existe una pregunta con el mismo código, se actualiza la respuesta.
-     * @param pregunta La pregunta a crear o actualizar.
+     * Crea o actualiza una pregunta en el archivo.
+     * Si el código ya existe, se reemplaza únicamente la respuesta.
+     * Si no existe, se agrega al final (opcional y no recomendable si el sistema usa 10 fijas).
+     *
+     * @param pregunta Pregunta a guardar o actualizar.
      */
     @Override
     public void crear(Pregunta pregunta) {
         try (RandomAccessFile raf = new RandomAccessFile(ruta, "rw")) {
             while (raf.getFilePointer() < raf.length()) {
-                long posicionInicio = raf.getFilePointer();
-                int cod = raf.readInt();
-                raf.readUTF(); // Saltar respuesta existente
-
-                if (cod == pregunta.getCodigo()) {
-                    raf.seek(posicionInicio + 4); // Salta el int (4 bytes) y reescribe solo la respuesta
+                long posicion = raf.getFilePointer();
+                int codigoArchivo = raf.readInt();
+                raf.readUTF(); // Saltar la respuesta
+                if (codigoArchivo == pregunta.getCodigo()) {
+                    raf.seek(posicion + 4); // Reposicionar después del int
                     raf.writeUTF(pregunta.getRespuesta());
                     return;
                 }
             }
-
-            // Si no existía el código, lo agrega al final (opcional, no se usará en sistema fijo de 10 preguntas)
+            // Si no se encontró el código, agregar al final (caso no previsto para preguntas fijas)
             raf.writeInt(pregunta.getCodigo());
             raf.writeUTF(pregunta.getRespuesta());
-
         } catch (IOException e) {
-            System.err.println("Error al crear/actualizar pregunta en archivo binario: " + e.getMessage());
+            System.err.println("Error al crear/actualizar pregunta: " + e.getMessage());
         }
     }
 
     /**
      * Busca una pregunta por su código.
-     * @param codigo Código de la pregunta.
-     * @return Objeto Pregunta encontrado o null si no existe.
+     *
+     * @param codigo Código único de la pregunta.
+     * @return Objeto {@link Pregunta} si se encuentra, o {@code null} si no.
      */
     @Override
     public Pregunta buscarPorCodigo(int codigo) {
         try (RandomAccessFile raf = new RandomAccessFile(ruta, "r")) {
             while (raf.getFilePointer() < raf.length()) {
-                int cod = raf.readInt();
+                int codigoArchivo = raf.readInt();
                 String respuesta = raf.readUTF();
-                if (cod == codigo) {
-                    Pregunta pregunta = new Pregunta(cod);
-                    pregunta.setRespuesta(respuesta);
-                    return pregunta;
+                if (codigoArchivo == codigo) {
+                    Pregunta p = new Pregunta(codigoArchivo);
+                    p.setRespuesta(respuesta);
+                    return p;
                 }
             }
         } catch (IOException e) {
-            System.err.println("Error al buscar pregunta en binario: " + e.getMessage());
+            System.err.println("Error al buscar pregunta: " + e.getMessage());
         }
         return null;
     }
 
     /**
-     * Lista todas las preguntas almacenadas.
-     * @return Lista de objetos Pregunta.
+     * Lista todas las preguntas almacenadas en el archivo binario.
+     *
+     * @return Lista de objetos {@link Pregunta}.
      */
     @Override
     public List<Pregunta> listar() {
         List<Pregunta> preguntas = new ArrayList<>();
         try (RandomAccessFile raf = new RandomAccessFile(ruta, "r")) {
             while (raf.getFilePointer() < raf.length()) {
-                int cod = raf.readInt();
+                int codigo = raf.readInt();
                 String respuesta = raf.readUTF();
-                Pregunta pregunta = new Pregunta(cod);
-                pregunta.setRespuesta(respuesta);
-                preguntas.add(pregunta);
+                Pregunta p = new Pregunta(codigo);
+                p.setRespuesta(respuesta);
+                preguntas.add(p);
             }
         } catch (IOException e) {
-            System.err.println("Error al listar preguntas desde archivo binario: " + e.getMessage());
+            System.err.println("Error al listar preguntas: " + e.getMessage());
         }
         return preguntas;
     }
 
     /**
-     * Establece una respuesta a una pregunta ya existente.
-     * @param codigo Código de la pregunta a responder.
-     * @param respuesta Respuesta escrita por el usuario.
+     * Actualiza la respuesta de una pregunta ya existente en el archivo.
+     *
+     * @param codigo    Código de la pregunta a actualizar.
+     * @param respuesta Nueva respuesta que se desea registrar.
      */
     @Override
     public void responder(int codigo, String respuesta) {
         try (RandomAccessFile raf = new RandomAccessFile(ruta, "rw")) {
             while (raf.getFilePointer() < raf.length()) {
-                long posicionInicio = raf.getFilePointer();
-                int cod = raf.readInt();
-                raf.readUTF(); // Leer la respuesta antigua (pero no usarla)
-
-                if (cod == codigo) {
-                    raf.seek(posicionInicio + 4); // Saltar código y sobreescribir solo la respuesta
+                long posicion = raf.getFilePointer();
+                int codigoArchivo = raf.readInt();
+                raf.readUTF(); // Saltar la respuesta antigua
+                if (codigoArchivo == codigo) {
+                    raf.seek(posicion + 4);
                     raf.writeUTF(respuesta);
                     return;
                 }
             }
         } catch (IOException e) {
-            System.err.println("Error al responder pregunta en binario: " + e.getMessage());
+            System.err.println("Error al responder pregunta: " + e.getMessage());
         }
     }
 }

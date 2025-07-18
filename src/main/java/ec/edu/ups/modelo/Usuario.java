@@ -222,8 +222,20 @@ public class Usuario {
                 nombre + "," +
                 apellido + "," +
                 email + "," +
-                telefono + "<"+carritosParaArchivo()+">";
+                telefono + "<" + carritosParaArchivo() + ">" + "<" + preguntasParaArchivo() + ">";
     }
+
+    private String preguntasParaArchivo() {
+        if (preguntasRespondidas.isEmpty()) {
+            return "sin preguntas";
+        }
+        String texto = "";
+        for (Pregunta p : preguntasRespondidas) {
+            texto += p.getCodigo() + ":" + p.getRespuesta() + "|";
+        }
+        return texto;
+    }
+
     private String carritosParaArchivo(){
         String carritosString = "<";
         for (Carrito carrito : carritos) {
