@@ -40,8 +40,8 @@ public class UsuarioDAOArchivoTexto implements UsuarioDAO {
 
         // Si no hay usuarios, crear los de prueba por defecto
         if (usuarios.isEmpty()) {
-            Usuario admin = new Usuario("0107233710", "12345", Rol.ADMINISTRADOR, "Brandon", "Rivera", "admin@tienda.com", "0999999999");
-            Usuario user = new Usuario("0103176194", "12345", Rol.USUARIO, "Cecilia", "Zambrano", "user@tienda.com", "0888888888");
+            Usuario admin = new Usuario("0107233710", "Bran@1", Rol.ADMINISTRADOR, "Brandon", "Rivera", "admin@tienda.com", "0999999999");
+            Usuario user = new Usuario("0103176194", "Bran@1", Rol.USUARIO, "Cecilia", "Zambrano", "user@tienda.com", "0888888888");
             usuarios.add(admin);
             usuarios.add(user);
             escribirUsuariosEnArchivo();

@@ -8,7 +8,9 @@ import ec.edu.ups.modelo.Usuario;
 import ec.edu.ups.util.FormateadorUtils;
 import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 import ec.edu.ups.util.exceptions.CedulaValidationException;
+import ec.edu.ups.util.exceptions.CorreoValidationException;
 import ec.edu.ups.util.exceptions.PasswordException;
+import ec.edu.ups.util.exceptions.TelefonoValidationException;
 import ec.edu.ups.vista.*;
 
 import javax.swing.*;
@@ -79,13 +81,34 @@ public class UsuarioController {
             public void actionPerformed(ActionEvent e) {
                 try {
                     registrarNuevoUsuario();
-                }catch (CedulaValidationException e1){
-                    usuarioActualizarView.mostrarMensaje(mensajes(Integer.parseInt(e1.getMessage())),titulosMensajes(Integer.parseInt(e1.getMessage())),"error");
-                }catch (PasswordException e2){
-                    usuarioActualizarView.mostrarMensaje(mensajes(Integer.parseInt(e2.getMessage())),titulosMensajes(Integer.parseInt(e2.getMessage())),"error");
+                } catch (CedulaValidationException e1) {
+                    usuarioActualizarView.mostrarMensaje(
+                            mensajes(Integer.parseInt(e1.getMessage())),
+                            titulosMensajes(Integer.parseInt(e1.getMessage())),
+                            "error"
+                    );
+                } catch (PasswordException e2) {
+                    usuarioActualizarView.mostrarMensaje(
+                            mensajes(Integer.parseInt(e2.getMessage())),
+                            titulosMensajes(Integer.parseInt(e2.getMessage())),
+                            "error"
+                    );
+                } catch (CorreoValidationException e3) {
+                    usuarioActualizarView.mostrarMensaje(
+                            mensajes(Integer.parseInt(e3.getMessage())),
+                            titulosMensajes(Integer.parseInt(e3.getMessage())),
+                            "error"
+                    );
+                } catch (TelefonoValidationException e4) {
+                    usuarioActualizarView.mostrarMensaje(
+                            mensajes(Integer.parseInt(e4.getMessage())),
+                            titulosMensajes(Integer.parseInt(e4.getMessage())),
+                            "error"
+                    );
                 }
             }
         });
+
         registrarView.getBtnLimpiar().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -116,11 +139,28 @@ public class UsuarioController {
             public void actionPerformed(ActionEvent e) {
                 try {
                     anadirUsuario();
-                }catch (CedulaValidationException e1){
-                    usuarioAnadirView.mostrarMensaje(mensajes(Integer.parseInt(e1.getMessage())),titulosMensajes(Integer.parseInt(e1.getMessage())),"error");
+                } catch (CedulaValidationException e1) {
+                    usuarioAnadirView.mostrarMensaje(
+                            mensajes(Integer.parseInt(e1.getMessage())),
+                            titulosMensajes(Integer.parseInt(e1.getMessage())),
+                            "error"
+                    );
+                } catch (CorreoValidationException e2) {
+                    usuarioAnadirView.mostrarMensaje(
+                            mensajes(Integer.parseInt(e2.getMessage())),
+                            titulosMensajes(Integer.parseInt(e2.getMessage())),
+                            "error"
+                    );
+                } catch (TelefonoValidationException e3) {
+                    usuarioAnadirView.mostrarMensaje(
+                            mensajes(Integer.parseInt(e3.getMessage())),
+                            titulosMensajes(Integer.parseInt(e3.getMessage())),
+                            "error"
+                    );
                 }
             }
         });
+
         usuarioAnadirView.getBtnLimpiar().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -154,13 +194,34 @@ public class UsuarioController {
             public void actionPerformed(ActionEvent e) {
                 try {
                     actualizarUsuario();
-                }catch (CedulaValidationException e1){
-                    usuarioActualizarView.mostrarMensaje(mensajes(Integer.parseInt(e1.getMessage())),titulosMensajes(Integer.parseInt(e1.getMessage())),"error");
-                }catch (PasswordException e2){
-                    usuarioActualizarView.mostrarMensaje(mensajes(Integer.parseInt(e2.getMessage())),titulosMensajes(Integer.parseInt(e2.getMessage())),"error");
+                } catch (CedulaValidationException e1) {
+                    usuarioActualizarView.mostrarMensaje(
+                            mensajes(Integer.parseInt(e1.getMessage())),
+                            titulosMensajes(Integer.parseInt(e1.getMessage())),
+                            "error"
+                    );
+                } catch (PasswordException e2) {
+                    usuarioActualizarView.mostrarMensaje(
+                            mensajes(Integer.parseInt(e2.getMessage())),
+                            titulosMensajes(Integer.parseInt(e2.getMessage())),
+                            "error"
+                    );
+                } catch (CorreoValidationException e3) {
+                    usuarioActualizarView.mostrarMensaje(
+                            mensajes(Integer.parseInt(e3.getMessage())),
+                            titulosMensajes(Integer.parseInt(e3.getMessage())),
+                            "error"
+                    );
+                } catch (TelefonoValidationException e4) {
+                    usuarioActualizarView.mostrarMensaje(
+                            mensajes(Integer.parseInt(e4.getMessage())),
+                            titulosMensajes(Integer.parseInt(e4.getMessage())),
+                            "error"
+                    );
                 }
             }
         });
+
         usuarioActualizarView.getBtnBuscar().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -734,6 +795,10 @@ public class UsuarioController {
             case 84 -> mensajeInternacionalizacionHandler.get("mensaje.131");
             case 85 -> mensajeInternacionalizacionHandler.get("mensaje.132");
             case 86 -> mensajeInternacionalizacionHandler.get("mensaje.133");
+            case 87 -> mensajeInternacionalizacionHandler.get("mensaje.134"); // Correo sin '@'
+            case 88 -> mensajeInternacionalizacionHandler.get("mensaje.135"); // Correo sin '.'
+            case 89 -> mensajeInternacionalizacionHandler.get("mensaje.136"); // Teléfono no numérico
+            case 90 -> mensajeInternacionalizacionHandler.get("mensaje.137"); // Teléfono no tiene 10 dígitos
 
             default -> "";
         };
@@ -774,6 +839,8 @@ public class UsuarioController {
             case 31 -> mensajeInternacionalizacionHandler.get("mensaje.124"); // Respuesta incorrecta
             case 78, 79, 80, 81, 82 -> mensajeInternacionalizacionHandler.get("titulo.36");
             case 83, 84, 85, 86 -> mensajeInternacionalizacionHandler.get("titulo.37");
+            case 87, 88 -> mensajeInternacionalizacionHandler.get("titulo.38"); // Correo inválido
+            case 89, 90 -> mensajeInternacionalizacionHandler.get("titulo.39"); // Teléfono inválido
 
             default -> " ";
         };

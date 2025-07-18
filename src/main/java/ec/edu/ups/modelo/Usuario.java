@@ -2,6 +2,8 @@ package ec.edu.ups.modelo;
 
 import ec.edu.ups.util.exceptions.CedulaValidationException;
 import ec.edu.ups.util.exceptions.PasswordException;
+import ec.edu.ups.util.exceptions.CorreoValidationException;
+import ec.edu.ups.util.exceptions.TelefonoValidationException;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -47,15 +49,15 @@ public class Usuario {
      */
     public Usuario(String nombreDeUsuario, String contrasenia, Rol rol, String nombre, String apellido, String email, String telefono) {
         setUsername(nombreDeUsuario);
+        setContrasenia(contrasenia);
+        setEmail(email);
+        setTelefono(telefono);
         this.carritos = new ArrayList<>();
         this.preguntasRespondidas = new ArrayList<>();
         this.fechaNacimiento = new GregorianCalendar();
-        this.contrasenia = contrasenia;
         this.rol = rol;
         this.nombre = nombre;
         this.apellido = apellido;
-        this.email = email;
-        this.telefono = telefono;
     }
 
     /**
@@ -183,16 +185,48 @@ public class Usuario {
     }
 
     public void setEmail(String email) {
+        if (email == null || email.isEmpty()) {
+            throw new CorreoValidationException("87"); // Falta @
+        }
+
+        boolean contieneArroba = false;
+        boolean contienePunto = false;
+
+        for (int i = 0; i < email.length(); i++) {
+            char c = email.charAt(i);
+            if (c == '@') contieneArroba = true;
+            if (c == '.') contienePunto = true;
+        }
+
+        if (!contieneArroba) throw new CorreoValidationException("87");
+        if (!contienePunto) throw new CorreoValidationException("88");
+
         this.email = email;
     }
+
+
+
 
     public String getTelefono() {
         return telefono;
     }
-
     public void setTelefono(String telefono) {
+        if (telefono == null || telefono.length() != 10) {
+            throw new TelefonoValidationException("90"); // No tiene 10 dígitos
+        }
+
+        for (int i = 0; i < telefono.length(); i++) {
+            char c = telefono.charAt(i);
+            if (!Character.isDigit(c)) {
+                throw new TelefonoValidationException("89"); // No es numérico
+            }
+        }
+
         this.telefono = telefono;
     }
+
+
+
 
     public GregorianCalendar getFechaNacimiento() {
         return fechaNacimiento;
