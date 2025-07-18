@@ -53,14 +53,20 @@ public class Main {
                 selectorView.getBtEN().addActionListener(e -> {
                     mensajeInternacionalizacionHandler.setLenguaje("en", "US");
                     selectorView.getLbTitulo().setText(mensajeInternacionalizacionHandler.get("almacenamiento"));
+                    selectorView.getBtMemoria().setText(mensajeInternacionalizacionHandler.get("memoria"));
+                    selectorView.getBtArchivo().setText(mensajeInternacionalizacionHandler.get("archivo"));
                 });
                 selectorView.getBtSP().addActionListener(e -> {
                     mensajeInternacionalizacionHandler.setLenguaje("es", "EC");
                     selectorView.getLbTitulo().setText(mensajeInternacionalizacionHandler.get("almacenamiento"));
+                    selectorView.getBtMemoria().setText(mensajeInternacionalizacionHandler.get("memoria"));
+                    selectorView.getBtArchivo().setText(mensajeInternacionalizacionHandler.get("archivo"));
                 });
                 selectorView.getBtFR().addActionListener(e -> {
                     mensajeInternacionalizacionHandler.setLenguaje("fr", "FR");
                     selectorView.getLbTitulo().setText(mensajeInternacionalizacionHandler.get("almacenamiento"));
+                    selectorView.getBtMemoria().setText(mensajeInternacionalizacionHandler.get("memoria"));
+                    selectorView.getBtArchivo().setText(mensajeInternacionalizacionHandler.get("archivo"));
                 });
 
                 selectorView.getBtMemoria().addActionListener(e -> {

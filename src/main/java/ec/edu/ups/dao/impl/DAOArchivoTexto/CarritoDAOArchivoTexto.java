@@ -4,6 +4,8 @@ import ec.edu.ups.dao.CarritoDAO;
 import ec.edu.ups.modelo.Carrito;
 import ec.edu.ups.modelo.ItemCarrito;
 import ec.edu.ups.modelo.Producto;
+import ec.edu.ups.modelo.Usuario;
+
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -98,7 +100,7 @@ public class CarritoDAOArchivoTexto implements CarritoDAO {
             String linea;
             while ((linea = br.readLine()) != null) {
                 Carrito carrito = fromArchivo(linea);
-                if (carrito != null && buscarPorCodigo(carrito.getCodigo()) == null) {
+                if (carrito != null) {
                     lista.add(carrito);
                 }
             }
@@ -108,21 +110,25 @@ public class CarritoDAOArchivoTexto implements CarritoDAO {
         return lista;
     }
 
+
     /**
      * Convierte una línea de texto a un objeto Carrito.
      */
     private Carrito fromArchivo(String linea) {
         try {
-            String[] partes = linea.split(",", 5);
+            String[] partes = linea.split(",", 6);
             int codigo = Integer.parseInt(partes[0]);
             double iva = Double.parseDouble(partes[1]);
             String fechaStr = partes[2];
             GregorianCalendar fecha = new GregorianCalendar();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             fecha.setTime(sdf.parse(fechaStr));
-            String itemsStr = partes[4];
+            String username = partes[4];
+            String itemsStr = partes[5];
 
-            Carrito carrito = new Carrito(null);
+            Usuario usuario = new Usuario();
+            usuario.setUsername(username);
+            Carrito carrito = new Carrito(usuario);
             carrito.setCodigo(codigo);
             carrito.setFechaCreacion(fecha);
 

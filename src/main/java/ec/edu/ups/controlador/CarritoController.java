@@ -161,6 +161,7 @@ public class CarritoController {
 
         carritoDAO.crear(nuevoCarrito);
 
+
         carritoAnadirView.mostrarMensaje(mensajes(0), titulosMensajes(0), "info");
         carritoAnadirView.setCarrito(new Carrito(carritoAnadirView.getUsuario()));
         carritoAnadirView.limpiarCampos();
@@ -200,19 +201,31 @@ public class CarritoController {
 
     }
     private void cargarProductos() {
-
         List<ItemCarrito> items = carritoAnadirView.getCarrito().obtenerItems();
         DefaultTableModel modelo = (DefaultTableModel) carritoAnadirView.getTblProductos().getModel();
         modelo.setNumRows(0);
+
         for (ItemCarrito item : items) {
-            modelo.addRow(new Object[]{item.getProducto().getCodigo(),
-                    item.getProducto().getNombre(),
-                    FormateadorUtils.formatearMoneda(item.getProducto().getPrecio(), locale),
+            Producto producto = item.getProducto();
+            if (producto == null) continue;
+
+            modelo.addRow(new Object[]{
+                    producto.getCodigo(),
+                    producto.getNombre(),
+                    FormateadorUtils.formatearMoneda(producto.getPrecio(), locale),
                     item.getCantidad(),
-                    FormateadorUtils.formatearMoneda(item.getProducto().getPrecio() * item.getCantidad(), locale)
+                    FormateadorUtils.formatearMoneda(item.getSubtotal(), locale)
             });
         }
+        Carrito carrito = carritoAnadirView.getCarrito();
+        carritoAnadirView.getTxtSubtotal().setText(
+                FormateadorUtils.formatearMoneda(carrito.calcularSubtotal(), locale));
+        carritoAnadirView.getTxtIva().setText(
+                FormateadorUtils.formatearMoneda(carrito.calcularIVA(), locale));
+        carritoAnadirView.getTxtTotal().setText(
+                FormateadorUtils.formatearMoneda(carrito.calcularTotal(), locale));
     }
+
     private void buscarCarrito() {
         String codigoTexto = carritoListaView.getTxtBuscar().getText();
 
@@ -530,7 +543,7 @@ public class CarritoController {
         carritoListaView.setTitle(mensajeInternacionalizacionHandler.get("carrito.buscar"));
         carritoListaView.getLbTitulo().setText(mensajeInternacionalizacionHandler.get("carrito.buscar")+ "🛒");
         carritoListaView.getBtnListar().setText(mensajeInternacionalizacionHandler.get("listar"));
-        carritoListaView.getLbNombre().setText(mensajeInternacionalizacionHandler.get("nombre"));
+        carritoListaView.getLbNombre().setText(mensajeInternacionalizacionHandler.get("codigo"));
         Object[] columnas = {mensajeInternacionalizacionHandler.get("codigo"), mensajeInternacionalizacionHandler.get("fecha"), mensajeInternacionalizacionHandler.get("usuario"), mensajeInternacionalizacionHandler.get("total")};
         carritoListaView.getModelo().setColumnIdentifiers(columnas);
         /**

@@ -145,7 +145,14 @@ public class UsuarioController {
                             titulosMensajes(Integer.parseInt(e1.getMessage())),
                             "error"
                     );
-                } catch (CorreoValidationException e2) {
+                }catch (PasswordException e2) {
+                    usuarioAnadirView.mostrarMensaje(
+                            mensajes(Integer.parseInt(e2.getMessage())),
+                            titulosMensajes(Integer.parseInt(e2.getMessage())),
+                            "error"
+                    );
+                }
+                catch (CorreoValidationException e2) {
                     usuarioAnadirView.mostrarMensaje(
                             mensajes(Integer.parseInt(e2.getMessage())),
                             titulosMensajes(Integer.parseInt(e2.getMessage())),

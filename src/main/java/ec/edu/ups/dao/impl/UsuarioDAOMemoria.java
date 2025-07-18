@@ -16,6 +16,8 @@ public class UsuarioDAOMemoria implements UsuarioDAO {
         usuarios = new ArrayList<Usuario>();
         Usuario admin = new Usuario("0107233710", "Bran@1", Rol.ADMINISTRADOR, "Brandon", "Rivera", "admin@tienda.com", "0999999999");
         Usuario user = new Usuario("0103176194", "Bran@1", Rol.USUARIO, "Cecilia", "Zambrano", "user@tienda.com", "0888888888");
+        crear(admin);
+        crear(user);
     }
 
     @Override

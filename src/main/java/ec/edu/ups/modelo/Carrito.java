@@ -93,8 +93,15 @@ public class Carrito {
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        return  codigo +","+ IVA+","+sdf.format(fechaCreacion.getTime())+","+calcularTotal()+","+ items;
+        return codigo + "," +
+                IVA + "," +
+                sdf.format(fechaCreacion.getTime()) + "," +
+                calcularTotal() + "," +
+                (usuario != null ? usuario.getUsername() : "null") + "," +
+                items;
     }
+
+
 
 
 }
