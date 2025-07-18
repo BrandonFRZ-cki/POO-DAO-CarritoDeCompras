@@ -144,46 +144,92 @@ public class Usuario {
         }
     }
 
+    /**
+     * Devuelve el rol asignado al usuario.
+     */
     public Rol getRol() {
         return rol;
     }
 
+    /**
+     * Establece el rol del usuario.
+     *
+     * @param rol Rol a asignar (ADMINISTRADOR o USUARIO).
+     */
     public void setRol(Rol rol) {
         this.rol = rol;
     }
 
+    /**
+     * Devuelve la lista de carritos asociados al usuario.
+     */
     public List<Carrito> getCarritos() {
         return carritos;
     }
 
+    /**
+     * Agrega un carrito a la lista del usuario.
+     *
+     * @param carrito Carrito a agregar.
+     */
     public void agregarCarrito(Carrito carrito) {
         this.carritos.add(carrito);
     }
 
+    /**
+     * Establece la lista completa de carritos del usuario.
+     *
+     * @param carritos Lista de carritos.
+     */
     public void setCarritos(List<Carrito> carritos) {
         this.carritos = carritos;
     }
 
+    /**
+     * Devuelve el nombre del usuario.
+     */
     public String getNombre() {
         return nombre;
     }
 
+    /**
+     * Establece el nombre del usuario.
+     *
+     * @param nombre Nombre a asignar.
+     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
+    /**
+     * Devuelve el apellido del usuario.
+     */
     public String getApellido() {
         return apellido;
     }
 
+    /**
+     * Establece el apellido del usuario.
+     *
+     * @param apellido Apellido a asignar.
+     */
     public void setApellido(String apellido) {
         this.apellido = apellido;
     }
 
+    /**
+     * Devuelve el correo electrónico del usuario.
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Establece el correo electrónico del usuario con validaciones básicas.
+     *
+     * @param email Correo a validar y asignar.
+     * @throws CorreoValidationException si falta '@' o '.'.
+     */
     public void setEmail(String email) {
         if (email == null || email.isEmpty()) {
             throw new CorreoValidationException("87"); // Falta @
@@ -204,12 +250,19 @@ public class Usuario {
         this.email = email;
     }
 
-
-
-
+    /**
+     * Devuelve el número de teléfono del usuario.
+     */
     public String getTelefono() {
         return telefono;
     }
+
+    /**
+     * Establece y valida el número de teléfono del usuario.
+     *
+     * @param telefono Número a validar y asignar.
+     * @throws TelefonoValidationException si no tiene 10 dígitos o contiene letras.
+     */
     public void setTelefono(String telefono) {
         if (telefono == null || telefono.length() != 10) {
             throw new TelefonoValidationException("90"); // No tiene 10 dígitos
@@ -225,29 +278,52 @@ public class Usuario {
         this.telefono = telefono;
     }
 
-
-
-
+    /**
+     * Devuelve la fecha de nacimiento del usuario.
+     */
     public GregorianCalendar getFechaNacimiento() {
         return fechaNacimiento;
     }
 
+    /**
+     * Establece la fecha de nacimiento del usuario.
+     *
+     * @param fechaNacimiento Fecha en formato GregorianCalendar.
+     */
     public void setFechaNacimiento(GregorianCalendar fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 
+    /**
+     * Devuelve la lista de preguntas de seguridad respondidas por el usuario.
+     */
     public List<Pregunta> getPreguntasRespondidas() {
         return preguntasRespondidas;
     }
 
+    /**
+     * Agrega una pregunta respondida a la lista.
+     *
+     * @param pregunta Pregunta respondida.
+     */
     public void agregarPregunta(Pregunta pregunta) {
         this.preguntasRespondidas.add(pregunta);
     }
 
+    /**
+     * Establece la lista de preguntas respondidas.
+     *
+     * @param preguntasRespondidas Lista de preguntas con respuestas.
+     */
     public void setPreguntasRespondidas(List<Pregunta> preguntasRespondidas) {
         this.preguntasRespondidas = preguntasRespondidas;
     }
 
+    /**
+     * Convierte el usuario a una cadena para escritura en archivo.
+     * Incluye cédula, contraseña, rol, nombre, apellido, correo, teléfono,
+     * carritos y preguntas respondidas.
+     */
     @Override
     public String toString() {
         return username + "," +
@@ -259,6 +335,11 @@ public class Usuario {
                 telefono + "<" + carritosParaArchivo() + ">" + "<" + preguntasParaArchivo() + ">";
     }
 
+    /**
+     * Serializa las preguntas respondidas para almacenamiento en archivo.
+     *
+     * @return Cadena con preguntas en formato id:respuesta|... o "sin preguntas".
+     */
     private String preguntasParaArchivo() {
         if (preguntasRespondidas.isEmpty()) {
             return "sin preguntas";
@@ -270,13 +351,19 @@ public class Usuario {
         return texto;
     }
 
-    private String carritosParaArchivo(){
+    /**
+     * Serializa los carritos del usuario. Actualmente no se utiliza.
+     *
+     * @return Cadena con los carritos o "sin carritos".
+     */
+    private String carritosParaArchivo() {
         String carritosString = "<";
         for (Carrito carrito : carritos) {
-            carritosString += carrito+":";
+            carritosString += carrito + ":";
         }
-        carritosString +=  ">";
+        carritosString += ">";
         return "sin carritos";
     }
+
 
 }

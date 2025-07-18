@@ -7,10 +7,23 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Implementación en memoria del DAO para la entidad {@link Producto}.
+ * Almacena productos en una lista interna sin persistencia externa.
+ *
+ * <p>Este DAO precarga una lista de productos organizados por categorías como
+ * juguetes, tecnología y cocina. Es útil para pruebas o funcionamiento sin archivos.</p>
+ *
+ * @author Brandon
+ * @version 1.0
+ */
 public class ProductoDAOMemoria implements ProductoDAO {
 
     private List<Producto> productos;
 
+    /**
+     * Constructor que inicializa y precarga la lista con 10 productos de distintas categorías.
+     */
     public ProductoDAOMemoria() {
         productos = new ArrayList<>();
 
@@ -26,11 +39,22 @@ public class ProductoDAOMemoria implements ProductoDAO {
         crear(new Producto(4003, "Batidora de mano", 37.75));
     }
 
+    /**
+     * Guarda un nuevo producto en la lista.
+     *
+     * @param producto El producto a agregar.
+     */
     @Override
     public void crear(Producto producto) {
         productos.add(producto);
     }
 
+    /**
+     * Busca un producto por su código.
+     *
+     * @param codigo Código único del producto.
+     * @return El producto encontrado, o {@code null} si no existe.
+     */
     @Override
     public Producto buscarPorCodigo(int codigo) {
         for (Producto producto : productos) {
@@ -41,6 +65,12 @@ public class ProductoDAOMemoria implements ProductoDAO {
         return null;
     }
 
+    /**
+     * Busca productos cuyo nombre comienza con el texto especificado.
+     *
+     * @param nombre Prefijo del nombre del producto.
+     * @return Lista de productos que coinciden con el criterio.
+     */
     @Override
     public List<Producto> buscarPorNombre(String nombre) {
         List<Producto> productosEncontrados = new ArrayList<>();
@@ -52,6 +82,11 @@ public class ProductoDAOMemoria implements ProductoDAO {
         return productosEncontrados;
     }
 
+    /**
+     * Actualiza un producto existente en la lista.
+     *
+     * @param producto Producto con los nuevos datos.
+     */
     @Override
     public void actualizar(Producto producto) {
         for (int i = 0; i < productos.size(); i++) {
@@ -61,6 +96,11 @@ public class ProductoDAOMemoria implements ProductoDAO {
         }
     }
 
+    /**
+     * Elimina un producto según su código.
+     *
+     * @param codigo Código del producto a eliminar.
+     */
     @Override
     public void eliminar(int codigo) {
         Iterator<Producto> iterator = productos.iterator();
@@ -72,6 +112,11 @@ public class ProductoDAOMemoria implements ProductoDAO {
         }
     }
 
+    /**
+     * Devuelve la lista completa de productos registrados.
+     *
+     * @return Lista de productos.
+     */
     @Override
     public List<Producto> listarTodos() {
         return productos;

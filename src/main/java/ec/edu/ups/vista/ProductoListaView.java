@@ -6,6 +6,13 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
+/**
+ * Vista interna que permite visualizar una lista de productos disponibles.
+ * Incluye funcionalidades para buscar por nombre y listar todos los productos.
+ *
+ * @author Brandon
+ * @version 1.0
+ */
 public class ProductoListaView extends JInternalFrame {
 
     private JTextField txtBuscar;
@@ -16,10 +23,13 @@ public class ProductoListaView extends JInternalFrame {
     private JLabel lbTitulo;
     private JLabel lbNombre;
     private DefaultTableModel modelo;
-    private Object[] columnas ;
+    private Object[] columnas;
 
+    /**
+     * Constructor que configura la interfaz de listado de productos.
+     * Establece el modelo de tabla con columnas predefinidas.
+     */
     public ProductoListaView() {
-
         setContentPane(panelPrincipal);
         setTitle("Listado de Productos");
         setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
@@ -27,13 +37,14 @@ public class ProductoListaView extends JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setResizable(true);
+
         columnas = new Object[]{"Codigo", "Nombre", "Precio"};
         modelo = new DefaultTableModel();
         modelo.setColumnIdentifiers(columnas);
         tblProductos.setModel(modelo);
-
     }
 
+    /** @return Campo de texto para ingresar el término de búsqueda. */
     public JTextField getTxtBuscar() {
         return txtBuscar;
     }
@@ -42,6 +53,7 @@ public class ProductoListaView extends JInternalFrame {
         this.txtBuscar = txtBuscar;
     }
 
+    /** @return Botón para buscar productos por nombre. */
     public JButton getBtnBuscar() {
         return btnBuscar;
     }
@@ -50,6 +62,7 @@ public class ProductoListaView extends JInternalFrame {
         this.btnBuscar = btnBuscar;
     }
 
+    /** @return Tabla que contiene la lista de productos. */
     public JTable getTblProductos() {
         return tblProductos;
     }
@@ -58,6 +71,7 @@ public class ProductoListaView extends JInternalFrame {
         this.tblProductos = tblProductos;
     }
 
+    /** @return Panel principal de la interfaz. */
     public JPanel getPanelPrincipal() {
         return panelPrincipal;
     }
@@ -66,6 +80,7 @@ public class ProductoListaView extends JInternalFrame {
         this.panelPrincipal = panelPrincipal;
     }
 
+    /** @return Botón para listar todos los productos disponibles. */
     public JButton getBtnListar() {
         return btnListar;
     }
@@ -74,6 +89,7 @@ public class ProductoListaView extends JInternalFrame {
         this.btnListar = btnListar;
     }
 
+    /** @return Modelo de tabla utilizado para mostrar los productos. */
     public DefaultTableModel getModelo() {
         return modelo;
     }
@@ -82,10 +98,12 @@ public class ProductoListaView extends JInternalFrame {
         this.modelo = modelo;
     }
 
+    /** @return Etiqueta del título de la ventana. */
     public JLabel getLbTitulo() {
         return lbTitulo;
     }
 
+    /** @return Etiqueta que indica el campo de nombre. */
     public JLabel getLbNombre() {
         return lbNombre;
     }
@@ -106,20 +124,21 @@ public class ProductoListaView extends JInternalFrame {
         this.columnas = columnas;
     }
 
+    /**
+     * Carga una lista de productos en la tabla.
+     *
+     * @param listaProductos Lista de productos a mostrar.
+     */
     public void cargarDatos(List<Producto> listaProductos) {
-
-
         DefaultTableModel modelo = getModelo();
         modelo.setRowCount(0);
 
         for (Producto producto : listaProductos) {
-            modelo.addRow(new Object[] {
+            modelo.addRow(new Object[]{
                     producto.getCodigo(),
                     producto.getNombre(),
                     producto.getPrecio()
             });
         }
-
     }
-
 }

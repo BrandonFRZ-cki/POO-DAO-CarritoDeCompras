@@ -24,7 +24,16 @@ import java.util.List;
 import java.util.Locale;
 
 
+/**
+ * Controlador que gestiona la lógica relacionada con la administración de usuarios,
+ * incluyendo creación, eliminación, actualización, autenticación, y recuperación de contraseña.
+ * También gestiona el cambio dinámico de idioma y las preguntas de seguridad.
+ *
+ * @author Brandon
+ * @version 1.0
+ */
 public class UsuarioController {
+
     private final LoginView loginView;
     private final UsuarioAnadirView usuarioAnadirView;
     private final UsuarioListaView usuarioListaView;
@@ -37,7 +46,20 @@ public class UsuarioController {
     private MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler;
     private Usuario usuario;
     private Locale locale;
-
+    /**
+     * Crea una nueva instancia del controlador de usuarios.
+     *
+     * @param usuarioDAO DAO para operaciones CRUD de usuario.
+     * @param loginView Vista de inicio de sesión.
+     * @param usuarioAnadirView Vista para añadir usuarios.
+     * @param usuarioListaView Vista para listar usuarios.
+     * @param usuarioEliminarView Vista para eliminar usuarios.
+     * @param usuarioActualizarView Vista para actualizar usuarios.
+     * @param registrarView Vista para registrar nuevos usuarios.
+     * @param responderPreguntasView Vista para responder preguntas de seguridad.
+     * @param preguntaDAO DAO de preguntas disponibles.
+     * @param mensajeInternacionalizacionHandler Manejador de mensajes internacionalizados.
+     */
     public UsuarioController(UsuarioDAO usuarioDAO, LoginView loginView, UsuarioAnadirView usuarioAnadirView,
                              UsuarioListaView usuarioListaView, UsuarioEliminarView usuarioEliminarView,
                              UsuarioActualizarView usuarioActualizarView, RegistrarView registrarView,
@@ -57,6 +79,14 @@ public class UsuarioController {
         configurarEventosEnVistas();
 
     }
+    /**
+     * Configura los eventos de acción para todas las vistas asociadas al controlador de usuario.
+     * Incluye los botones de login, registro, añadir, listar, actualizar, eliminar y recuperación
+     * de contraseña, así como la validación de preguntas de seguridad.
+     *
+     * Este método centraliza el enlace entre la lógica del controlador y las interfaces gráficas,
+     * registrando listeners para cada botón relevante del sistema.
+     */
     private void configurarEventosEnVistas() {
         /**
          * ╔═════════════════════════════╗
@@ -266,6 +296,11 @@ public class UsuarioController {
             }
         });
     }
+    /**
+     * Autentica al usuario según el nombre de usuario y contraseña ingresados en la vista de login.
+     * Verifica si el usuario tiene preguntas de seguridad respondidas y fecha de nacimiento.
+     * Si no cumple con los requisitos, se abre la vista para completar datos faltantes.
+     */
     private void autenticar() {
         String username = loginView.getTxtUsername().getText();
         String contrasena = new String(loginView.getTxtContrasena().getPassword());
@@ -330,9 +365,20 @@ public class UsuarioController {
         JOptionPane.showMessageDialog(responderPreguntasView, mensajes(7), titulosMensajes(3), JOptionPane.INFORMATION_MESSAGE);
         responderPreguntasView.dispose();
     }
+
+    /**
+     * Devuelve el usuario actualmente autenticado.
+     *
+     * @return Usuario autenticado o null si no se ha autenticado aún.
+     */
     public Usuario getUsuarioAutenticado() {
         return usuario;
     }
+    /**
+     * Añade un nuevo usuario desde la vista de administrador.
+     * Realiza validaciones de campos vacíos, coincidencia de contraseñas y existencia previa del username.
+     * Si todo es válido, crea el usuario y lo guarda en el DAO.
+     */
     private void anadirUsuario() {
         String username = usuarioAnadirView.getTxtUserName().getText();
         String contrasena = usuarioAnadirView.getTxtContrasena().getText();
@@ -365,6 +411,10 @@ public class UsuarioController {
         usuarioAnadirView.mostrarMensaje(mensajes(16), titulosMensajes(7), "warning");
         usuarioAnadirView.limparCampos();
     }
+    /**
+     * Busca usuarios por coincidencia parcial en el nombre de usuario ingresado.
+     * Si encuentra coincidencias, las carga en la tabla de la vista; si no, muestra un mensaje informativo.
+     */
     private void buscarUsuarioPorUserName() {
         String texto = usuarioListaView.getTxtBuscar().getText().toLowerCase().trim();
 
@@ -388,10 +438,18 @@ public class UsuarioController {
 
         cargarEnTabla(usuariosCoincidentes);
     }
+    /**
+     * Lista todos los usuarios registrados y los carga en la tabla de la vista.
+     */
     private void listarUsuarios() {
         List<Usuario> usuarios = usuarioDAO.listarTodos();
         cargarEnTabla(usuarios);
     }
+    /**
+     * Carga una lista de usuarios en el modelo de tabla de la vista de listado.
+     *
+     * @param usuarios Lista de usuarios a mostrar en la tabla.
+     */
     private void cargarEnTabla(List<Usuario> usuarios) {
         DefaultTableModel modelo = usuarioListaView.getModelo();
         modelo.setRowCount(0); // Limpia la tabla
@@ -408,6 +466,10 @@ public class UsuarioController {
             });
         }
     }
+    /**
+     * Actualiza los datos de un usuario según la opción seleccionada por el administrador.
+     * Permite modificar nombre, apellido, correo, teléfono o contraseña.
+     */
     private void actualizarUsuario() {
         String username = usuarioActualizarView.getTxtUsername().getText();
         Usuario usuario = usuarioDAO.buscarPorUsername(username);
@@ -470,6 +532,10 @@ public class UsuarioController {
         usuarioActualizarView.getTxtTelefono().setText(usuario.getTelefono());
         usuarioActualizarView.getTxtContrasena().setText(usuario.getContrasenia());
     }
+    /**
+     * Busca un usuario por su username y llena los campos de la vista de actualización con su información.
+     * Muestra un mensaje si el campo está vacío o si no se encuentra el usuario.
+     */
     public void buscarParaActualizar() {
         String username = usuarioActualizarView.getTxtUsername().getText().trim();
 
@@ -494,6 +560,10 @@ public class UsuarioController {
 
         usuarioActualizarView.mostrarMensaje(mensajes(40), titulosMensajes(14), "info");
     }
+    /**
+     * Busca un usuario por su username en la vista de eliminación.
+     * Si existe, muestra su nombre y apellido; si no, muestra mensajes de error y limpia los campos.
+     */
     public void buscarParaEliminar() {
         String username = usuarioEliminarView.getTxtUsername().getText().trim();
 
@@ -513,6 +583,10 @@ public class UsuarioController {
             usuarioEliminarView.mostrarMensaje(mensajes(43), titulosMensajes(16), "error");
         }
     }
+    /**
+     * Elimina un usuario luego de confirmar la acción con un cuadro de diálogo.
+     * Muestra mensajes de éxito o advertencia según el resultado.
+     */
     public void eliminar() {
         String username = usuarioEliminarView.getTxtUsername().getText().trim();
 
@@ -540,6 +614,11 @@ public class UsuarioController {
             usuarioEliminarView.getTxtApellido().setText("");
         }
     }
+    /**
+     * Registra un nuevo usuario desde la vista de registro público.
+     * Valida los campos obligatorios, verifica coincidencia de contraseñas
+     * y la existencia previa del username. Si es exitoso, pasa a la vista de preguntas de seguridad.
+     */
     private void registrarNuevoUsuario() {
         String username = registrarView.getTxtUserName().getText().trim();
         String nombre = registrarView.getTxtNombre().getText().trim();
@@ -574,6 +653,10 @@ public class UsuarioController {
         responderPreguntasView.limpiarCampos();
         responderPreguntasView.setVisible(true);
     }
+    /**
+     * Recupera la contraseña de un usuario autenticando su identidad con una pregunta de seguridad aleatoria.
+     * Si la respuesta es correcta, permite definir una nueva contraseña.
+     */
     private void recuperarContrasena() {
         String username = JOptionPane.showInputDialog(loginView, mensajes(68));
         Usuario usuario = usuarioDAO.buscarPorUsername(username);
@@ -619,6 +702,12 @@ public class UsuarioController {
             loginView.mostrarMensaje(mensajes(76), titulosMensajes(31), "error");
         }
     }
+    /**
+     * Cambia el idioma de la interfaz gráfica, actualizando los textos de todas las vistas.
+     *
+     * @param lenguaje Código ISO del idioma (por ejemplo, "es" para español).
+     * @param pais Código ISO del país (por ejemplo, "EC" para Ecuador).
+     */
     public void cambiarIdioma(String lenguaje, String pais) {
         locale = mensajeInternacionalizacionHandler.getLocale();
         // Login
@@ -715,6 +804,14 @@ public class UsuarioController {
         Object[] columnasUsers = {mensajeInternacionalizacionHandler.get("nombreusuario"), mensajeInternacionalizacionHandler.get("nombre"), mensajeInternacionalizacionHandler.get("apellido"), mensajeInternacionalizacionHandler.get("correo"), mensajeInternacionalizacionHandler.get("telefono"),mensajeInternacionalizacionHandler.get("fechanacimiento")};
         usuarioListaView.getModelo().setColumnIdentifiers(columnasUsers);
    }
+    /**
+     * Retorna un mensaje internacionalizado correspondiente al código proporcionado.
+     * Este método utiliza el manejador de internacionalización para obtener el texto
+     * adecuado en el idioma actual del sistema.
+     *
+     * @param cod Código numérico del mensaje.
+     * @return Cadena con el mensaje correspondiente al código dado.
+     */
     private String mensajes(int cod) {
         return switch (cod) {
             case 0 -> mensajeInternacionalizacionHandler.get("mensaje.47");
@@ -812,6 +909,13 @@ public class UsuarioController {
             default -> "";
         };
     }
+    /**
+     * Retorna un título de mensaje internacionalizado correspondiente al código proporcionado.
+     * Usado principalmente en cuadros de diálogo (JOptionPane) como encabezado del mensaje.
+     *
+     * @param cod Código numérico del título.
+     * @return Cadena con el título correspondiente al código dado.
+     */
     private String titulosMensajes(int cod) {
         return switch (cod) {
             case 0 -> mensajeInternacionalizacionHandler.get("mensaje.48");
