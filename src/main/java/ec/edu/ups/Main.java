@@ -158,6 +158,7 @@ public class Main {
                 mensajeInternacionalizacionHandler
         );
         usuarioController.cambiarIdioma("","");
+        loginView.mostrarMensaje(mensajeInternacionalizacionHandler.get("mensaje.inicio"),mensajeInternacionalizacionHandler.get("titulo.inicio"),"info");
         loginView.getBtEN().addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 mensajeInternacionalizacionHandler.setLenguaje("en","US");
