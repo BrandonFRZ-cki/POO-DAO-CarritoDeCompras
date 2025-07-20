@@ -1,5 +1,6 @@
 package ec.edu.ups.vista;
 
+import ec.edu.ups.modelo.Usuario;
 import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
@@ -169,7 +170,6 @@ public class MenuPrincipalView extends JFrame {
         setJMenuBar(menuBar);
         setContentPane(jDesktopPane);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle(mensajeInternacionalizacionHandler.get("titulo"));
         setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 
@@ -179,9 +179,9 @@ public class MenuPrincipalView extends JFrame {
      * @param lenguaje Código de idioma (por ejemplo, "es", "en").
      * @param pais Código de país (por ejemplo, "EC", "US").
      */
-    public void cambiarIdioma(String lenguaje, String pais) {
+    public void cambiarIdioma(String lenguaje, String pais, Usuario usuarioAuntenticado) {
         mensajeInternacionalizacionHandler.setLenguaje(lenguaje, pais);
-        setTitle(mensajeInternacionalizacionHandler.get("titulo"));
+        setTitle(mensajeInternacionalizacionHandler.get("titulo")+" ---------------------- "+mensajeInternacionalizacionHandler.get("usuario")+" →  " + usuarioAuntenticado.getNombre()+" "+usuarioAuntenticado.getApellido());
 
         // Actualizar textos de todos los elementos
         menuProducto.setText(mensajeInternacionalizacionHandler.get("producto"));

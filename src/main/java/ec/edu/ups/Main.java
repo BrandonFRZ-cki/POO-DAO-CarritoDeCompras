@@ -213,8 +213,8 @@ public class Main {
                             mensajeInternacionalizacionHandler
                     );
                     principalView.setVisible(true);
-                    principalView.mostrarMensaje(mensajeInternacionalizacionHandler.get("bienvenido")+" : " + usuarioAuntenticado.getUsername());
-                    principalView.setTitle(mensajeInternacionalizacionHandler.get("titulo")+" ---------------------- "+mensajeInternacionalizacionHandler.get("usuario")+" →  " + usuarioAuntenticado.getUsername());
+                    principalView.mostrarMensaje(mensajeInternacionalizacionHandler.get("bienvenido")+" : " + usuarioAuntenticado.getNombre()+" "+usuarioAuntenticado.getApellido());
+                    principalView.setTitle(mensajeInternacionalizacionHandler.get("titulo")+" ---------------------- "+mensajeInternacionalizacionHandler.get("usuario")+" →  " + usuarioAuntenticado.getNombre()+" "+usuarioAuntenticado.getApellido());
                     usuarioController.cambiarIdioma(""," ");
                     carritoController.cambiarIdioma(" "," ");
                     productoController.cambiarIdioma(" "," ");
@@ -371,7 +371,7 @@ public class Main {
                     principalView.getMenuItemIdiomaEspanol().addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            principalView.cambiarIdioma("es", "EC");
+                            principalView.cambiarIdioma("es", "EC", usuarioAuntenticado);
                             productoController.cambiarIdioma("es", "EC");
                             carritoController.cambiarIdioma("es", "EC");
                             usuarioController.cambiarIdioma("es", "EC");
@@ -381,7 +381,7 @@ public class Main {
                     principalView.getMenuItemIdiomaIngles().addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            principalView.cambiarIdioma("en", "US");
+                            principalView.cambiarIdioma("en", "US",usuarioAuntenticado);
                             productoController.cambiarIdioma("en", "US");
                             carritoController.cambiarIdioma("en", "US");
                             usuarioController.cambiarIdioma("en", "US");
@@ -391,7 +391,7 @@ public class Main {
                     principalView.getMenuItemIdiomaFrances().addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            principalView.cambiarIdioma("fr", "FR");
+                            principalView.cambiarIdioma("fr", "FR",usuarioAuntenticado);
                             productoController.cambiarIdioma("fr", "FR");
                             carritoController.cambiarIdioma("fr", "FR");
                             usuarioController.cambiarIdioma("fr", "FR");
