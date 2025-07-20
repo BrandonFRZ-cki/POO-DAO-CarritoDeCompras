@@ -182,6 +182,30 @@ public class Carrito {
     }
 
     /**
+     * Sincroniza el contador estático de códigos del carrito con base en una lista existente.
+     *
+     * <p>Este método busca el mayor código entre todos los carritos cargados desde el archivo,
+     * y establece el valor del contador interno como ese máximo más uno. De esta manera, se evita
+     * la asignación de códigos duplicados o inconsistentes al crear nuevos carritos.</p>
+     *
+     * <p>Debe ser llamado inmediatamente después de cargar los carritos desde archivo,
+     * antes de crear nuevos objetos {@link Carrito}.</p>
+     *
+     * @param carritos Lista de carritos ya cargados desde archivo.
+     */
+    public static void sincronizarContador(List<Carrito> carritos) {
+        int max = 0;
+        for (Carrito c : carritos) {
+            if (c.getCodigo() > max) {
+                max = c.getCodigo();
+            }
+        }
+        contador = max + 1;
+    }
+
+
+
+    /**
      * Representación en texto del carrito para persistencia.
      * Incluye código, IVA, fecha, total, usuario y lista de ítems.
      *
@@ -190,11 +214,26 @@ public class Carrito {
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        return codigo + "," +
-                IVA + "," +
-                sdf.format(fechaCreacion.getTime()) + "," +
-                calcularTotal() + "," +
-                (usuario != null ? usuario.getUsername() : "null") + "," +
-                items;
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(codigo).append(",")
+                .append(IVA).append(",")
+                .append(sdf.format(fechaCreacion.getTime())).append(",")
+                .append(calcularTotal()).append(",")
+                .append(usuario != null ? usuario.getUsername() : "null").append(",[");
+
+        for (ItemCarrito item : items) {
+            Producto p = item.getProducto();
+            sb.append(p.getCodigo()).append(",")
+                    .append(p.getNombre()).append(",")
+                    .append(p.getPrecio()).append(",")
+                    .append(item.getCantidad()).append(":");
+        }
+
+        sb.append("]");
+
+        return sb.toString();
     }
+
+
 }

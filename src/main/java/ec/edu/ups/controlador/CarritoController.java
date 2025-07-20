@@ -432,7 +432,6 @@ public class CarritoController {
      * Permite modificar un carrito existente: agregar, eliminar o cambiar cantidades de productos.
      * Valida permisos del usuario y muestra mensajes adecuados.
      */
-
     private void actualizarCarrito() {
         String codigoTexto = carritoActualizarView.getTxtCodigo().getText();
 
@@ -451,10 +450,7 @@ public class CarritoController {
                 return;
             }
 
-            String[] opciones = {
-                    mensajes(33), mensajes(34), mensajes(35)
-            };
-
+            String[] opciones = { mensajes(33), mensajes(34), mensajes(35) };
             String seleccion = (String) JOptionPane.showInputDialog(
                     carritoActualizarView,
                     mensajes(31),
@@ -496,6 +492,8 @@ public class CarritoController {
                 }
             }
 
+            carritoDAO.actualizar(carrito);
+
             carritoActualizarView.mostrarMensaje(mensajes(42), titulosMensajes(13), "info");
             buscarActualizarCarrito();
 
@@ -503,6 +501,7 @@ public class CarritoController {
             carritoActualizarView.mostrarMensaje(mensajes(43), titulosMensajes(11), "error");
         }
     }
+
     /**
      * Busca un carrito por código y carga su información en la vista de actualización,
      * incluyendo la tabla de productos y totales.

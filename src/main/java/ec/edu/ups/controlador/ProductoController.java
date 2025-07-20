@@ -261,7 +261,7 @@ public class ProductoController {
             int seguroMensaje = JOptionPane.showOptionDialog(
                     null, mensajes(8),titulosMensajes(8),
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
-                    null, new Object[]{"OK", "No"}, null);
+                    null, new Object[]{mensajeInternacionalizacionHandler.get("mensaje.27"), mensajeInternacionalizacionHandler.get("mensaje.28")}, null);
 
             if (seguroMensaje == JOptionPane.YES_OPTION) {
                 productoDAO.eliminar(codigo);

@@ -112,7 +112,6 @@ public class CarritoDAOArchivoTexto implements CarritoDAO {
      *
      * @return Lista de objetos {@link Carrito}.
      */
-    @Override
     public List<Carrito> listarTodos() {
         List<Carrito> lista = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
@@ -126,8 +125,11 @@ public class CarritoDAOArchivoTexto implements CarritoDAO {
         } catch (IOException e) {
             throw new RuntimeException("Error al leer archivo de carritos", e);
         }
+        Carrito.sincronizarContador(lista);
+
         return lista;
     }
+
 
     /**
      * Convierte una línea del archivo en un objeto {@link Carrito}, incluyendo sus ítems.
@@ -139,23 +141,25 @@ public class CarritoDAOArchivoTexto implements CarritoDAO {
         try {
             String[] partes = linea.split(",", 6);
             int codigo = Integer.parseInt(partes[0]);
-            double iva = Double.parseDouble(partes[1]);
+            double ivaLeido = Double.parseDouble(partes[1]);
             String fechaStr = partes[2];
-
-            GregorianCalendar fecha = new GregorianCalendar();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            fecha.setTime(sdf.parse(fechaStr));
-
+            double totalLeido = Double.parseDouble(partes[3]);
             String username = partes[4];
             String itemsStr = partes[5];
 
+            // Crear carrito base
             Usuario usuario = new Usuario();
             usuario.setUsername(username);
             Carrito carrito = new Carrito(usuario);
             carrito.setCodigo(codigo);
+
+            // Fecha
+            GregorianCalendar fecha = new GregorianCalendar();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            fecha.setTime(sdf.parse(fechaStr));
             carrito.setFechaCreacion(fecha);
 
-            // Procesar los productos del carrito
+            // Agregar items
             if (itemsStr.contains("[") && itemsStr.contains("]")) {
                 String contenido = itemsStr.substring(itemsStr.indexOf("[") + 1, itemsStr.lastIndexOf("]"));
                 String[] itemsSeparados = contenido.split(":");
@@ -177,6 +181,8 @@ public class CarritoDAOArchivoTexto implements CarritoDAO {
             return null;
         }
     }
+
+
 
     /**
      * Sobrescribe completamente el archivo con una lista actualizada de carritos.
