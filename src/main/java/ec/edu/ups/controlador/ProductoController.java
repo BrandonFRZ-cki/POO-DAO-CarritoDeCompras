@@ -259,9 +259,9 @@ public class ProductoController {
         try {
             int codigo = Integer.parseInt(productoEliminarView.getTxtCodigo().getText());
             int seguroMensaje = JOptionPane.showOptionDialog(
-                    null, "¿Seguro que deseas eliminar este producto?", "Confirmar eliminación",
+                    null, mensajes(8),titulosMensajes(8),
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
-                    null, new Object[]{"Sí", "No"}, null);
+                    null, new Object[]{"OK", "No"}, null);
 
             if (seguroMensaje == JOptionPane.YES_OPTION) {
                 productoDAO.eliminar(codigo);
@@ -320,6 +320,7 @@ public class ProductoController {
             Producto producto = productoDAO.buscarPorCodigo(codigo);
             producto.setNombre(nuevoNombre);
             producto.setPrecio(nuevoPrecio);
+            productoDAO.actualizar(producto);
 
             productoActualizarView.getTxtCodigo().setEditable(true);
             productoActualizarView.getTxtCodigo().setText(" - ");
