@@ -1,10 +1,21 @@
 package ec.edu.ups.modelo;
 
+import ec.edu.ups.util.exceptions.CedulaValidationException;
+import ec.edu.ups.util.exceptions.PasswordException;
+import ec.edu.ups.util.exceptions.CorreoValidationException;
+import ec.edu.ups.util.exceptions.TelefonoValidationException;
+
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+/**
+ * Clase que representa un usuario del sistema.
+ * Contiene datos personales, credenciales, listas de carritos y preguntas respondidas.
+ * Incluye validaciones para la cédula y contraseña conforme a reglas locales.
+ */
 public class Usuario {
+
     private String username;
     private String contrasenia;
     private Rol rol;
@@ -16,115 +27,343 @@ public class Usuario {
     private GregorianCalendar fechaNacimiento;
     private List<Pregunta> preguntasRespondidas;
 
+    /**
+     * Constructor por defecto que inicializa las listas vacías y la fecha actual como fecha de nacimiento.
+     */
     public Usuario() {
-    }
-
-    public Usuario(String nombreDeUsuario, String contrasenia, Rol rol,String nombre, String apellido, String email, String telefono) {
-        this.username = nombreDeUsuario;
-        this.contrasenia = contrasenia;
-        this.rol = rol;
-        this.carritos = new ArrayList<Carrito>();
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.email = email;
-        this.telefono = telefono;
+        this.carritos = new ArrayList<>();
         this.preguntasRespondidas = new ArrayList<>();
         this.fechaNacimiento = new GregorianCalendar();
     }
 
+    /**
+     * Constructor principal con todos los atributos obligatorios del usuario.
+     *
+     * @param nombreDeUsuario Cédula del usuario (10 dígitos con validación).
+     * @param contrasenia Contraseña con validaciones.
+     * @param rol Rol del usuario (ADMINISTRADOR o USUARIO).
+     * @param nombre Nombre del usuario.
+     * @param apellido Apellido del usuario.
+     * @param email Correo electrónico.
+     * @param telefono Teléfono del usuario.
+     */
+    public Usuario(String nombreDeUsuario, String contrasenia, Rol rol, String nombre, String apellido, String email, String telefono) {
+        setUsername(nombreDeUsuario);
+        setContrasenia(contrasenia);
+        setEmail(email);
+        setTelefono(telefono);
+        this.carritos = new ArrayList<>();
+        this.preguntasRespondidas = new ArrayList<>();
+        this.fechaNacimiento = new GregorianCalendar();
+        this.rol = rol;
+        this.nombre = nombre;
+        this.apellido = apellido;
+    }
+
+    /**
+     * Devuelve la cédula (username) del usuario.
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Asigna y valida la cédula ecuatoriana del usuario.
+     *
+     * @param username Cédula de 10 dígitos.
+     * @throws CedulaValidationException si no cumple las reglas de validación.
+     */
     public void setUsername(String username) {
-        this.username = username;
+        if (username != null && username.length() == 10) {
+            try {
+                for (int i = 0; i < username.length(); i++) {
+                    Integer.parseInt(username.charAt(i) + "");
+                }
+            } catch (NumberFormatException e) {
+                throw new CedulaValidationException("79"); // Solo números
+            }
+
+            int[] multiplicadores = {2, 1, 2, 1, 2, 1, 2, 1, 2};
+            int suma = 0;
+
+            for (int i = 0; i < 9; i++) {
+                int digito = Integer.parseInt(username.charAt(i) + "");
+                int producto = digito * multiplicadores[i];
+                if (producto >= 10) producto -= 9;
+                suma += producto;
+            }
+
+            int digitoVerificador = Integer.parseInt(username.charAt(9) + "");
+            int resultado = (suma % 10 == 0) ? 0 : 10 - (suma % 10);
+
+            if (resultado != digitoVerificador) throw new CedulaValidationException("80");
+            int provincia = Integer.parseInt(username.substring(0, 2));
+            if (provincia < 0 || provincia > 24) throw new CedulaValidationException("81");
+            int tercerDigito = Integer.parseInt(username.charAt(2) + "");
+            if (tercerDigito >= 6) throw new CedulaValidationException("82");
+
+            this.username = username;
+        } else {
+            throw new CedulaValidationException("78"); // No tiene 10 dígitos
+        }
     }
 
+    /**
+     * Devuelve la contraseña del usuario.
+     */
     public String getContrasenia() {
         return contrasenia;
     }
 
+    /**
+     * Asigna la contraseña del usuario con validaciones de seguridad:
+     * mínimo 6 caracteres, al menos una mayúscula, una minúscula y un carácter especial (@ _ -).
+     *
+     * @param contrasenia Contraseña ingresada.
+     * @throws PasswordException si no cumple las reglas.
+     */
     public void setContrasenia(String contrasenia) {
-        this.contrasenia = contrasenia;
+        boolean tieneMayuscula = false;
+        boolean tieneMinuscula = false;
+        boolean tieneEspecial = false;
+
+        if (contrasenia != null && contrasenia.length() >= 6) {
+            for (int i = 0; i < contrasenia.length(); i++) {
+                char c = contrasenia.charAt(i);
+                if (Character.isUpperCase(c)) tieneMayuscula = true;
+                else if (Character.isLowerCase(c)) tieneMinuscula = true;
+                else if (c == '@' || c == '_' || c == '-') tieneEspecial = true;
+            }
+            if (!tieneMayuscula) throw new PasswordException("84");
+            if (!tieneMinuscula) throw new PasswordException("85");
+            if (!tieneEspecial)  throw new PasswordException("86");
+
+            this.contrasenia = contrasenia;
+        } else {
+            throw new PasswordException("83");
+        }
     }
 
+    /**
+     * Devuelve el rol asignado al usuario.
+     */
     public Rol getRol() {
         return rol;
     }
 
+    /**
+     * Establece el rol del usuario.
+     *
+     * @param rol Rol a asignar (ADMINISTRADOR o USUARIO).
+     */
     public void setRol(Rol rol) {
         this.rol = rol;
     }
 
+    /**
+     * Devuelve la lista de carritos asociados al usuario.
+     */
     public List<Carrito> getCarritos() {
         return carritos;
     }
 
+    /**
+     * Agrega un carrito a la lista del usuario.
+     *
+     * @param carrito Carrito a agregar.
+     */
     public void agregarCarrito(Carrito carrito) {
-        carritos.add(carrito);
+        this.carritos.add(carrito);
     }
 
+    /**
+     * Establece la lista completa de carritos del usuario.
+     *
+     * @param carritos Lista de carritos.
+     */
     public void setCarritos(List<Carrito> carritos) {
         this.carritos = carritos;
     }
 
+    /**
+     * Devuelve el nombre del usuario.
+     */
     public String getNombre() {
         return nombre;
     }
 
+    /**
+     * Establece el nombre del usuario.
+     *
+     * @param nombre Nombre a asignar.
+     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
+    /**
+     * Devuelve el apellido del usuario.
+     */
     public String getApellido() {
         return apellido;
     }
 
+    /**
+     * Establece el apellido del usuario.
+     *
+     * @param apellido Apellido a asignar.
+     */
     public void setApellido(String apellido) {
         this.apellido = apellido;
     }
 
+    /**
+     * Devuelve el correo electrónico del usuario.
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Establece el correo electrónico del usuario con validaciones básicas.
+     *
+     * @param email Correo a validar y asignar.
+     * @throws CorreoValidationException si falta '@' o '.'.
+     */
     public void setEmail(String email) {
+        if (email == null || email.isEmpty()) {
+            throw new CorreoValidationException("87"); // Falta @
+        }
+
+        boolean contieneArroba = false;
+        boolean contienePunto = false;
+
+        for (int i = 0; i < email.length(); i++) {
+            char c = email.charAt(i);
+            if (c == '@') contieneArroba = true;
+            if (c == '.') contienePunto = true;
+        }
+
+        if (!contieneArroba) throw new CorreoValidationException("87");
+        if (!contienePunto) throw new CorreoValidationException("88");
+
         this.email = email;
     }
 
+    /**
+     * Devuelve el número de teléfono del usuario.
+     */
     public String getTelefono() {
         return telefono;
     }
 
+    /**
+     * Establece y valida el número de teléfono del usuario.
+     *
+     * @param telefono Número a validar y asignar.
+     * @throws TelefonoValidationException si no tiene 10 dígitos o contiene letras.
+     */
     public void setTelefono(String telefono) {
+        if (telefono == null || telefono.length() != 10) {
+            throw new TelefonoValidationException("90"); // No tiene 10 dígitos
+        }
+
+        for (int i = 0; i < telefono.length(); i++) {
+            char c = telefono.charAt(i);
+            if (!Character.isDigit(c)) {
+                throw new TelefonoValidationException("89"); // No es numérico
+            }
+        }
+
         this.telefono = telefono;
     }
-    public List<Pregunta> getPreguntasRespondidas() {
-        return preguntasRespondidas;
-    }
-    public void agregarPregunta(Pregunta pregunta) {
-        this.preguntasRespondidas.add(pregunta);
-    }
 
+    /**
+     * Devuelve la fecha de nacimiento del usuario.
+     */
     public GregorianCalendar getFechaNacimiento() {
         return fechaNacimiento;
     }
 
+    /**
+     * Establece la fecha de nacimiento del usuario.
+     *
+     * @param fechaNacimiento Fecha en formato GregorianCalendar.
+     */
     public void setFechaNacimiento(GregorianCalendar fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 
+    /**
+     * Devuelve la lista de preguntas de seguridad respondidas por el usuario.
+     */
+    public List<Pregunta> getPreguntasRespondidas() {
+        return preguntasRespondidas;
+    }
+
+    /**
+     * Agrega una pregunta respondida a la lista.
+     *
+     * @param pregunta Pregunta respondida.
+     */
+    public void agregarPregunta(Pregunta pregunta) {
+        this.preguntasRespondidas.add(pregunta);
+    }
+
+    /**
+     * Establece la lista de preguntas respondidas.
+     *
+     * @param preguntasRespondidas Lista de preguntas con respuestas.
+     */
     public void setPreguntasRespondidas(List<Pregunta> preguntasRespondidas) {
         this.preguntasRespondidas = preguntasRespondidas;
     }
 
-
+    /**
+     * Convierte el usuario a una cadena para escritura en archivo.
+     * Incluye cédula, contraseña, rol, nombre, apellido, correo, teléfono,
+     * carritos y preguntas respondidas.
+     */
     @Override
     public String toString() {
-        return "Usuario{" +
-                "nombreDeUsuario='" + username + '\'' +
-                ", contrasenia='" + contrasenia + '\'' +
-                ", rol=" + rol +
-                '}';
+        return username + "," +
+                contrasenia + "," +
+                rol + "," +
+                nombre + "," +
+                apellido + "," +
+                email + "," +
+                telefono + "<" + carritosParaArchivo() + ">" + "<" + preguntasParaArchivo() + ">";
     }
+
+    /**
+     * Serializa las preguntas respondidas para almacenamiento en archivo.
+     *
+     * @return Cadena con preguntas en formato id:respuesta|... o "sin preguntas".
+     */
+    private String preguntasParaArchivo() {
+        if (preguntasRespondidas.isEmpty()) {
+            return "sin preguntas";
+        }
+        String texto = "";
+        for (Pregunta p : preguntasRespondidas) {
+            texto += p.getCodigo() + ":" + p.getRespuesta() + "|";
+        }
+        return texto;
+    }
+
+    /**
+     * Serializa los carritos del usuario. Actualmente no se utiliza.
+     *
+     * @return Cadena con los carritos o "sin carritos".
+     */
+    private String carritosParaArchivo() {
+        String carritosString = "<";
+        for (Carrito carrito : carritos) {
+            carritosString += carrito + ":";
+        }
+        carritosString += ">";
+        return "sin carritos";
+    }
+
+
 }

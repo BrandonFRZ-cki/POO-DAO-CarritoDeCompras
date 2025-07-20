@@ -12,8 +12,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Locale;
-
+/**
+ * Controlador encargado de gestionar las acciones relacionadas con los productos,
+ * como creación, listado, búsqueda, actualización y eliminación. También maneja
+ * la configuración de idioma dinámico para todas las vistas involucradas.
+ *
+ * @author Brandon
+ * @version 1.0
+ */
 public class ProductoController {
+
 
     private final ProductoAnadirView productoAnadirView;
     private final ProductoListaView productoListaView;
@@ -26,6 +34,17 @@ public class ProductoController {
     private MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler;
     private Locale locale;
 
+    /**
+     * Crea una nueva instancia del controlador de productos, enlazando las vistas y el DAO correspondiente.
+     *
+     * @param productoDAO DAO para operaciones CRUD de productos.
+     * @param productoAnadirView Vista para añadir productos.
+     * @param productoListaView Vista para listar productos.
+     * @param productoActualizarView Vista para actualizar productos.
+     * @param carritoAnadirView Vista para añadir productos al carrito.
+     * @param productoEliminarView Vista para eliminar productos.
+     * @param mensajeInternacionalizacionHandler Manejador de mensajes internacionalizados.
+     */
 
     public ProductoController(ProductoDAO productoDAO,
                               ProductoAnadirView productoAnadirView,
@@ -46,7 +65,10 @@ public class ProductoController {
         this.configurarEventosEnVistas();
 
     }
-
+    /**
+     * Registra los listeners de eventos para todos los botones de las vistas asociadas a productos,
+     * incluyendo añadir, listar, buscar, actualizar, eliminar y búsqueda en carrito.
+     */
     private void configurarEventosEnVistas() {
 
 
@@ -112,7 +134,10 @@ public class ProductoController {
         });
 
     }
-
+    /**
+     * Guarda un nuevo producto validando los campos del formulario.
+     * Si el código ya existe o los datos son inválidos, se muestran los mensajes correspondientes.
+     */
     private void guardarProducto() {
         String codTexto = productoAnadirView.getTxtCodigo().getText();
         String nombre = productoAnadirView.getTxtNombre().getText();
@@ -141,16 +166,27 @@ public class ProductoController {
             productoAnadirView.mostrarMensaje(mensajes(3), titulosMensajes(3), "error");
         }
     }
+    /**
+     * Busca productos por nombre desde la vista de listado y carga los resultados en la tabla.
+     */
     private void buscarProducto() {
         String nombre = productoListaView.getTxtBuscar().getText();
 
         List<Producto> productosEncontrados = productoDAO.buscarPorNombre(nombre);
         cargarDatos(productosEncontrados);
     }
+    /**
+     * Lista todos los productos disponibles y los muestra en la tabla de la vista correspondiente.
+     */
     private void listarProductos() {
         List<Producto> productos = productoDAO.listarTodos();
         cargarDatos(productos);
     }
+    /**
+     * Carga una lista de productos en el modelo de tabla de la vista de productos.
+     *
+     * @param listaProductos Lista de productos a mostrar en la tabla.
+     */
     public void cargarDatos(List<Producto> listaProductos) {
         DefaultTableModel modelo = productoListaView.getModelo();
         modelo.setRowCount(0);
@@ -164,6 +200,10 @@ public class ProductoController {
         }
 
     }
+    /**
+     * Busca un producto por su código desde la vista de carrito.
+     * Si lo encuentra, llena los campos de nombre y precio; si no, los deja vacíos.
+     */
     private void buscarProductoPorCodigo() {
         try {
             int codigo = Integer.parseInt(carritoAnadirView.getTxtCodigo().getText());
@@ -181,6 +221,11 @@ public class ProductoController {
             carritoAnadirView.mostrarMensaje(mensajes(5), titulosMensajes(5), "error");
         }
     }
+    /**
+     * Busca un producto por su código en la vista de eliminación.
+     *
+     * @return true si el producto existe y se cargaron sus datos; false si no se encontró.
+     */
     private boolean buscarProductoParaEliminar() {
         try {
             int codigo = Integer.parseInt(productoEliminarView.getTxtCodigo().getText());
@@ -201,6 +246,10 @@ public class ProductoController {
             return false;
         }
     }
+    /**
+     * Elimina un producto después de confirmar con el usuario. Si no existe o hay error,
+     * se muestra un mensaje adecuado.
+     */
     private void eliminarProducto() {
         if (!buscarProductoParaEliminar()) {
             productoEliminarView.mostrarMensaje(mensajes(7), titulosMensajes(7), "warning");
@@ -210,9 +259,9 @@ public class ProductoController {
         try {
             int codigo = Integer.parseInt(productoEliminarView.getTxtCodigo().getText());
             int seguroMensaje = JOptionPane.showOptionDialog(
-                    null, "¿Seguro que deseas eliminar este producto?", "Confirmar eliminación",
+                    null, mensajes(8),titulosMensajes(8),
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
-                    null, new Object[]{"Sí", "No"}, null);
+                    null, new Object[]{mensajeInternacionalizacionHandler.get("mensaje.27"), mensajeInternacionalizacionHandler.get("mensaje.28")}, null);
 
             if (seguroMensaje == JOptionPane.YES_OPTION) {
                 productoDAO.eliminar(codigo);
@@ -224,6 +273,10 @@ public class ProductoController {
             productoEliminarView.mostrarMensaje(mensajes(10), titulosMensajes(10), "error");
         }
     }
+    /**
+     * Busca un producto por su código desde la vista de actualización.
+     * Si lo encuentra, habilita los campos para modificación.
+     */
     private void buscarProductoParaActualizar() {
         try {
             int codigo = Integer.parseInt(productoActualizarView.getTxtCodigo().getText());
@@ -247,6 +300,10 @@ public class ProductoController {
             productoActualizarView.mostrarMensaje(mensajes(12), titulosMensajes(12), "error");
         }
     }
+    /**
+     * Actualiza los datos de un producto con los valores ingresados en los campos correspondientes.
+     * Si hay errores en los datos numéricos o campos vacíos, muestra los mensajes respectivos.
+     */
     private void actualizar() {
         String nuevoNombre = productoActualizarView.getTxtNuevoNombre().getText();
         String nuevoPrecioTexto = productoActualizarView.getTxtNuevoPrecio().getText();
@@ -263,6 +320,7 @@ public class ProductoController {
             Producto producto = productoDAO.buscarPorCodigo(codigo);
             producto.setNombre(nuevoNombre);
             producto.setPrecio(nuevoPrecio);
+            productoDAO.actualizar(producto);
 
             productoActualizarView.getTxtCodigo().setEditable(true);
             productoActualizarView.getTxtCodigo().setText(" - ");
@@ -276,6 +334,13 @@ public class ProductoController {
             productoActualizarView.mostrarMensaje(mensajes(15), titulosMensajes(15), "error");
         }
     }
+    /**
+     * Cambia el idioma de la interfaz gráfica de todas las vistas relacionadas con productos,
+     * actualizando etiquetas, títulos y botones.
+     *
+     * @param lenguaje Código ISO del lenguaje (por ejemplo, "es").
+     * @param pais Código ISO del país (por ejemplo, "EC").
+     */
     public void cambiarIdioma(String lenguaje, String pais) {
         locale = mensajeInternacionalizacionHandler.getLocale();
         /**
@@ -325,6 +390,12 @@ public class ProductoController {
         productoListaView.getModelo().setColumnIdentifiers(columnas);
 
     }
+    /**
+     * Retorna el mensaje internacionalizado correspondiente al código numérico proporcionado.
+     *
+     * @param cod Código del mensaje.
+     * @return Mensaje correspondiente al código dado.
+     */
     private String mensajes(int cod) {
         return switch (cod) {
             case 0 -> mensajeInternacionalizacionHandler.get("mensaje.0");
@@ -346,7 +417,12 @@ public class ProductoController {
             default -> "";
         };
     }
-
+    /**
+     * Retorna el título internacionalizado correspondiente al código numérico proporcionado.
+     *
+     * @param cod Código del título.
+     * @return Título correspondiente al código dado.
+     */
     private String titulosMensajes(int cod) {
         return switch (cod) {
             case 0 -> mensajeInternacionalizacionHandler.get("titulo.0");

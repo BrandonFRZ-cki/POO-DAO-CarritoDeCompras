@@ -2,7 +2,17 @@ package ec.edu.ups.vista;
 
 import javax.swing.*;
 
-public class ResponderPreguntas extends JFrame{
+/**
+ * Vista para que el usuario pueda responder preguntas de seguridad
+ * y proporcionar su fecha de nacimiento. Esta información se utiliza
+ * como método de verificación de identidad para recuperación de cuenta.
+ * Contiene campos para 9 preguntas, día, mes y año.
+ *
+ * @author Brandon
+ * @version 1.0
+ */
+public class ResponderPreguntas extends JFrame {
+
     private JPanel panelPrincipal;
     private JButton btnLimpiar;
     private JButton btnAceptar;
@@ -30,7 +40,11 @@ public class ResponderPreguntas extends JFrame{
     private JLabel lbDia;
     private JLabel lbMes;
     private JLabel lbAnio;
+    private JLabel lbTitulo;
 
+    /**
+     * Constructor que configura la vista para responder preguntas.
+     */
     public ResponderPreguntas() {
         setContentPane(panelPrincipal);
         setTitle("Registro");
@@ -40,6 +54,7 @@ public class ResponderPreguntas extends JFrame{
         setLocationRelativeTo(null);
     }
 
+    /** @return Panel principal del formulario. */
     public JPanel getPanelPrincipal() {
         return panelPrincipal;
     }
@@ -48,6 +63,7 @@ public class ResponderPreguntas extends JFrame{
         this.panelPrincipal = panelPrincipal;
     }
 
+    /** @return Botón para limpiar campos. */
     public JButton getBtnLimpiar() {
         return btnLimpiar;
     }
@@ -56,6 +72,7 @@ public class ResponderPreguntas extends JFrame{
         this.btnLimpiar = btnLimpiar;
     }
 
+    /** @return Botón para aceptar las respuestas. */
     public JButton getBtnAceptar() {
         return btnAceptar;
     }
@@ -64,6 +81,7 @@ public class ResponderPreguntas extends JFrame{
         this.btnAceptar = btnAceptar;
     }
 
+    /** @return Campo para ingresar el día de nacimiento. */
     public JTextField getTxtDia() {
         return txtDia;
     }
@@ -72,6 +90,7 @@ public class ResponderPreguntas extends JFrame{
         this.txtDia = txtDia;
     }
 
+    /** @return ComboBox para seleccionar el mes de nacimiento. */
     public JComboBox getCbxMes() {
         return cbxMes;
     }
@@ -80,6 +99,7 @@ public class ResponderPreguntas extends JFrame{
         this.cbxMes = cbxMes;
     }
 
+    /** @return Campo para ingresar el año de nacimiento. */
     public JTextField getTxtAnio() {
         return txtAnio;
     }
@@ -88,176 +108,74 @@ public class ResponderPreguntas extends JFrame{
         this.txtAnio = txtAnio;
     }
 
-    public JLabel getLbPregunta1() {
-        return lbPregunta1;
-    }
+    // Getters y setters para preguntas
 
-    public void setLbPregunta1(JLabel lbPregunta1) {
-        this.lbPregunta1 = lbPregunta1;
-    }
+    public JLabel getLbPregunta1() { return lbPregunta1; }
+    public JTextField getTxtPregunta1() { return txtPregunta1; }
+    public JLabel getLbPregunta2() { return lbPregunta2; }
+    public JTextField getTxtPregunta2() { return txtPregunta2; }
+    public JLabel getLbPregunta3() { return lbPregunta3; }
+    public JTextField getTxtPregunta3() { return txtPregunta3; }
+    public JLabel getLbPregunta4() { return lbPregunta4; }
+    public JTextField getTxtPregunta4() { return txtPregunta4; }
+    public JLabel getLbPregunta5() { return lbPregunta5; }
+    public JTextField getTxtPregunta5() { return txtPregunta5; }
+    public JLabel getLbPregunta6() { return lbPregunta6; }
+    public JTextField getTxtPregunta6() { return txtPregunta6; }
+    public JLabel getLbPregunta7() { return lbPregunta7; }
+    public JTextField getTxtPregunta7() { return txtPregunta7; }
+    public JLabel getLbPregunta8() { return lbPregunta8; }
+    public JTextField getTxtPregunta8() { return txtPregunta8; }
+    public JLabel getLbPregunta9() { return lbPregunta9; }
+    public JTextField getTxtPregunta9() { return txtPregunta9; }
 
-    public JTextField getTxtPregunta1() {
-        return txtPregunta1;
-    }
-
-    public void setTxtPregunta1(JTextField txtPregunta1) {
-        this.txtPregunta1 = txtPregunta1;
-    }
-
-    public JLabel getLbPregunta2() {
-        return lbPregunta2;
-    }
-
-    public void setLbPregunta2(JLabel lbPregunta2) {
-        this.lbPregunta2 = lbPregunta2;
-    }
-
-    public JLabel getLbPregunta3() {
-        return lbPregunta3;
-    }
-
-    public void setLbPregunta3(JLabel lbPregunta3) {
-        this.lbPregunta3 = lbPregunta3;
-    }
-
-    public JTextField getTxtPregunta3() {
-        return txtPregunta3;
-    }
-
-    public void setTxtPregunta3(JTextField txtPregunta3) {
-        this.txtPregunta3 = txtPregunta3;
-    }
-
-    public JLabel getLbPregunta4() {
-        return lbPregunta4;
-    }
-
-    public void setLbPregunta4(JLabel lbPregunta4) {
-        this.lbPregunta4 = lbPregunta4;
-    }
-
-    public JTextField getTxtPregunta4() {
-        return txtPregunta4;
-    }
-
-    public void setTxtPregunta4(JTextField txtPregunta4) {
-        this.txtPregunta4 = txtPregunta4;
-    }
-
-    public JLabel getLbPregunta5() {
-        return lbPregunta5;
-    }
-
-    public void setLbPregunta5(JLabel lbPregunta5) {
-        this.lbPregunta5 = lbPregunta5;
-    }
-
-    public JTextField getTxtPregunta5() {
-        return txtPregunta5;
-    }
-
-    public void setTxtPregunta5(JTextField txtPregunta5) {
-        this.txtPregunta5 = txtPregunta5;
-    }
-
-    public JTextField getTxtPregunta6() {
-        return txtPregunta6;
-    }
-
-    public void setTxtPregunta6(JTextField txtPregunta6) {
-        this.txtPregunta6 = txtPregunta6;
-    }
-
-    public JLabel getLbPregunta6() {
-        return lbPregunta6;
-    }
-
-    public void setLbPregunta6(JLabel lbPregunta6) {
-        this.lbPregunta6 = lbPregunta6;
-    }
-
-    public JTextField getTxtPregunta2() {
-        return txtPregunta2;
-    }
-
-    public void setTxtPregunta2(JTextField txtPregunta2) {
-        this.txtPregunta2 = txtPregunta2;
-    }
-
-    public JLabel getLbPregunta7() {
-        return lbPregunta7;
-    }
-
-    public void setLbPregunta7(JLabel lbPregunta7) {
-        this.lbPregunta7 = lbPregunta7;
-    }
-
-    public JTextField getTxtPregunta7() {
-        return txtPregunta7;
-    }
-
-    public void setTxtPregunta7(JTextField txtPregunta7) {
-        this.txtPregunta7 = txtPregunta7;
-    }
-
-    public JTextField getTxtPregunta8() {
-        return txtPregunta8;
-    }
-
-    public void setTxtPregunta8(JTextField txtPregunta8) {
-        this.txtPregunta8 = txtPregunta8;
-    }
-
-    public JLabel getLbPregunta8() {
-        return lbPregunta8;
-    }
-
-    public void setLbPregunta8(JLabel lbPregunta8) {
-        this.lbPregunta8 = lbPregunta8;
-    }
-
-    public JLabel getLbPregunta9() {
-        return lbPregunta9;
-    }
-
-    public void setLbPregunta9(JLabel lbPregunta9) {
-        this.lbPregunta9 = lbPregunta9;
-    }
-
-    public JTextField getTxtPregunta9() {
-        return txtPregunta9;
-    }
-
-    public void setTxtPregunta9(JTextField txtPregunta9) {
-        this.txtPregunta9 = txtPregunta9;
-    }
-
+    /**
+     * Setter alternativo para el campo pregunta 9
+     * utilizado como pregunta 10 en algunos contextos.
+     * @param txtPregunta10 campo de texto con respuesta
+     */
     public void setTxtPregunta10(JTextField txtPregunta10) {
         this.txtPregunta9 = txtPregunta10;
     }
 
+    /** @return Etiqueta del día de nacimiento. */
     public JLabel getLbDia() {
         return lbDia;
     }
 
+    /** @return Etiqueta del mes de nacimiento. */
     public JLabel getLbMes() {
         return lbMes;
     }
 
+    /** @return Etiqueta del año de nacimiento. */
     public JLabel getLbAnio() {
         return lbAnio;
     }
 
+    /** @return Etiqueta del título principal. */
+    public JLabel getLbTitulo() {
+        return lbTitulo;
+    }
+
+    /**
+     * Limpia todos los campos de preguntas y fecha.
+     */
     public void limpiarCampos() {
         txtDia.setText("");
         txtAnio.setText("");
         cbxMes.setSelectedIndex(0);
-
-        JTextField[] respuestas = getCamposRespuestas();
-        for (JTextField campo : respuestas) {
+        for (JTextField campo : getCamposRespuestas()) {
             campo.setText("");
         }
     }
+
+    /**
+     * Retorna un arreglo con todos los campos de texto usados
+     * para responder preguntas de seguridad.
+     *
+     * @return Arreglo de campos JTextField de respuestas.
+     */
     public JTextField[] getCamposRespuestas() {
         return new JTextField[]{
                 txtPregunta1,
@@ -271,5 +189,4 @@ public class ResponderPreguntas extends JFrame{
                 txtPregunta9
         };
     }
-
 }
