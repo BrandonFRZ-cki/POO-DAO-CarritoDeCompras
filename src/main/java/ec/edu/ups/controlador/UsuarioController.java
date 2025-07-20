@@ -292,7 +292,15 @@ public class UsuarioController {
         loginView.getBtnRecuperarContrasenia().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                recuperarContrasena();
+                try{
+                    recuperarContrasena();
+                }catch (PasswordException e2) {
+                    usuarioActualizarView.mostrarMensaje(
+                            mensajes(Integer.parseInt(e2.getMessage())),
+                            titulosMensajes(Integer.parseInt(e2.getMessage())),
+                            "error"
+                    );
+                }
             }
         });
     }
